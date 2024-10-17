@@ -15,7 +15,7 @@ Welcome to the ClassMate GitHub repository! Our project aims to develop an appli
 Our codebase is organized within a single repository, with key files and directories serving specific roles in the development of the eŠkolskaKomunikacija system:
 
 - **documentation**: Contains project documentation, including comprehensive guides and the main project file (`eSkolskaKomunikacija.pdf`).
-- **eSkolskaKomunikacija.pdf**: A detailed PDF outlining the scope, requirements, and specifications of the eŠkolskaKomunikacija system.
+- **eSkolskaKomunikacija.pdf**: A detailed PDF outlining the scope, requirements, and specifications of the ClassMate system.
 - **src**: The source code directory, which houses all the application logic, user interfaces, and backend services necessary for running the system.
 
 ---
