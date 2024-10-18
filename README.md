@@ -37,10 +37,10 @@ Our codebase is organized within a single repository, with key files and directo
 
 - Bošković Marin
 - Brkić Marin (Team Lead)
-- Grga Gabrić
+- Gabrić Grga
 - Jeličić Lovre
 - Kuzmanić Roko
-- Leonarda Lovrić
+- Lovrić Leonarda
 - Sulić Mislav Luka
 
 ---
