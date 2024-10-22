@@ -1,42 +1,42 @@
-# ClassMate: Digital School Communication and Management System
+# ClassMate: Digitalni školski sustav za upravljanje i komunikaciju
 
-*Course*: **Software Engineering** | *University Project*
-
----
-
-## 💻 Project Overview
-
-Welcome to the ClassMate GitHub repository! Our project aims to develop an application that organizes the work of teachers and students in modern educational institutions through electronic means. All data related to students, schedules, school resources, and educational activities are available online for everyone involved in the educational process.
+*Kolegij*: **Programsko inženjerstvo** | *Sveučilišni projekt*
 
 ---
 
-### 🗂️ Repository Structure
+## 💻 Pregled projekta
 
-Our codebase is organized within a single repository, with key files and directories serving specific roles in the development of the ClassMate system:
-
-- **documentation**: Contains project documentation, including comprehensive guides and the main project file (`eSkolskaKomunikacija.pdf`).
-- **eSkolskaKomunikacija.pdf**: A detailed PDF outlining the scope, requirements, and specifications of the ClassMate system.
-- **src**: The source code directory, which houses all the application logic, user interfaces, and backend services necessary for running the system.
+Dobrodošli u ClassMate GitHub repozitorij! Cilj ovog projekta je razviti aplikaciju koja organizira rad nastavnika i učenika u suvremenim obrazovnim institucijama putem elektroničkih sredstava.
 
 ---
 
-## ✔️ Features
+### 🗂️ Struktura repozitorija
 
-- **Student Registration**: Automatic assignment of courses based on the selected educational path (e.g., computer technician, web programmer).
-- **Class Scheduling**: Automated generation of schedules, taking into account room capacities, equipment, and teacher availability.
-- **Resource Management**: Tracks usage of both human and material resources, such as classrooms and equipment.
-- **Communication Tools**: Built-in messaging system for group or individual communication, along with notification handling for schedule changes.
-- **Curriculum Alignment**: Subjects are aligned with curriculum data from the Ministry of Science and Education.
-- **External Services Integration**: OAuth2 support for registration and login.
-- **PDF Document Generation**: Provides official school documents (e.g., enrollment confirmation) as PDF via email upon request.
-- **Weather Information**: Displays current weather conditions and forecast for the school’s location on the homepage.
+Naš kod organiziran je unutar jednog repozitorija, s ključnim datotekama i direktorijima koji imaju specifične uloge u razvoju ClassMate sustava:
+
+- **Dokumentacija**: Sadrži projektnu dokumentaciju, uključujući detaljne vodiče i glavni projektni dokument (`eSkolskaKomunikacija.pdf`).
+- **eSkolskaKomunikacija.pdf**: Detaljan PDF koji opisuje opseg, zahtjeve i specifikacije ClassMate sustava.
+- **IzvorniKod**: Direktorij izvornog koda koji sadrži svu aplikacijsku logiku, korisnička sučelja i usluge potrebne za rad sustava.
 
 ---
 
-## 🫂 The Team
+## ✔️ Funkcionalnosti
+
+- **Registracija učenika**: Automatska dodjela predmeta na temelju odabranog obrazovnog smjera (npr. računalni tehničar, web programer).
+- **Raspored nastave**: Automatsko generiranje rasporeda uzimajući u obzir kapacitete prostorija, opremu i dostupnost nastavnika.
+- **Upravljanje resursima**: Praćenje korištenja ljudskih i materijalnih resursa, poput učionica i opreme.
+- **Alati za komunikaciju**: Ugrađen sustav za razmjenu poruka, grupno ili individualno, te rukovanje obavijestima o promjenama u rasporedu.
+- **Usklađivanje s kurikulumom**: Predmeti su usklađeni s kurikulumom Ministarstva znanosti i obrazovanja.
+- **Integracija vanjskih usluga**: Podrška za OAuth2 za registraciju i prijavu.
+- **Generiranje PDF dokumenata**: Omogućava službene školske dokumente (npr. potvrda o upisu) u PDF formatu putem e-pošte na zahtjev.
+- **Informacije o vremenu**: Prikazuje trenutne vremenske uvjete i prognozu za lokaciju škole na početnoj stranici.
+
+---
+
+## 🫂 Tim
 
 - Bošković Marin
-- Brkić Marin (Team Lead)
+- Brkić Marin (Voditelj)
 - Gabrić Grga
 - Jeličić Lovre
 - Kuzmanić Roko
@@ -45,8 +45,8 @@ Our codebase is organized within a single repository, with key files and directo
 
 ---
 
-## 📃 License
+## 📃 Licenca
 
-This project is part of a university course and is not intended for commercial use.
+Ovaj projekt je dio sveučilišnog kolegija i nije namijenjen za komercijalnu uporabu.
 
 ---
