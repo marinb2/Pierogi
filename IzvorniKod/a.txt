@@ -1,0 +1,2 @@
+ovo je folder za izvorni kod. Placeholder file dok se ne ubaci nesto drugo u folder
+jer se prazan folder ne prikazuje na gitu. Nakon toga izbrisati ovaj file
