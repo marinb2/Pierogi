@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-
 @Entity
 @Table(name = "app_user")
 public class User {
@@ -20,12 +19,22 @@ public class User {
     private String username;
     private String email;
     private LocalDateTime createdAt;
-    
+
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "roleId")
     private Role role;
 
-    
+    @ManyToOne
+    @JoinColumn(name = "schoolId")
+    private School school;
+
+    @ManyToOne
+    @JoinColumn(name = "programmeId")
+    private Programme programme;
+
+    @ManyToOne
+    @JoinColumn(name = "subjectId")
+    private Subject subject;
 
     // Getters and Setters
 
@@ -67,5 +76,29 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
+
+    public Programme getProgramme() {
+        return programme;
+    }
+
+    public void setProgramme(Programme programme) {
+        this.programme = programme;
+    }
+    
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

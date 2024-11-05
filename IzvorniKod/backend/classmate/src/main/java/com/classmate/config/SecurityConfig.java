@@ -2,7 +2,6 @@ package com.classmate.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -13,13 +12,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/" , "/welcome", "/favicon.ico", "/error", "/oauth2/**").permitAll()
                 .anyRequest().authenticated()
             )
-            .oauth2Login(withDefaults());
-        return http.build();
+            .oauth2Login(oauth2 -> oauth2
+                .defaultSuccessUrl("/index", true)
+            )
+            .build();
     }
 }
