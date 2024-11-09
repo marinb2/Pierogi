@@ -1,20 +1,20 @@
 import logo from '../assets/logo.svg'
 import homeExample from '../assets/home-example.svg'
-import '../styles/HomePage.css'
+import '../styles/LandingPage.css'
 
-function HomePage() {
+function LandingPage() {
 
   function redirectToGoogleOAuth() {
-    window.location.href = "http://localhost:8080/login/oauth2/code/google";
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
   }
 
   return (
 
-    <div className="home-page">
+    <div className="landing-page">
 
       <img src={logo} className="logo"></img>
 
-      <div className="home-desc">
+      <div className="landing-page-desc">
         <h1>Školski sustav na dlanu</h1>
         <p>Trebate pouzdan sustav za digitalizaciju školskih procesa? Na pravom ste mjestu! Olakšajte svakodnevne zadatke, unaprijedite komunikaciju i uštedite vrijeme uz intuitivno rješenje za sve školske potrebe.</p>
       </div>
@@ -62,4 +62,4 @@ function HomePage() {
   )
 }
 
-export default HomePage
+export default LandingPage

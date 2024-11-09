@@ -1,4 +1,4 @@
-.home-page {
+.landing-page {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -12,30 +12,21 @@
     height: 40px;
 }
 
-.home-desc {
+.landing-page-desc {
     margin-top: 70px;
 }
 
-.home-desc h1 {
+.landing-page-desc h1 {
     font-size: 60px;
     font-weight: 500;
 }
 
-.home-desc p {
+.landing-page-desc p {
     font-size: 18px;
     font-weight: 400;
     line-height: 1.6;
     margin-top: -25px;
     max-width: 700px;
-}
-
-.google-login-button {
-    margin-top: 30px;
-    margin-bottom: 70px;
-}
-
-.google-login-button div {
-    border-radius: 25px;
 }
 
 .home-example {
