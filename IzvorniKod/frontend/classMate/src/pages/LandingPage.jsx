@@ -1,6 +1,6 @@
 import logo from '../assets/logo.svg'
 import homeExample from '../assets/home-example.svg'
-import '../styles/HomePage.css'
+import '../styles/LandingPage.css'
 
 function LandingPage() {
 
