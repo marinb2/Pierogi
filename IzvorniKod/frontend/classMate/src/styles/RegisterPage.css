@@ -1,0 +1,10 @@
+.form-div {
+    background-color: white;
+    padding: 1px 16px 20px 16px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}

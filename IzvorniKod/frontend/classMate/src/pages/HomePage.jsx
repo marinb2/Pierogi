@@ -10,11 +10,11 @@ function HomePage() {
 
   return (
 
-    <div className="home-page">
+    <div className="landing-page">
 
       <img src={logo} className="logo"></img>
 
-      <div className="home-desc">
+      <div className="landing-page-desc">
         <h1>Školski sustav na dlanu</h1>
         <p>Trebate pouzdan sustav za digitalizaciju školskih procesa? Na pravom ste mjestu! Olakšajte svakodnevne zadatke, unaprijedite komunikaciju i uštedite vrijeme uz intuitivno rješenje za sve školske potrebe.</p>
       </div>
