@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>You can make a new school here</h1>
+        <p>Enter school details:</p>
+        <form class="makeschoolform">
+            <input type="text" id="name" name="name"
+                placeholder="enter school name"> <br>
+            <input type="text" id="address" name="address"
+                placeholder="enter school address"> <br>
+            <input type="submit" value="Submit"> <br>
+            <input type="reset" value="Reset" />
+        </form>
+    </body>
+    <script>
+        /* let schools;
+        fetch("http://localhost:8080/api/schools")
+        .then(res => res.json())
+        .then(data => schools = data)
+        .then(() => {console.log(schools[0].name)}); */
+        const formEl = document.querySelector('.makeschoolform');
+        console.log(formEl);
+
+        formEl.addEventListener('submit', event => {
+            event.preventDefault();
+
+            const formdata = new FormData(formEl);
+            const data = Object.fromEntries(formdata);
+            console.log(data);
+
+            fetch("http://localhost:8080/api/schools",{
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+        })
+        
+        
+
+        /* var xhr = new XMLHttpRequest()
+        var url = "http://localhost:8080/api/schools"
+        xhm.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", applica) */
+    </script>
+
+</html>

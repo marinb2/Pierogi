@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Teacher {
@@ -14,6 +15,9 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @OneToOne
+    private Subject professed_subject;
 
     @OneToMany(mappedBy = "teacher")
     private List<UnavailableTime> unavailableTimes;
@@ -34,6 +38,14 @@ public class Teacher {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Subject getProfessedSubject() {
+        return professed_subject;
+    }
+
+    public void getProfessedSubject(Subject subject) {
+        this.professed_subject = subject;
     }
 
     public List<UnavailableTime> getUnavailableTimes() {
