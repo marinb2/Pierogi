@@ -1,12 +1,12 @@
 import RegisterPage from './pages/RegisterPage'
-import HomePage from './pages/HomePage'
+import LandingPage from './pages/LandingPage'
 
 // Ako želite da se prikaže LandingPage, zamijenite RegisterPage s LandingPage u liniji 9.
 function App() {
 
   return (
     <div>
-        <RegisterPage />
+        <LandingPage />
     </div>
   )
 }
