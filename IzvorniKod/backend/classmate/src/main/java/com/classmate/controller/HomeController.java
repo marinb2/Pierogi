@@ -8,9 +8,18 @@ public class HomeController {
 
     @GetMapping("/")
     public String welcomePage() {
-        return "welcome"; 
+        return "welcome";
     }
 
+    @GetMapping("/result")
+    public String successPage() {
+        return "result";
+    }
+
+    @GetMapping("/api/school/new")
+    public String createNewSchool(){
+        return "makenewschool";
+    }
 
     @GetMapping("/index")
     public String indexPage() {

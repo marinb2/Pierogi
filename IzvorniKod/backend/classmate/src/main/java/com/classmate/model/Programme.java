@@ -1,15 +1,15 @@
 package com.classmate.model;
 
-import java.util.Set;
+//import java.util.Set;
 
-import jakarta.persistence.CascadeType;
+//import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+//import jakarta.persistence.OneToMany;
 
 @Entity
 public class Programme {
@@ -22,8 +22,8 @@ public class Programme {
     @JoinColumn(name = "schoolId")
     private School school;
 
-    @OneToMany(mappedBy = "programme", cascade=CascadeType.ALL, orphanRemoval = true)
-    private Set<Subject> subjects;
+    /* @OneToMany(mappedBy = "programme", cascade=CascadeType.ALL, orphanRemoval = true)
+    private Set<Subject> subjects; */
 
     // Getters and Setters
 
@@ -51,12 +51,12 @@ public class Programme {
         this.school = school;
     }
 
-    public Set<Subject> getSubjects() {
+    /* public Set<Subject> getSubjects() {
         return subjects;
     }
 
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
-    }
+    } */
 
 }

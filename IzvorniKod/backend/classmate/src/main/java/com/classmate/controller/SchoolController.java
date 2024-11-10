@@ -9,24 +9,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.classmate.model.User;
-import com.classmate.service.UserService;
+import com.classmate.model.School;
+import com.classmate.service.SchoolService;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
-    
-    @Autowired
-    private UserService userService;
+@RequestMapping("/api/schools")
+public class SchoolController {
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    @Autowired
+    private SchoolService schoolService;
+
+    @GetMapping("")
+    public List<School> getAllSchools() {
+        return schoolService.getAllSchools();
     }
+
+    
 
     @PostMapping(value = "", consumes = { "application/json" })
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public School createSchool(@RequestBody School school) {
+        return schoolService.createNewSchool(school);
     }
-    
 }
