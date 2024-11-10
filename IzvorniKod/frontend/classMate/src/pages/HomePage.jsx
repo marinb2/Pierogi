@@ -1,8 +1,8 @@
 import logo from '../assets/logo.svg'
 import homeExample from '../assets/home-example.svg'
-import '../styles/LandingPage.css'
+import '../styles/HomePage.css'
 
-function LandingPage() {
+function HomePage() {
 
   function redirectToGoogleOAuth() {
     window.location.href = "http://localhost:8080/oauth2/authorization/google";
@@ -62,4 +62,4 @@ function LandingPage() {
   )
 }
 
-export default LandingPage
+export default HomePage
