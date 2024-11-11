@@ -16,9 +16,10 @@
                 .then(res => res.json())
                 .then(data => {
                     for(var i = 0; i < data.length; i++){
-                        if(email == data[i].email)
+                        if(email == data[i].email){
                             console.log("found");
-                            window.location.href = "http://localhost:8080/index"
+                            window.location.href = "http://localhost:8080/index";
+                        }
                     }
                 })
             })
