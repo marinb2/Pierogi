@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.classmate.model.Schedule;
+import com.classmate.model.School;
 import com.classmate.service.ScheduleService;
 
 @RestController
@@ -27,6 +29,11 @@ public class ScheduleController {
     @PostMapping
     public Schedule createSchedule(@RequestBody Schedule schedule) {
         return scheduleService.createSchedule(schedule);
+    }
+
+    @GetMapping("/{id}")
+    public Schedule getScheduleById(@PathVariable Long id) {
+        return scheduleService.getScheduleById(id);
     }
 
     

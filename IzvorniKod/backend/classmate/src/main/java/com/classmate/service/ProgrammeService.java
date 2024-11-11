@@ -1,11 +1,13 @@
 package com.classmate.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.classmate.model.Programme;
+import com.classmate.model.Role;
 import com.classmate.repository.ProgrammeRepository;
 
 @Service
@@ -18,4 +20,9 @@ public class ProgrammeService {
         return programmeRepository.findAll();
     }
 
+    public Optional<Programme> getProgrammeById(Long id) {
+        return programmeRepository.findById(id);
+    }
+
+    
 }
