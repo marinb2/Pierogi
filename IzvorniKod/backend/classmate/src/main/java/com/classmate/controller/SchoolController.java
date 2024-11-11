@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.classmate.model.School;
@@ -24,10 +25,14 @@ public class SchoolController {
         return schoolService.getAllSchools();
     }
 
-    
-
-    @PostMapping(value = "", consumes = { "application/json" })
+    @PostMapping
     public School createSchool(@RequestBody School school) {
-        return schoolService.createNewSchool(school);
+        return schoolService.createSchool(school);
     }
+
+    @GetMapping("/{id}")
+    public School getSchoolById(@PathVariable Long id) {
+        return schoolService.getSchoolById(id);
+    }
+
 }

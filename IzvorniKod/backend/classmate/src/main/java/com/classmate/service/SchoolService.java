@@ -1,7 +1,7 @@
 package com.classmate.service;
 
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,18 @@ public class SchoolService {
         return schoolRepository.findAll();
     }
 
+
+    public School createSchool(School school) {
+        return schoolRepository.save(school);
+    }
+
+    public School getSchoolById(Long id) {
+        Optional<School> school = schoolRepository.findById(id);
+        return school.orElse(null);
+    }
+
     public School createNewSchool(School school) {
         return schoolRepository.save(school);
     }
+
 }
