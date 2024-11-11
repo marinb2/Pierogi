@@ -18,6 +18,7 @@ public class SchoolService {
         return schoolRepository.findAll();
     }
 
+
     public School createSchool(School school) {
         return schoolRepository.save(school);
     }
@@ -27,5 +28,8 @@ public class SchoolService {
         return school.orElse(null);
     }
 
-    
+    public School createNewSchool(School school) {
+        return schoolRepository.save(school);
+    }
+
 }

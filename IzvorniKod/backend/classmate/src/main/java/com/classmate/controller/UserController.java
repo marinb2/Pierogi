@@ -24,7 +24,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping
+    @PostMapping(value = "", consumes = { "application/json" })
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }

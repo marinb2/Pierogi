@@ -1,6 +1,7 @@
 package com.classmate.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class SchoolController {
     @Autowired
     private SchoolService schoolService;
 
-    @GetMapping
+    @GetMapping("")
     public List<School> getAllSchools() {
         return schoolService.getAllSchools();
     }
@@ -34,6 +35,4 @@ public class SchoolController {
         return schoolService.getSchoolById(id);
     }
 
-    
-   
 }
