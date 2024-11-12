@@ -15,11 +15,11 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/welcome", "/favicon.ico", "/error", "/oauth2/**")
+                        .requestMatchers("/", "/favicon.ico", "/error", "/oauth2/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/loginform", true))
+                        .defaultSuccessUrl("http://localhost:3000/register", true))
                 .build();
     }
 }
