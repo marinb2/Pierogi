@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.classmate.model.Programme;
-import com.classmate.model.Role;
 import com.classmate.repository.ProgrammeRepository;
 
 @Service
@@ -22,6 +21,18 @@ public class ProgrammeService {
 
     public Optional<Programme> getProgrammeById(Long id) {
         return programmeRepository.findById(id);
+    }
+
+    public Programme createProgramme(Programme programme) {
+        return programmeRepository.save(programme);
+    }
+
+    public boolean deleteProgramme(Long id) {
+        if (programmeRepository.existsById(id)) {
+            programmeRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     

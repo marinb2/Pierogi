@@ -26,4 +26,14 @@ public class RoleService {
     public Optional<Role> getRoleById(Long id) {
         return roleRepository.findById(id);
     }
+
+    public boolean deleteRole(Long id) {
+        if (roleRepository.existsById(id)) {
+            roleRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
 }

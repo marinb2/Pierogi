@@ -23,4 +23,19 @@ public class SubjectService {
         return subjectRepository.findById(id);
 }
 
+    public Subject createSubject (Subject subject){
+        return subjectRepository.save(subject);
+    }
+
+
+    public boolean deleteSubject(Long id) {
+        if (subjectRepository.existsById(id)) {
+            subjectRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    
+
 }

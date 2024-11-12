@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.classmate.model.Subject;
+
 import com.classmate.model.User;
 import com.classmate.service.UserService;
 

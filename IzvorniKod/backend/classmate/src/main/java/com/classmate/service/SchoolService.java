@@ -28,8 +28,14 @@ public class SchoolService {
         return school.orElse(null);
     }
 
-    public School createNewSchool(School school) {
-        return schoolRepository.save(school);
+    public boolean deleteSchool(Long id) {
+        if (schoolRepository.existsById(id)) {
+            schoolRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
+
+
 
 }

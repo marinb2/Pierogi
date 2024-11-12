@@ -26,5 +26,26 @@ public class NotificationService {
         return notificationRepository.save(notification);
     }
 
+    public Notification updateNotification(Long id, Notification updatedNotification) {
+        Optional<Notification> existingNotificationOpt = notificationRepository.findById(id);
+        if (existingNotificationOpt.isPresent()) {
+            Notification existingNotification = existingNotificationOpt.get();
+            existingNotification.setContent(updatedNotification.getContent());
+            existingNotification.setSentAt(updatedNotification.getSentAt());
+            existingNotification.setSender(updatedNotification.getSender());
+            existingNotification.setRecipient(updatedNotification.getRecipient());
+            return notificationRepository.save(existingNotification);
+        }
+        return null;
+    }
+
+    public boolean deleteNotification(Long id) {
+        if (notificationRepository.existsById(id)) {
+            notificationRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
 
 }
