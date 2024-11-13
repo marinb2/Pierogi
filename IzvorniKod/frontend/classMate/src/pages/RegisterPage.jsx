@@ -1,11 +1,15 @@
 import logo from "../assets/logo.svg";
 import '../styles/RegisterPage.css';
-import React from 'react';
+import React, { act, useEffect } from 'react';
 import { Stepper, Step, StepLabel, Button, Typography, Box, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+
+var ran_once = false;
+var programmes_updated = false;
+var subjects_updated = false;
 
 const StyledStepLabel = styled(StepLabel)(() => ({
     "& .MuiStepIcon-root.Mui-active": {
@@ -15,8 +19,6 @@ const StyledStepLabel = styled(StepLabel)(() => ({
         color: 'rgba(103, 58, 183, 1)',
     }
 }));
-
-const steps = ['Odabir uloge', 'Odabir škole', 'Informacije o ulozi'];
 
 // Placeholder data za formu, kasnije će se dohvaćati iz baze i uvjetno prikazivati ovisno o odabiru korisnika
 const stepData = [
@@ -33,35 +35,26 @@ const stepData = [
         label: 'Škola',
         value: 'school',
         options: [
-            { value: '', label: 'Odaberite školu', disabled: true },
-            { value: 'XV. gimnazija', label: 'XV. gimnazija' },
-            { value: 'Prirodoslovna škola Vladimira Preloga', label: 'Prirodoslovna škola Vladimira Preloga' },
-            { value: 'I. gimnazija', label: 'I. gimnazija' },
-            { value: 'Tehnička škola Ruđera Boškovića', label: 'Tehnička škola Ruđera Boškovića' },
+            { value: '', label: 'Odaberite školu', disabled: true }
         ],
     },
     {
         label: 'Smjer',
         value: 'major',
         options: [
-            { value: '', label: 'Odaberite smjer', disabled: true },
-            { value: "Kemijski tehničar", label: 'Kemijski tehničar' },
-            { value: "Matematika", label: 'Matematika' },
-            { value: 'Fizika', label: 'Fizika' },
-            { value: 'Računarstvo', label: 'Računarstvo' },
+            { value: '', label: 'Odaberite smjer', disabled: true }
         ],
     },
     {
         label: 'Predmet',
         value: 'subject',
         options: [
-            { value: '', label: 'Odaberite predmet', disabled: true },
-            { value: "math", label: 'Matematika' },
-            { value: "physics", label: 'Fizika' },
-            { value: "chemistry", label: 'Kemija' },
+            { value: '', label: 'Odaberite predmet', disabled: true }
         ],
     }
 ];
+
+const steps = ['Odabir uloge', 'Odabir škole', 'Informacije o ulozi'];
 
 const SelectField = ({ label, value, onChange, options }) => {
     return (
@@ -104,6 +97,51 @@ SelectField.propTypes = {
 
 function RegisterPage() {
 
+    const [value, setValue] = React.useState(0);
+
+
+    useEffect(() => {
+
+
+        if (!ran_once) {
+            ran_once = true;
+            fetch("http://localhost:8080/auth/details/currentuser", {
+                credentials: "include",
+                method: "GET"
+            }).then(res => res.json()).then(authdata => {
+                fetch("http://localhost:8080/api/users", {
+                    credentials: "include",
+                    method: "GET"
+                }).then(res => res.json()).then(userdata => {
+                    for (var i = 0; i < userdata.length; i++) {
+                        if (userdata[i].email == authdata.email)
+                            window.location.href = "http://localhost:3000/main";
+                    }
+                    fetch("http://localhost:8080/api/schools",
+                        {
+                            credentials: "include",
+                            method: "GET",
+                        }
+                    ).then(res => res.json())
+                        .then(data => {
+                            console.log(data);
+                            for (var i = 0; i < data.length; i++) {
+                                stepData[1].options.push(
+                                    {
+                                        value: data[i].name,
+                                        label: data[i].name
+                                    })
+                            }
+                        });
+                })
+
+
+
+            })
+        }
+    }, []);
+
+
     const [activeStep, setActiveStep] = React.useState(0);
     const [formData, setFormData] = React.useState({
         role: '',
@@ -114,6 +152,104 @@ function RegisterPage() {
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+
+        if (activeStep == 0) {
+            console.log("zero");
+            console.log(formData);
+        } else if (activeStep == 1) {
+            console.log("one");
+            console.log(formData);
+        } else if (activeStep == 2) {
+            console.log("two");
+            console.log(formData);
+            fetch("http://localhost:8080/auth/details/currentuser", {
+                credentials: "include"
+            }).then(res => res.json()).then(authdata => {
+                fetch("http://localhost:8080/api/schools", {
+                    credentials: "include"
+                }).then(res => res.json()).then(schooldata => {
+                    fetch("http://localhost:8080/api/roles", {
+                        credentials: "include"
+                    }).then(res => res.json()).then(roledata => {
+                        if (formData.role == "učenik") {
+                            fetch("http://localhost:8080/api/programmes", {
+                                credentials: "include"
+                            }).then(res => res.json()).then(programmedata => {
+                                var role, programme, school;
+                                for (var i = 0; i < schooldata.length; i++) {
+                                    if (formData.school == schooldata[i].name)
+                                        school = schooldata[i];
+                                }
+                                for (var i = 0; i < roledata.length; i++) {
+                                    if (formData.role == roledata[i].roleName)
+                                        role = roledata[i];
+                                }
+                                for (var i = 0; i < programmedata.length; i++) {
+                                    if (formData.major == programmedata[i].programName)
+                                        programme = programmedata[i];
+                                }
+                                var send_this = {
+                                    created_at: new Date(),
+                                    email: authdata.email,
+                                    role: role,
+                                    programme: programme,
+                                    school: school
+                                }
+                                fetch("http://localhost:8080/api/users", {
+                                    credentials: "include",
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "Application/json"
+                                    },
+                                    body: JSON.stringify(send_this)
+                                }).then(() => {
+                                    window.location.href = "http://localhost:3000/main";
+                                })
+                            })
+                        } else if (formData.role = "nastavnik") {
+                            fetch("http://localhost:8080/api/subjects", {
+                                credentials: "include"
+                            }).then(res => res.json()).then(subjectdata => {
+                                var role, subject, school;
+                                for (var i = 0; i < schooldata.length; i++) {
+                                    if (formData.school == schooldata[i].name)
+                                        school = schooldata[i];
+                                }
+                                for (var i = 0; i < roledata.length; i++) {
+                                    if (formData.role == roledata[i].roleName)
+                                        role = roledata[i];
+                                }
+                                for (var i = 0; i < subjectdata.length; i++) {
+                                    if (formData.subject == subjectdata[i].subjectName)
+                                        subject = subjectdata[i];
+                                }
+                                var send_this = {
+                                    created_at: new Date(),
+                                    email: authdata.email,
+                                    role: role,
+                                    subject: subject,
+                                    school: school
+                                }
+                                fetch("http://localhost:8080/api/users", {
+                                    credentials: "include",
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "Application/json"
+                                    },
+                                    body: JSON.stringify(send_this)
+                                }).then(() => {
+                                    window.location.href = "http://localhost:3000/main";
+                                })
+
+                            })
+                        }
+                    })
+                })
+
+            }
+            )
+        }
     };
 
     const handleBack = () => {
@@ -137,6 +273,32 @@ function RegisterPage() {
 
         if (activeStep === 2) {
             if (formData.role === "učenik") {
+                //console.log("tu sam");
+                fetch("http://localhost:8080/api/programmes",
+                    {
+                        method: "GET",
+                        credentials: "include"
+                    }
+                ).then(res => res.json()).then(data => {
+                    for (var i = 0; i < data.length; i++) {
+                        //console.log(i + " " + data[i].school.name + " " + formData.school);
+                        if (data[i].school.name == formData.school && !stepData[2].options.some(e => e.label == data[i].programName)) {
+                            console.log(data[i]);
+                            stepData[2].options.push(
+                                {
+                                    value: data[i].programName,
+                                    label: data[i].programName
+                                })
+                        }
+                    }
+                    console.log(stepData[2].options);
+                    //force reload
+                    if (!programmes_updated) {
+                        programmes_updated = true;
+                        setValue((v) => v + 1);
+                    }
+                })
+
                 return (
                     <SelectField
                         label="Smjer"
@@ -145,9 +307,34 @@ function RegisterPage() {
                         options={stepData[2].options}
                     />
                 );
+
+
             }
 
             if (formData.role === "nastavnik") {
+                fetch("http://localhost:8080/api/subjects",
+                    {
+                        method: "GET",
+                        credentials: "include"
+                    }
+                ).then(rez => rez.json()).then(subjects => {
+                    for (var i = 0; i < subjects.length; i++) {
+                        if (subjects[i].programme.school.name == formData.school && !stepData[3].options.some(e => e.label == subjects[i].subjectName)) {
+                            console.log(subjects[i]);
+                            stepData[3].options.push(
+                                {
+                                    value: subjects[i].subjectName,
+                                    label: subjects[i].subjectName
+                                }
+                            )
+                        }
+                    }
+                    //force reload
+                    if (!subjects_updated) {
+                        subjects_updated = true;
+                        setValue((v) => v + 1);
+                    }
+                })
                 return (
                     <SelectField
                         label="Predmet"
@@ -207,7 +394,7 @@ function RegisterPage() {
                                     color="inherit"
                                     disabled={activeStep === 0}
                                     onClick={handleBack}
-                                    sx={{ mr: 1, width: '150px', color: 'rgba(103, 58, 183, 1)', borderColor: 'rgba(103, 58, 183, 1)', marginLeft: '8px', border: '1px solid'}}
+                                    sx={{ mr: 1, width: '150px', color: 'rgba(103, 58, 183, 1)', borderColor: 'rgba(103, 58, 183, 1)', marginLeft: '8px', border: '1px solid' }}
                                     startIcon={<ChevronLeftIcon />}
                                 >
                                     Nazad

@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.classmate.model.User;
 import com.classmate.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    
+
     @Autowired
     private UserService userService;
 
@@ -36,5 +35,5 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
-    
+
 }

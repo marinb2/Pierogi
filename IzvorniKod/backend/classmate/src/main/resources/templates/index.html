@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Index Page</title>
-</head>
-<body>
-    <h1>Welcome to the Index Page</h1>
-    <p>This is a simple Thymeleaf template.</p>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Index Page</title>
+    </head>
+    <body>
+        <h1>Welcome to the Index Page</h1>
+        <p>This is a simple Thymeleaf template.</p>
+    </body>
+    <script>
+    var data = [{
+        name: "marin", surname: "brkic"
+    }, {
+        name: "roko", surname: "kuzmanic"
+    }]
+    console.log(data.some(e => e.name =="marin"));
+</script>
 </html>
