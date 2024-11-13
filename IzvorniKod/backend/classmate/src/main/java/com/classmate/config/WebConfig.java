@@ -13,8 +13,8 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")  // Omogućava CORS za sve rute
-                        .allowedOrigins("http://localhost:3000")  // URL gdje se pokreće frontend aplikacija
+                registry.addMapping("/**") // Omogućava CORS za sve rute
+                        .allowedOrigins("http://localhost:3000") // URL gdje se pokreće frontend aplikacija
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Dopuštene metode
                         .allowedHeaders("*")
                         .allowCredentials(true);
