@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            var email;
+            fetch("http://localhost:8080/auth/details/currentuser")
+            .then(res => res.json())
+            .then(emaildata => {
+                email = emaildata.email;
+                fetch("http://localhost:8080/api/users")
+                .then(res => res.json())
+                .then(data => {
+                    for(var i = 0; i < data.length; i++){
+                        if(email == data[i].email){
+                            console.log("found");
+                            window.location.href = "http://localhost:8080/index";
+                        }
+                    }
+                })
+            })
+        </script>
+
+        <h1>this is the login form</h1>
+        <form id="loginform">
+
+            <select id="role" name="role"></select>
+            <button id="next1" type="button">Next1</button>
+            <select id="schools" name="schools" hidden></select>
+            <button id="next2" type="button" hidden>Next2</button>
+            <select id="programmes" name="programme" hidden></select>
+            <button id="submit1" type="button" hidden>Submit</button>
+            <select id="subjects" name="subject" hidden></select>
+            <button id="submit2" type="button" hidden>Submit</button>
+
+        </form>
+    </body>
+
+    <script>
+        const rolesdropdown = document.getElementById('role');
+        const next1button = document.getElementById('next1');
+        const schoolsdropdown = document.getElementById('schools');
+        const next2button = document.getElementById('next2');
+        const programmesdropdown = document.getElementById('programmes');
+        const submit1 = document.getElementById('submit1');
+        const subjectsdropdown = document.getElementById('subjects');
+        const submit2 = document.getElementById('submit2');
+        const inputform = document.getElementById('loginform');
+
+        var roles;
+        var schools;
+        var programmes;
+        var subjects;
+
+        //console.log(schoolsdropdown);
+        //console.log(rolesdropdown);
+        //console.log(next1button);
+        console.log(submit1);
+
+        /* inputform.addEventListener("submit", e => {
+            e.preventDefault();
+        }) */
+
+        next1button.addEventListener("click", (event) => {
+            rolesdropdown.setAttribute("hidden", true);
+            next1button.setAttribute("hidden", true);
+            schoolsdropdown.removeAttribute("hidden");
+            next2button.removeAttribute("hidden");
+            fetch("http://localhost:8080/api/schools")
+            .then(res => res.json())
+            .then(data => schools = data)
+            .then(() => {
+                for(var i = 0; i < schools.length; i++){
+                let selectelement = document.createElement("option");
+                selectelement.setAttribute("value", schools[i].name);
+                selectelement.innerHTML = schools[i].name;
+                schoolsdropdown.appendChild(selectelement);
+            }
+            })
+        })
+
+        next2button.addEventListener("click", (event) => {
+            schoolsdropdown.setAttribute("hidden", true);
+            next2button.setAttribute("hidden", true);
+            const formData = new FormData(inputform);
+            const data = Object.fromEntries(formData);
+            console.log(`role: ${data.role}, school: ${data.schools}`);
+            if(data.role == 'nastavnik'){
+                subjectsdropdown.removeAttribute("hidden");
+                submit2.removeAttribute("hidden");
+                fetch("http://localhost:8080/api/subjects")
+                .then(res => res.json())
+                .then(data => subjects = data)
+                .then(() => {
+                    for(var i = 0; i < subjects.length; i++){
+                        if(subjects[i].programme.school.name == data.schools){
+                            let selectelement = document.createElement("option");
+                            selectelement.setAttribute("value", subjects[i].subjectName);
+                            selectelement.innerHTML = subjects[i].subjectName;
+                            subjectsdropdown.appendChild(selectelement);
+                        }
+                        
+                    }
+                })
+            } else if(data.role == 'ucenik'){
+                programmesdropdown.removeAttribute("hidden");
+                submit1.removeAttribute("hidden");
+                fetch("http://localhost:8080/api/programmes")
+                .then(res => res.json())
+                .then(data => programmes = data)
+                .then(() => {
+                    for(var i = 0; i < programmes.length; i++){
+                        if(programmes[i].school.name == data.schools){
+                            let selectelement = document.createElement("option");
+                            selectelement.setAttribute("value", programmes[i].programName);
+                            selectelement.innerHTML = programmes[i].programName;
+                            programmesdropdown.appendChild(selectelement);
+                        }
+                    }
+                })
+            }
+        })
+
+        submit1.addEventListener("click", (event) => {
+            //ucenik
+            const formdata = new FormData(inputform);
+            const data = Object.fromEntries(formdata);
+            console.log(data);
+
+            fetch("http://localhost:8080/api/roles")
+            .then(res => res.json())
+            .then(roledata => {
+                var role;
+                for(var i = 0; i < roledata.length; i++){
+                    if(roledata[i].roleName == data.role)
+                    role = roledata[i];
+                }
+            
+
+            fetch("http://localhost:8080/api/schools")
+            .then(res => res.json())
+            .then(schooldata => {
+                console.log("schooldata:")
+                console.log(schooldata);
+                var school;
+                for(var i = 0; i < schooldata.length; i++){
+                    if(schooldata[i].name == data.schools){
+                        school = schooldata[i];
+                        console.log(school);
+                    }
+                        
+                }
+
+                fetch("http://localhost:8080/api/programmes")
+                .then(res => res.json())
+                .then(programmedata => {
+                    var programme;
+                    for(var i = 0; i < programmedata.length; i++){
+                        if(data.programme == programmedata[i].programName)
+                            programme = programmedata[i];
+                    }
+                    console.log(programme);
+
+
+                fetch("http://localhost:8080/auth/details/currentuser")
+            .then(res => res.json())
+            .then(authdata => {
+                var send_this = {
+                created_at: new Date(),
+                email: authdata.email,
+                role: role,
+                programme: programme,
+                school: school
+            }
+
+            fetch("http://localhost:8080/api/users",{
+                method: "POST",
+                headers:{
+                    "Content-Type": "Application/json"
+                },
+                body: JSON.stringify(send_this)
+            })
+            window.location.href = "http://localhost:8080/index"
+            })
+            })
+            })
+            })
+        })
+
+        submit2.addEventListener("click", (event) => {
+            //nastavnik
+            const formdata = new FormData(inputform);
+            const data = Object.fromEntries(formdata);
+            console.log(data);
+
+            fetch("http://localhost:8080/api/roles")
+            .then(res => res.json())
+            .then(roledata => {
+                var role;
+                for(var i = 0; i < roledata.length; i++){
+                    if(roledata[i].roleName == data.role)
+                    role = roledata[i];
+                }
+            
+
+            fetch("http://localhost:8080/api/schools")
+            .then(res => res.json())
+            .then(schooldata => {
+                console.log("schooldata:")
+                console.log(schooldata);
+                var school;
+                for(var i = 0; i < schooldata.length; i++){
+                    if(schooldata[i].name == data.schools){
+                        school = schooldata[i];
+                        console.log(school);
+                    }
+                        
+                }
+
+                fetch("http://localhost:8080/api/subjects")
+                .then(res => res.json())
+                .then(subjectdata => {
+                    var subject;
+                    for(var i = 0; i < subjectdata.length; i++){
+                        if(data.subject == subjectdata[i].subjectName)
+                        subject = subjectdata[i];
+                    }
+                    console.log(subject);
+
+
+                fetch("http://localhost:8080/auth/details/currentuser")
+            .then(res => res.json())
+            .then(authdata => {
+                var send_this = {
+                created_at: new Date(),
+                email: authdata.email,
+                role: role,
+                subject: subject,
+                school: school
+            }
+
+            fetch("http://localhost:8080/api/users",{
+                method: "POST",
+                headers:{
+                    "Content-Type": "Application/json"
+                },
+                body: JSON.stringify(send_this)
+            })
+            window.location.href = "http://localhost:8080/index";
+            })
+            })
+            })
+            })
+
+        })
+
+        fetch("http://localhost:8080/api/roles")
+        .then(res => res.json())
+        .then(data => roles = data)
+        .then(() => {
+            for(var i = 0; i < roles.length; i++){
+                if(roles[i].roleId == 1 || roles[i].roleId == 2) {
+                let selectelement = document.createElement("option");
+                selectelement.setAttribute("value", roles[i].roleName);
+                selectelement.innerHTML = roles[i].roleName;
+                rolesdropdown.appendChild(selectelement);
+                }
+            }
+        })
+    </script>
+</html>

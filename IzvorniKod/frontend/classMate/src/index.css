@@ -1,0 +1,7 @@
+* {
+    font-family: Roboto, sans-serif;
+}
+
+body {
+    background: linear-gradient(67deg, rgba(180, 192, 255, 0.48) 4.59%, rgba(255, 233, 187, 0.30) 27.48%, rgba(255, 255, 255, 0.00) 54.05%, rgba(255, 239, 204, 0.30) 73.94%, rgba(216, 216, 255, 0.60) 92.88%), #FBFBFB;
+}
