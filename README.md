@@ -37,7 +37,7 @@ Naš kod organiziran je unutar jednog repozitorija, s ključnim datotekama i dir
 
 - Bošković Marin
 - Brkić Marin (Voditelj)
-- Gabrić Grga
+- Gabrić Grga 
 - Jeličić Lovre
 - Kuzmanić Roko
 - Lovrić Leonarda
