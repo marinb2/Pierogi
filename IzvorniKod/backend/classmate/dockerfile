@@ -1,0 +1,23 @@
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:17-jdk-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the Maven wrapper and pom.xml to the container
+COPY .mvn/ .mvn
+COPY mvnw .
+COPY pom.xml .
+
+# Download dependencies and build the application
+RUN ./mvnw dependency:go-offline -B
+RUN ./mvnw package -DskipTests
+
+# Copy the generated jar file to the container
+COPY target/*.jar app.jar
+
+# Expose the port on which the application will run
+EXPOSE 8080
+
+# Define the command to run the application
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
