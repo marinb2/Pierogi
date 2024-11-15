@@ -35,21 +35,32 @@ const stepData = [
         label: 'Škola',
         value: 'school',
         options: [
-            { value: '', label: 'Odaberite školu', disabled: true }
+            { value: '', label: 'Odaberite školu', disabled: true },
+            { value: 'XV. gimnazija', label: 'XV. gimnazija' },
+            { value: 'Prirodoslovna škola Vladimira Preloga', label: 'Prirodoslovna škola Vladimira Preloga' },
+            { value: 'I. gimnazija', label: 'I. gimnazija' },
+            { value: 'Tehnička škola Ruđera Boškovića', label: 'Tehnička škola Ruđera Boškovića' },
         ],
     },
     {
         label: 'Smjer',
         value: 'major',
         options: [
-            { value: '', label: 'Odaberite smjer', disabled: true }
+            { value: '', label: 'Odaberite smjer', disabled: true },
+            { value: "Kemijski tehničar", label: 'Kemijski tehničar' },
+            { value: "Matematika", label: 'Matematika' },
+            { value: 'Fizika', label: 'Fizika' },
+            { value: 'Računarstvo', label: 'Računarstvo' },
         ],
     },
     {
         label: 'Predmet',
         value: 'subject',
         options: [
-            { value: '', label: 'Odaberite predmet', disabled: true }
+            { value: '', label: 'Odaberite predmet', disabled: true },
+            { value: "math", label: 'Matematika' },
+            { value: "physics", label: 'Fizika' },
+            { value: "chemistry", label: 'Kemija' },
         ],
     }
 ];
