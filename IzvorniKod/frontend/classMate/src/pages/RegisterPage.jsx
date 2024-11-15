@@ -27,7 +27,7 @@ const stepData = [
         value: 'role',
         options: [
             { value: '', label: 'Odaberite ulogu', disabled: true },
-            { value: "učenik", label: 'Učenik' },
+            { value: "ucenik", label: 'Učenik' },
             { value: "nastavnik", label: 'Nastavnik' },
         ],
     },
@@ -172,7 +172,7 @@ function RegisterPage() {
                     fetch("http://localhost:8080/api/roles", {
                         credentials: "include"
                     }).then(res => res.json()).then(roledata => {
-                        if (formData.role == "učenik") {
+                        if (formData.role == "ucenik") {
                             fetch("http://localhost:8080/api/programmes", {
                                 credentials: "include"
                             }).then(res => res.json()).then(programmedata => {
@@ -272,7 +272,7 @@ function RegisterPage() {
         const currentStepData = stepData[activeStep];
 
         if (activeStep === 2) {
-            if (formData.role === "učenik") {
+            if (formData.role === "ucenik") {
                 //console.log("tu sam");
                 fetch("http://localhost:8080/api/programmes",
                     {
