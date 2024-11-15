@@ -105,8 +105,8 @@ function RegisterPage() {
 
         if (!ran_once) {
             ran_once = true;
-            fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser")
-            .then(res => res.json()).then(authdata => {
+            //fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser")
+            //.then(res => res.json()).then(authdata => {
                 fetch("https://classmate-iu0n.onrender.com/api/users", {
                     credentials: "include",
                     method: "GET"
@@ -135,7 +135,7 @@ function RegisterPage() {
 
 
 
-            })
+            //})
         }
     }, []);
 
@@ -161,8 +161,8 @@ function RegisterPage() {
         } else if (activeStep == 2) {
             console.log("two");
             console.log(formData);
-            fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser")
-                .then(res => res.json()).then(authdata => {
+            //fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser")
+                //.then(res => res.json()).then(authdata => {
                 fetch("https://classmate-iu0n.onrender.com/api/schools", {
                     credentials: "include"
                 }).then(res => res.json()).then(schooldata => {
@@ -244,8 +244,7 @@ function RegisterPage() {
                     })
                 })
 
-            }
-            )
+            //})
         }
     };
 
