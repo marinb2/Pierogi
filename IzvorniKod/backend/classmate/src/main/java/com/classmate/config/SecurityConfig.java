@@ -35,7 +35,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://pierogi-alpha.vercel.app"));
+        configuration.setAllowedOrigins(Arrays.asList("https://pierogi-alpha.vercel.app", "https://pierogi-alpha.vercel.app/register"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Access-Control-Allow-Origin",  "Access-Control-Allow-Credentials"));
         configuration.setAllowCredentials(true);

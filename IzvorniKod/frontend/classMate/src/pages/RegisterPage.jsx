@@ -105,10 +105,12 @@ function RegisterPage() {
 
         if (!ran_once) {
             ran_once = true;
-            fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser")
-            .then(res => res.json()).then(authdata => {
+            fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser", {
+                credentials: "include",
+                method: "GET"
+            }).then(res => res.json()).then(authdata => {
                 fetch("https://classmate-iu0n.onrender.com/api/users", {
-                    
+                    credentials: "include",
                     method: "GET"
                 }).then(res => res.json()).then(userdata => {
                     for (var i = 0; i < userdata.length; i++) {
@@ -117,7 +119,7 @@ function RegisterPage() {
                     }
                     fetch("https://classmate-iu0n.onrender.com/api/schools",
                         {
-                            
+                            credentials: "include",
                             method: "GET",
                         }
                     ).then(res => res.json())
@@ -161,17 +163,18 @@ function RegisterPage() {
         } else if (activeStep == 2) {
             console.log("two");
             console.log(formData);
-            fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser")
-                .then(res => res.json()).then(authdata => {
+            fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser", {
+                credentials: "include"
+            }).then(res => res.json()).then(authdata => {
                 fetch("https://classmate-iu0n.onrender.com/api/schools", {
-                    
+                    credentials: "include"
                 }).then(res => res.json()).then(schooldata => {
                     fetch("https://classmate-iu0n.onrender.com/api/roles", {
-                        
+                        credentials: "include"
                     }).then(res => res.json()).then(roledata => {
                         if (formData.role == "ucenik") {
                             fetch("https://classmate-iu0n.onrender.com/api/programmes", {
-                                
+                                credentials: "include"
                             }).then(res => res.json()).then(programmedata => {
                                 var role, programme, school;
                                 for (var i = 0; i < schooldata.length; i++) {
@@ -194,7 +197,7 @@ function RegisterPage() {
                                     school: school
                                 }
                                 fetch("https://classmate-iu0n.onrender.com/api/users", {
-                                    
+                                    credentials: "include",
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "Application/json"
@@ -206,7 +209,7 @@ function RegisterPage() {
                             })
                         } else if (formData.role = "nastavnik") {
                             fetch("https://classmate-iu0n.onrender.com/api/subjects", {
-                                
+                                credentials: "include"
                             }).then(res => res.json()).then(subjectdata => {
                                 var role, subject, school;
                                 for (var i = 0; i < schooldata.length; i++) {
@@ -229,7 +232,7 @@ function RegisterPage() {
                                     school: school
                                 }
                                 fetch("https://classmate-iu0n.onrender.com/api/users", {
-                                    
+                                    credentials: "include",
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "Application/json"
@@ -274,7 +277,7 @@ function RegisterPage() {
                 fetch("https://classmate-iu0n.onrender.com/api/programmes",
                     {
                         method: "GET",
-                        
+                        credentials: "include"
                     }
                 ).then(res => res.json()).then(data => {
                     for (var i = 0; i < data.length; i++) {
@@ -311,7 +314,8 @@ function RegisterPage() {
             if (formData.role === "nastavnik") {
                 fetch("https://classmate-iu0n.onrender.com/api/subjects",
                     {
-                        method: "GET"
+                        method: "GET",
+                        credentials: "include"
                     }
                 ).then(rez => rez.json()).then(subjects => {
                     for (var i = 0; i < subjects.length; i++) {
