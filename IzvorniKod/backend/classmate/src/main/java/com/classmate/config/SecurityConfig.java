@@ -22,7 +22,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS in Spring Security
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/favicon.ico", "/error", "/oauth2/**").permitAll()
+                .requestMatchers("/", "/favicon.ico", "/error", "/login/**", "/oauth2/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Allow unauthenticated access to this endpoint if required
                 .anyRequest().authenticated()
             )
@@ -35,9 +35,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://pierogi-alpha.vercel.app", "https://classmate-iu0n.onrender.com"));
+        configuration.setAllowedOrigins(Arrays.asList("https://pierogi-alpha.vercel.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Access-Control-Allow-Origin",  "Access-Control-Allow-Credentials"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
