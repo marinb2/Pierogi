@@ -174,6 +174,7 @@ function RegisterPage() {
         } else if (activeStep == 2) {
             console.log("two");
             console.log(formData);
+            window.location.href = "https://pierogi-alpha.vercel.app/main";
             fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser", {
                 credentials: "include"
             }).then(res => res.json()).then(authdata => {
