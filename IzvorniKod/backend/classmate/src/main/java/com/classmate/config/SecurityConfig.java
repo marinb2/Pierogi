@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
-                .defaultSuccessUrl("https://classmate-iu0n.onrender.com/api/users", true)
+                .defaultSuccessUrl("https://pierogi-alpha.vercel.app/reqister", true)
             )
             .build();
     }
