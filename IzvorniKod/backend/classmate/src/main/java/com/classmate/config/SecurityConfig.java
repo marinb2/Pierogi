@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Allow unauthenticated access to this endpoint if required
                 .anyRequest().authenticated()
             )
-            .oauth2Login(oauth2 -> oauth2
+            .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/google")
                 .defaultSuccessUrl("https://pierogi-alpha.vercel.app/register", true)
             )
             .build();
