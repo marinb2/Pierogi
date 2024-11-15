@@ -105,19 +105,19 @@ function RegisterPage() {
 
         if (!ran_once) {
             ran_once = true;
-            fetch("http://localhost:8080/auth/details/currentuser", {
+            fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser", {
                 credentials: "include",
                 method: "GET"
             }).then(res => res.json()).then(authdata => {
-                fetch("http://localhost:8080/api/users", {
+                fetch("https://classmate-iu0n.onrender.com/api/users", {
                     credentials: "include",
                     method: "GET"
                 }).then(res => res.json()).then(userdata => {
                     for (var i = 0; i < userdata.length; i++) {
                         if (userdata[i].email == authdata.email)
-                            window.location.href = "http://localhost:3000/main";
+                            window.location.href = "https://pierogi-alpha.vercel.app/main";
                     }
-                    fetch("http://localhost:8080/api/schools",
+                    fetch("https://classmate-iu0n.onrender.com/api/schools",
                         {
                             credentials: "include",
                             method: "GET",
@@ -163,17 +163,17 @@ function RegisterPage() {
         } else if (activeStep == 2) {
             console.log("two");
             console.log(formData);
-            fetch("http://localhost:8080/auth/details/currentuser", {
+            fetch("https://classmate-iu0n.onrender.com/auth/details/currentuser", {
                 credentials: "include"
             }).then(res => res.json()).then(authdata => {
-                fetch("http://localhost:8080/api/schools", {
+                fetch("https://classmate-iu0n.onrender.com/api/schools", {
                     credentials: "include"
                 }).then(res => res.json()).then(schooldata => {
-                    fetch("http://localhost:8080/api/roles", {
+                    fetch("https://classmate-iu0n.onrender.com/api/roles", {
                         credentials: "include"
                     }).then(res => res.json()).then(roledata => {
                         if (formData.role == "ucenik") {
-                            fetch("http://localhost:8080/api/programmes", {
+                            fetch("https://classmate-iu0n.onrender.com/api/programmes", {
                                 credentials: "include"
                             }).then(res => res.json()).then(programmedata => {
                                 var role, programme, school;
@@ -196,7 +196,7 @@ function RegisterPage() {
                                     programme: programme,
                                     school: school
                                 }
-                                fetch("http://localhost:8080/api/users", {
+                                fetch("https://classmate-iu0n.onrender.com/api/users", {
                                     credentials: "include",
                                     method: "POST",
                                     headers: {
@@ -204,11 +204,11 @@ function RegisterPage() {
                                     },
                                     body: JSON.stringify(send_this)
                                 }).then(() => {
-                                    window.location.href = "http://localhost:3000/main";
+                                    window.location.href = "https://pierogi-alpha.vercel.app/main";
                                 })
                             })
                         } else if (formData.role = "nastavnik") {
-                            fetch("http://localhost:8080/api/subjects", {
+                            fetch("https://classmate-iu0n.onrender.com/api/subjects", {
                                 credentials: "include"
                             }).then(res => res.json()).then(subjectdata => {
                                 var role, subject, school;
@@ -231,7 +231,7 @@ function RegisterPage() {
                                     subject: subject,
                                     school: school
                                 }
-                                fetch("http://localhost:8080/api/users", {
+                                fetch("https://classmate-iu0n.onrender.com/api/users", {
                                     credentials: "include",
                                     method: "POST",
                                     headers: {
@@ -239,7 +239,7 @@ function RegisterPage() {
                                     },
                                     body: JSON.stringify(send_this)
                                 }).then(() => {
-                                    window.location.href = "http://localhost:3000/main";
+                                    window.location.href = "https://pierogi-alpha.vercel.app/main";
                                 })
 
                             })
@@ -274,7 +274,7 @@ function RegisterPage() {
         if (activeStep === 2) {
             if (formData.role === "ucenik") {
                 //console.log("tu sam");
-                fetch("http://localhost:8080/api/programmes",
+                fetch("https://classmate-iu0n.onrender.com/api/programmes",
                     {
                         method: "GET",
                         credentials: "include"
@@ -312,7 +312,7 @@ function RegisterPage() {
             }
 
             if (formData.role === "nastavnik") {
-                fetch("http://localhost:8080/api/subjects",
+                fetch("https://classmate-iu0n.onrender.com/api/subjects",
                     {
                         method: "GET",
                         credentials: "include"
