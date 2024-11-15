@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2
-                .defaultSuccessUrl("https://classmate-iu0n.onrender.com/", true)
+                .defaultSuccessUrl("https://classmate-iu0n.onrender.com/api/users", true)
             )
             .build();
     }
