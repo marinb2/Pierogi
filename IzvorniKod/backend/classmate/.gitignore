@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### .env files ###
-.env
+#.env
