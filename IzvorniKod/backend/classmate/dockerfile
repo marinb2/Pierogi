@@ -22,4 +22,5 @@ COPY src ./src
 RUN ./mvnw package -DskipTests
 
 # Specify the command to run the application
-CMD ["java", "-jar", "target/your-app.jar"]
+CMD ["java", "-jar", "target/classmate-0.0.1-SNAPSHOT.jar"]
+
