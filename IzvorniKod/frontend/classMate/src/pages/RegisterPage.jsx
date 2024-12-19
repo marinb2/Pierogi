@@ -199,7 +199,6 @@ function RegisterPage() {
     const registerUser = async (user, role) => {
         try {
             if (role == "učenik") {
-                console.log(user);
                 await fetch("http://localhost:8080/api/users", {
                     method: "post", credentials: "include",
                     headers: {
@@ -215,14 +214,10 @@ function RegisterPage() {
                         programme: user.major,
                         school: user.school
                     })
+                }).then(() => {
+                    window.location.href = "http://localhost:3000/main"
                 });
-                console.log({
-                    created_at: new Date(),
-                    email: userDetails.email,
-                    role: { roleId: 1, roleName: "ucenik" },
-                    programme: user.major,
-                    school: user.school
-                })
+
             } else if (role == "nastavnik") {
                 await fetch("http://localhost:8080/api/users", {
                     method: "post", credentials: "include",
@@ -239,6 +234,8 @@ function RegisterPage() {
                         subject: user.subject,
                         school: user.school
                     })
+                }).then(() => {
+                    window.location.href = "http://localhost:3000/main"
                 });
             }
         } catch (error) {
@@ -247,13 +244,9 @@ function RegisterPage() {
     }
 
     useEffect(() => {
-        console.log(userDetails);
-        console.log(users);
         if (userDetails && users)
             for (var i = 0; i < users.length; i++) {
-                console.log(users[i].email + " " + userDetails.email);
                 if (users[i].email == userDetails.email) {
-                    console.log("tusam")
                     window.location.href = "http://localhost:3000/main"
                 }
             }
@@ -263,7 +256,6 @@ function RegisterPage() {
     useEffect(() => {
         if (activeStep === 1) {
             if (schools) {
-                console.log("here")
                 for (var i = 0; i < schools.length; i++) {
                     stepData[1].options.push({
                         id: schools[i].id,
@@ -277,13 +269,10 @@ function RegisterPage() {
     }, [activeStep, schools])
 
     useEffect(() => {
-        console.log(majors);
-        console.log("majors");
 
         if (activeStep === 2) {
             if (majors) {
                 for (var i = 0; i < majors.length; i++) {
-                    console.log(majors[i].school.name + " " + formData.school);
                     if (majors[i].school.name === formData.school) {
                         stepData[2].options.push({
                             id: majors[i].programmeId,
@@ -322,26 +311,20 @@ function RegisterPage() {
         if (activeStep === 0) {
             getUserDetails();
             getUsers();
-            console.log(formData);
         } else if (activeStep === 1) {
-            console.log("ue1");
             getSchools();
         } else if (activeStep === 2) {
-            console.log("ue2");
-            console.log(formData);
             if (formData.role === "nastavnik") {
                 getSubjects();
             } else if (formData.role === "učenik") {
                 getMajors();
             }
         } else if (activeStep === 3) {
-            console.log(formData)
             var school;
             var major;
             if (formData.role == "učenik") {
                 for (var i = 0; i < schools.length; i++) {
                     if (formData.school == schools[i].name) {
-                        console.log(schools[i]);
                         school = schools[i];
                         break;
                     }
@@ -353,7 +336,6 @@ function RegisterPage() {
                     }
                 }
                 var user = { school: school, major: major }
-                console.log(user);
                 registerUser(user, formData.role)
             } else if (formData.role == "nastavnik") {
                 for (var i = 0; i < schools.length; i++) {
