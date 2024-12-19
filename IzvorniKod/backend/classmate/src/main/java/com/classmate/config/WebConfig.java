@@ -14,7 +14,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Omogućava CORS za sve rute
-                        .allowedOrigins("https://pierogi-alpha.vercel.app", "https://pierogi-alpha.vercel.app/register") // URL gdje se pokreće frontend aplikacija
+                        .allowedOrigins("http://localhost:3000") // URL gdje se pokreće frontend aplikacija
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Dopuštene metode
                         .allowedHeaders("*")
                         .allowCredentials(true);

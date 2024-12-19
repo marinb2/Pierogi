@@ -5,7 +5,7 @@ import '../styles/LandingPage.css'
 function LandingPage() {
 
   function redirectToGoogleOAuth() {
-    window.location.href = "https://classmate-iu0n.onrender.com/oauth2/authorization/google";
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
   }
 
   return (
