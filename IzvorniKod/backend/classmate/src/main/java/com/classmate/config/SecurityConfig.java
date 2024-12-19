@@ -1,7 +1,6 @@
 package com.classmate.config;
 
 import java.util.Arrays;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,14 +19,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS in Spring Security
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) // Disable CSRF protection if it's not needed (e.g., for REST APIs)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/favicon.ico", "/error", "/oauth2/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Allow unauthenticated access to this endpoint if required
-                .anyRequest().authenticated()
+                .requestMatchers("/", "/favicon.ico", "/error", "/login/*", "/oauth2/*").permitAll() // Permit OAuth-related endpoints
+                .requestMatchers("/", "/favicon.ico", "/error", "/oauth2/authorization/google", "/login/oauth2/code/google").permitAll() // Permit OAuth-related endpoints
+                .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Example: Allow unauthenticated access to user registration endpoint
+                .anyRequest().authenticated() // Require authentication for other endpoints
             )
-            .oauth2Login(oauth2 -> oauth2
-                .defaultSuccessUrl("http://localhost:3000/register", true)
+            .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/google")
+                .defaultSuccessUrl("https://pierogi-alpha.vercel.app/register", true) // Redirect to frontend after successful login
             )
             .build();
     }
@@ -35,13 +35,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("https://pierogi-alpha.vercel.app")); // Allow requests from frontend
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed HTTP methods
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With")); // Allowed headers
+        configuration.setAllowCredentials(true); // Allow cookies/auth headers
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // Apply CORS settings to all endpoints
         return source;
     }
 }
