@@ -1,4 +1,4 @@
-package com.classmate.controller;
+/* package com.classmate.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -45,4 +45,4 @@ public class OAuth2Controller {
                 .location(URI.create("https://pierogi-alpha.vercel.app/register"))
                 .build();
     }
-}
+} */
