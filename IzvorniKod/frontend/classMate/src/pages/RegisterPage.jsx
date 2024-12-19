@@ -34,10 +34,10 @@ const stepData = [
         value: 'school',
         options: [
             { value: '', label: 'Odaberite školu', disabled: true, id: -1 },
-            { value: 'XV. gimnazija', label: 'XV. gimnazija', id: 1000 },
+            /* { value: 'XV. gimnazija', label: 'XV. gimnazija', id: 1000 },
             { value: 'Prirodoslovna škola Vladimira Preloga', label: 'Prirodoslovna škola Vladimira Preloga', id: 1001 },
             { value: 'I. gimnazija', label: 'I. gimnazija', id: 1002 },
-            { value: 'Tehnička škola Ruđera Boškovića', label: 'Tehnička škola Ruđera Boškovića', id: 1003 },
+            { value: 'Tehnička škola Ruđera Boškovića', label: 'Tehnička škola Ruđera Boškovića', id: 1003 }, */
         ],
     },
     {
@@ -45,10 +45,10 @@ const stepData = [
         value: 'major',
         options: [
             { value: '', label: 'Odaberite smjer', disabled: true, id: -1 },
-            { value: "Kemijski tehničar", label: 'Kemijski tehničar', id: 1000 },
+            /* { value: "Kemijski tehničar", label: 'Kemijski tehničar', id: 1000 },
             { value: "Matematika", label: 'Matematika', id: 1001 },
             { value: 'Fizika', label: 'Fizika', id: 1002 },
-            { value: 'Računarstvo', label: 'Računarstvo', id: 1003 },
+            { value: 'Računarstvo', label: 'Računarstvo', id: 1003 }, */
         ],
     },
     {
@@ -56,9 +56,9 @@ const stepData = [
         value: 'subject',
         options: [
             { value: '', label: 'Odaberite predmet', disabled: true, id: -1 },
-            { value: "math", label: 'Matematika', id: 1000 },
+            /* { value: "math", label: 'Matematika', id: 1000 },
             { value: "physics", label: 'Fizika', id: 1001 },
-            { value: "chemistry", label: 'Kemija', id: 1002 },
+            { value: "chemistry", label: 'Kemija', id: 1002 }, */
         ],
     }
 ];
