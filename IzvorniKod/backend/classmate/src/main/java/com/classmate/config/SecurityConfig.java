@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/favicon.ico", "/error", "/login/*", "/oauth2/*").permitAll() // Permit OAuth-related endpoints
                 .requestMatchers("/", "/favicon.ico", "/error", "/oauth2/authorization/google", "/login/oauth2/code/google").permitAll() // Permit OAuth-related endpoints
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Example: Allow unauthenticated access to user registration endpoint
-                //.anyRequest().authenticated() // Require authentication for other endpoints
+                .anyRequest().authenticated() // Require authentication for other endpoints
             )
             .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/google")
                 .defaultSuccessUrl("http://localhost:3000/register", true) // Redirect to frontend after successful login
