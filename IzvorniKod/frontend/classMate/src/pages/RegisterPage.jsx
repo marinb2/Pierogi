@@ -131,7 +131,7 @@ function RegisterPage() {
 
     const getUserDetails = async () => {
         try {
-            const response = await fetch("http://localhost:8080/auth/user", { method: "GET", credentials: "include" });
+            const response = await fetch("https://pierogi2-1m4p.onrender.com/auth/user", { method: "GET", credentials: "include" });
             if (response) {
 
                 const userDetailsjson = await response.json();
@@ -145,7 +145,7 @@ function RegisterPage() {
 
     const getUsers = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/users", { method: "GET", credentials: "include" });
+            const response = await fetch("https://pierogi2-1m4p.onrender.com/api/users", { method: "GET", credentials: "include" });
             if (response) {
 
                 const usersjson = await response.json();
@@ -158,7 +158,7 @@ function RegisterPage() {
     }
     const getSchools = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/schools", { method: "GET", credentials: "include" });
+            const response = await fetch("https://pierogi2-1m4p.onrender.com/api/schools", { method: "GET", credentials: "include" });
             if (response) {
 
                 const schoolsjson = await response.json();
@@ -171,7 +171,7 @@ function RegisterPage() {
     }
     const getSubjects = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/subjects", { method: "GET", credentials: "include" });
+            const response = await fetch("https://pierogi2-1m4p.onrender.com/api/subjects", { method: "GET", credentials: "include" });
             if (response) {
 
                 const subjectsjson = await response.json();
@@ -184,7 +184,7 @@ function RegisterPage() {
     }
     const getMajors = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/programmes", { method: "GET", credentials: "include" });
+            const response = await fetch("https://pierogi2-1m4p.onrender.com/api/programmes", { method: "GET", credentials: "include" });
             if (response) {
 
                 const majorsjson = await response.json();
@@ -199,7 +199,7 @@ function RegisterPage() {
     const registerUser = async (user, role) => {
         try {
             if (role == "učenik") {
-                await fetch("http://localhost:8080/api/users", {
+                await fetch("https://pierogi2-1m4p.onrender.com/api/users", {
                     method: "post", credentials: "include",
                     headers: {
                         "Content-Type": "Application/json"
@@ -219,7 +219,7 @@ function RegisterPage() {
                 });
 
             } else if (role == "nastavnik") {
-                await fetch("http://localhost:8080/api/users", {
+                await fetch("https://pierogi2-1m4p.onrender.com/api/users", {
                     method: "post", credentials: "include",
                     headers: {
                         "Content-Type": "Application/json"
