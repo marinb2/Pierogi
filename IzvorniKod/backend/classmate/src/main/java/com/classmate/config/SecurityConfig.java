@@ -21,7 +21,7 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS in Spring Security
             .csrf(csrf -> csrf.disable()) // Disable CSRF protection if it's not needed (e.g., for REST APIs)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/favicon.ico", "/error", "/login/*", "/oauth2/*").permitAll() // Permit OAuth-related endpoints
+                .requestMatchers("/", "/favicon.ico", "/error", "/login/*", "/oauth2/*", "api/**").permitAll() // Permit OAuth-related endpoints
                 .requestMatchers("/", "/favicon.ico", "/error", "/oauth2/authorization/google", "/login/oauth2/code/google").permitAll() // Permit OAuth-related endpoints
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Example: Allow unauthenticated access to user registration endpoint
                 .anyRequest().authenticated() // Require authentication for other endpoints
