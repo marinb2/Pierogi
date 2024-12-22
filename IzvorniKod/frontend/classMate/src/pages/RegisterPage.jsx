@@ -100,9 +100,11 @@ SelectField.propTypes = {
     ).isRequired
 };
 function RegisterPage() {
+    const frontdomain = "http://localhost:3000"
+    const backdomain = "https://pierogi2-1m4p.onrender.com"
     const [forceRerender, setForceRerender] = useState(0);
     const [activeStep, setActiveStep] = React.useState(0);
-    const [userDetails, setUserDetails] = useState(null);
+    const [userDetails, setUserDetails] = useState("");
     const [users, setUsers] = useState(null);
     const [schools, setSchools] = useState(null);
     const [subjects, setSubjects] = useState(null);
@@ -129,23 +131,11 @@ function RegisterPage() {
         }));
     };
 
-    const getUserDetails = async () => {
-        try {
-            const response = await fetch("https://pierogi2-1m4p.onrender.com/auth/user", { method: "GET", credentials: "include" });
-            if (response) {
-
-                const userDetailsjson = await response.json();
-                setUserDetails(userDetailsjson);
-
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    
 
     const getUsers = async () => {
         try {
-            const response = await fetch("https://pierogi2-1m4p.onrender.com/api/users", { method: "GET", credentials: "include" });
+            const response = await fetch(`${backdomain}/api/users`, { method: "GET", credentials: "include" });
             if (response) {
 
                 const usersjson = await response.json();
@@ -158,7 +148,7 @@ function RegisterPage() {
     }
     const getSchools = async () => {
         try {
-            const response = await fetch("https://pierogi2-1m4p.onrender.com/api/schools", { method: "GET", credentials: "include" });
+            const response = await fetch(`${backdomain}/api/schools`, { method: "GET", credentials: "include" });
             if (response) {
 
                 const schoolsjson = await response.json();
@@ -171,7 +161,7 @@ function RegisterPage() {
     }
     const getSubjects = async () => {
         try {
-            const response = await fetch("https://pierogi2-1m4p.onrender.com/api/subjects", { method: "GET", credentials: "include" });
+            const response = await fetch(`${backdomain}/api/subjects`, { method: "GET", credentials: "include" });
             if (response) {
 
                 const subjectsjson = await response.json();
@@ -184,7 +174,7 @@ function RegisterPage() {
     }
     const getMajors = async () => {
         try {
-            const response = await fetch("https://pierogi2-1m4p.onrender.com/api/programmes", { method: "GET", credentials: "include" });
+            const response = await fetch(`${backdomain}/api/programmes`, { method: "GET", credentials: "include" });
             if (response) {
 
                 const majorsjson = await response.json();
@@ -199,14 +189,14 @@ function RegisterPage() {
     const registerUser = async (user, role) => {
         try {
             if (role == "učenik") {
-                await fetch("https://pierogi2-1m4p.onrender.com/api/users", {
+                await fetch(`${backdomain}/api/users`, {
                     method: "post", credentials: "include",
                     headers: {
                         "Content-Type": "Application/json"
                     },
                     body: JSON.stringify({
                         created_at: new Date(),
-                        email: userDetails.email,
+                        email: userDetails,
                         role: {
                             "roleId": 1,
                             "roleName": "ucenik"
@@ -215,18 +205,18 @@ function RegisterPage() {
                         school: user.school
                     })
                 }).then(() => {
-                    window.location.href = "http://localhost:3000/main"
+                    window.location.href = `${frontdomain}/main`
                 });
 
             } else if (role == "nastavnik") {
-                await fetch("https://pierogi2-1m4p.onrender.com/api/users", {
+                await fetch(`${backdomain}/api/users`, {
                     method: "post", credentials: "include",
                     headers: {
                         "Content-Type": "Application/json"
                     },
                     body: JSON.stringify({
                         created_at: new Date(),
-                        email: userDetails.email,
+                        email: userDetails,
                         role: {
                             "roleId": 2,
                             "roleName": "nastavnik"
@@ -235,7 +225,7 @@ function RegisterPage() {
                         school: user.school
                     })
                 }).then(() => {
-                    window.location.href = "http://localhost:3000/main"
+                    window.location.href = `${frontdomain}/main`;
                 });
             }
         } catch (error) {
@@ -243,11 +233,12 @@ function RegisterPage() {
         }
     }
 
+
     useEffect(() => {
         if (userDetails && users)
             for (var i = 0; i < users.length; i++) {
-                if (users[i].email == userDetails.email) {
-                    window.location.href = "http://localhost:3000/main"
+                if (users[i].email == userDetails) {
+                    window.location.href = `${frontdomain}/main`
                 }
             }
 
@@ -309,7 +300,7 @@ function RegisterPage() {
 
     useEffect(() => {
         if (activeStep === 0) {
-            getUserDetails();
+            setUserDetails(sessionStorage.getItem("loggedInUserEmail"));
             getUsers();
         } else if (activeStep === 1) {
             getSchools();

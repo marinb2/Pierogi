@@ -1,6 +1,10 @@
 import logo from '../assets/logo.svg'
 import homeExample from '../assets/home-example.svg'
 import '../styles/LandingPage.css'
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+
+const clientId = "932056831828-jn9cido6b78ao4hlhlssfjs09r5g1788.apps.googleusercontent.com"
 
 function LandingPage() {
 
@@ -19,7 +23,19 @@ function LandingPage() {
         <p>Trebate pouzdan sustav za digitalizaciju školskih procesa? Na pravom ste mjestu! Olakšajte svakodnevne zadatke, unaprijedite komunikaciju i uštedite vrijeme uz intuitivno rješenje za sve školske potrebe.</p>
       </div>
 
-      <button onClick={redirectToGoogleOAuth} className="gsi-material-button">
+      <GoogleLogin
+        onSuccess={credentialResponse => {
+
+          sessionStorage.setItem("loggedInUserEmail", jwtDecode(credentialResponse.credential).email);
+          window.location.href = "http://localhost:3000/register";
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      />
+
+
+      {/* <button onClick={redirectToGoogleOAuth} className="gsi-material-button">
         <div className="gsi-material-button-state"></div>
         <div className="gsi-material-button-content-wrapper">
           <div className="gsi-material-button-icon">
@@ -52,7 +68,7 @@ function LandingPage() {
           <span className="gsi-material-button-contents">Prijava putem Googlea</span>
           <span style={{ display: "none" }}>Prijava putem Googlea</span>
         </div>
-      </button>
+      </button> */}
 
 
       <div>
