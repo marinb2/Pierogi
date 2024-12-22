@@ -27,7 +27,7 @@ function LandingPage() {
         onSuccess={credentialResponse => {
 
           sessionStorage.setItem("loggedInUserEmail", jwtDecode(credentialResponse.credential).email);
-          window.location.href = "http://localhost:3000/register";
+          window.location.href = "https://pierogi-theta.vercel.app/register";
         }}
         onError={() => {
           console.log('Login Failed');
