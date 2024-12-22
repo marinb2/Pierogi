@@ -8,6 +8,7 @@ import com.classmate.service.NotificationService;
 
 @RestController
 @RequestMapping("/api/notifications")
+@CrossOrigin("*")
 public class NotificationController {
 
     @Autowired
