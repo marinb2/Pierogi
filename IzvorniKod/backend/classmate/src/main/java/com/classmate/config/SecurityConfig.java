@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated() // Require authentication for other endpoints
             )
             .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/google")
-                .defaultSuccessUrl("https://pierogi-ha2b6amtx-marinb2s-projects.vercel.app//register", true) // Redirect to frontend after successful login
+                .defaultSuccessUrl("https://pierogi-theta.vercel.app/register", true) // Redirect to frontend after successful login
             )
             .build();
     }
@@ -35,7 +35,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://pierogi-ha2b6amtx-marinb2s-projects.vercel.app/")); // Allow requests from frontend
+        configuration.setAllowedOrigins(Arrays.asList("https://pierogi-theta.vercel.app")); // Allow requests from frontend
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed HTTP methods
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With")); // Allowed headers
         configuration.setAllowCredentials(true); // Allow cookies/auth headers
