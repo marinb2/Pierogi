@@ -10,6 +10,9 @@ const clientId = "932056831828-jn9cido6b78ao4hlhlssfjs09r5g1788.apps.googleuserc
 
 function LandingPage() {
 
+  const frontdomain = "https://pierogi-theta.vercel.app"
+  const backdomain = "https://pierogi2-1m4p.onrender.com"
+
   const [users, setUsers] = useState([]);
   const [loggedInEmail, setLoggedInEmail] = useState("");
 
