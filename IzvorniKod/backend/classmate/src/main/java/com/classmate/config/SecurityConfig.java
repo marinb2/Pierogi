@@ -26,9 +26,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Example: Allow unauthenticated access to user registration endpoint
                 .anyRequest().authenticated() // Require authentication for other endpoints
             )
-            .oauth2Login(oauth2 -> oauth2.loginPage("/oauth2/authorization/google")
-                .defaultSuccessUrl("https://pierogi-theta.vercel.app/register", true) // Redirect to frontend after successful login
-            )
             .build();
     }
 
