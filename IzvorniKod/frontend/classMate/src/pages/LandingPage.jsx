@@ -3,14 +3,48 @@ import homeExample from '../assets/home-example.svg'
 import '../styles/LandingPage.css'
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from 'react';
+import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
 
 const clientId = "932056831828-jn9cido6b78ao4hlhlssfjs09r5g1788.apps.googleusercontent.com"
 
 function LandingPage() {
 
-  function redirectToGoogleOAuth() {
-    window.location.href = "https://pierogi2-1m4p.onrender.com/oauth2/authorization/google";
+  const [users, setUsers] = useState([]);
+  const [loggedInEmail, setLoggedInEmail] = useState("");
+
+  const getUsers = async () => {
+    try {
+      const response = await fetch(`${backdomain}/api/users`, { method: "GET", credentials: "include" });
+      if (response) {
+
+        const usersjson = await response.json();
+        setUsers(usersjson);
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  useEffect(() => {
+    getUsers();
+  }, [])
+
+  useEffect(() => {
+    if (users && loggedInEmail) {
+      for (var i = 0; i < users.length; i++) {
+        if (loggedInEmail == users.email) {
+          window.location.href = "https://pierogi-theta.vercel.app/main";
+        }
+      }
+      window.location.href = "https://pierogi-theta.vercel.app/register";
+    }
+  }, [users, loggedInEmail]);
+
+  /* function redirectToGoogleOAuth() {
+    window.location.href = "";
+  } */
 
   return (
 
@@ -27,7 +61,6 @@ function LandingPage() {
         onSuccess={credentialResponse => {
 
           sessionStorage.setItem("loggedInUserEmail", jwtDecode(credentialResponse.credential).email);
-          window.location.href = "https://pierogi-theta.vercel.app/register";
         }}
         onError={() => {
           console.log('Login Failed');
