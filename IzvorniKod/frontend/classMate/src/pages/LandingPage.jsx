@@ -13,8 +13,8 @@ function LandingPage() {
   const frontdomain = "https://pierogi-theta.vercel.app"
   const backdomain = "https://pierogi2-1m4p.onrender.com"
 
-  const [users, setUsers] = useState([]);
-  const [loggedInEmail, setLoggedInEmail] = useState("");
+  const [users, setUsers] = useState(null);
+  const [loggedInEmail, setLoggedInEmail] = useState(null);
 
   const getUsers = async () => {
     try {
