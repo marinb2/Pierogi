@@ -64,6 +64,7 @@ function LandingPage() {
         onSuccess={credentialResponse => {
 
           sessionStorage.setItem("loggedInUserEmail", jwtDecode(credentialResponse.credential).email);
+          setLoggedInEmail(jwtDecode(credentialResponse.credential).email);
         }}
         onError={() => {
           console.log('Login Failed');
