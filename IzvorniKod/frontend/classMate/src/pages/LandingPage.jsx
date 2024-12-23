@@ -37,7 +37,7 @@ function LandingPage() {
   useEffect(() => {
     if (users && loggedInEmail) {
       for (var i = 0; i < users.length; i++) {
-        if (loggedInEmail == users.email) {
+        if (loggedInEmail == users[i].email) {
           window.location.href = "https://pierogi-theta.vercel.app/main";
         }
       }
