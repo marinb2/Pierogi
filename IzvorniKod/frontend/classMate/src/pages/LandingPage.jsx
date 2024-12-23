@@ -41,7 +41,7 @@ function LandingPage() {
           window.location.href = "https://pierogi-theta.vercel.app/main";
         }
       }
-      //window.location.href = "https://pierogi-theta.vercel.app/register";
+      window.location.href = "https://pierogi-theta.vercel.app/register";
     }
   }, [users, loggedInEmail]);
 
