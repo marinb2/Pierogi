@@ -10,8 +10,8 @@ const clientId = "932056831828-jn9cido6b78ao4hlhlssfjs09r5g1788.apps.googleuserc
 
 function LandingPage() {
 
-  const frontdomain = "https://pierogi-theta.vercel.app"
-  const backdomain = "https://pierogi2-1m4p.onrender.com"
+  const frontdomain = "http://localhost:3000"
+  const backdomain = "http://localhost:8080"
 
   const [users, setUsers] = useState(null);
   const [loggedInEmail, setLoggedInEmail] = useState(null);
@@ -38,10 +38,10 @@ function LandingPage() {
     if (users && loggedInEmail) {
       for (var i = 0; i < users.length; i++) {
         if (loggedInEmail == users[i].email) {
-          window.location.href = "https://pierogi-theta.vercel.app/main";
+          window.location.href = `${frontdomain}/main`;
         }
       }
-      window.location.href = "https://pierogi-theta.vercel.app/register";
+      window.location.href = `${frontdomain}/register`;
     }
   }, [users, loggedInEmail]);
 
