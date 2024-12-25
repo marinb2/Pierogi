@@ -10,8 +10,8 @@ const clientId = "932056831828-jn9cido6b78ao4hlhlssfjs09r5g1788.apps.googleuserc
 
 function LandingPage() {
 
-  const frontdomain = "https://pierogi-theta.vercel.app"
-  const backdomain = "https://pierogi2-1m4p.onrender.com"
+  const frontdomain = "http://localhost:3000"
+  const backdomain = "http://localhost:8080"
 
   const [users, setUsers] = useState(null);
   const [loggedInEmail, setLoggedInEmail] = useState(null);
@@ -28,9 +28,6 @@ function LandingPage() {
     } catch (error) {
       console.log(error);
     }
-
-  function redirectToGoogleOAuth() {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
   }
 
   useEffect(() => {
