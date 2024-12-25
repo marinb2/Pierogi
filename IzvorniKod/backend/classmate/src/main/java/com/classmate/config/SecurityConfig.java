@@ -1,6 +1,7 @@
 package com.classmate.config;
 
 import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,7 +20,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS in Spring Security
-            .csrf(csrf -> csrf.disable()) // Disable CSRF protection if it's not needed (e.g., for REST APIs)
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/favicon.ico", "/error", "/login/*", "/oauth2/*", "api/**").permitAll() // Permit OAuth-related endpoints
                 .requestMatchers("/", "/favicon.ico", "/error", "/oauth2/authorization/google", "/login/oauth2/code/google").permitAll() // Permit OAuth-related endpoints
@@ -32,13 +33,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://pierogi-theta.vercel.app")); // Allow requests from frontend
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed HTTP methods
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With")); // Allowed headers
-        configuration.setAllowCredentials(true); // Allow cookies/auth headers
-
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Apply CORS settings to all endpoints
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }

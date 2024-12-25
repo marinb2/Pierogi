@@ -28,6 +28,9 @@ function LandingPage() {
     } catch (error) {
       console.log(error);
     }
+
+  function redirectToGoogleOAuth() {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
   }
 
   useEffect(() => {
@@ -38,10 +41,10 @@ function LandingPage() {
     if (users && loggedInEmail) {
       for (var i = 0; i < users.length; i++) {
         if (loggedInEmail == users[i].email) {
-          window.location.href = "https://pierogi-theta.vercel.app/main";
+          window.location.href = `${frontdomain}/main`;
         }
       }
-      window.location.href = "https://pierogi-theta.vercel.app/register";
+      window.location.href = `${frontdomain}/register`;
     }
   }, [users, loggedInEmail]);
 
