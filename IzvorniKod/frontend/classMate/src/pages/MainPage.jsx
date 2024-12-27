@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/MainPage.css';
-import logo from '../assets/logo.svg'
+import logo from '../assets/logo.svg';
 
-
-function TopBar({ toggleSidebar }) {
+function TopBar({ currentTitle, toggleSidebar }) {
   return (
     <div className="topbar">
       <div className="logo">
-        <img src={logo} className="logo-image"></img> 
+        <img src={logo} className="logo-image" alt="Logo"></img> 
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
       </div>
       <div className="title">
-        <p>Moj raspored</p>
+        <p>{currentTitle}</p>
       </div>
     </div>
   );
@@ -21,6 +20,7 @@ function TopBar({ toggleSidebar }) {
 
 function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [currentTitle, setCurrentTitle] = useState('Moj raspored');
 
   const toggleSidebar = () => {
     if (window.innerWidth < 768) {
@@ -28,7 +28,10 @@ function Sidebar() {
     }
   };
 
-  // Ensure the sidebar is always open when the screen width is above 768px
+  const handleMenuClick = (title) => {
+    setCurrentTitle(title); // Postavlja naslov u TopBar
+  };
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -42,27 +45,29 @@ function Sidebar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const subjects = ['Matematika', 'Hrvatski', 'Biologija', 'Povijest', 'Informatika', 'Vjeronauk', 'Latinski', 'Filozofija'];
+
   return (
     <div className="app-container">
-      <TopBar toggleSidebar={toggleSidebar} />
+      <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
       <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="section">
           <h3>Osnovno</h3>
-          <div className="menu-item active">
+          <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
             <span>🗓️</span>
             <a href="#schedule">Moj raspored</a>
           </div>
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
             <span>🔔</span>
             <a href="#notifications">Obavijesti</a>
             <span className="badge">24</span>
           </div>
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
             <span>💬</span>
             <a href="#conversations">Razgovori</a>
             <span className="badge">2</span>
           </div>
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
             <span>📄</span>
             <a href="#confirmations">Potvrde</a>
           </div>
@@ -70,19 +75,17 @@ function Sidebar() {
 
         <div className="section subjects">
           <h3>Predmeti</h3>
-          {['Matematika', 'Hrvatski', 'Biologija', 'Povijest', 'Informatika', 'Vjeronauk', 'Latinski', 'Filozofija'].map((subject, index) => (
-            <div className="menu-item" key={subject}>
+          {subjects.map((subject) => (
+            <div className="menu-item" key={subject} onClick={() => handleMenuClick(subject)}>
               <span>📂</span>
               <a href={`#${subject.toLowerCase()}`}>{subject}</a>
-              {index === 0 && <span className="badge">12</span>} {/* Badge for Matematika */}
-              {index === 1 && <span className="badge">2</span>}  {/* Badge for Hrvatski */}
             </div>
           ))}
         </div>
 
         <div className="section">
           <h3>Općenito</h3>
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => handleMenuClick('Odjava')}>
             <span>🚪</span>
             <a href="#logout">Odjava</a>
           </div>
