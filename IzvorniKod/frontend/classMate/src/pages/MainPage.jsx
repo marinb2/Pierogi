@@ -4,10 +4,14 @@ import logo from '../assets/logo.svg'
 
 
 function TopBar({ toggleSidebar }) {
+
+  //email trenutno ulogiranog korisnika
+  console.log(sessionStorage.getItem("loggedInUserEmail"));
+
   return (
     <div className="topbar">
       <div className="logo">
-        <img src={logo} className="logo-image"></img> 
+        <img src={logo} className="logo-image"></img>
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
