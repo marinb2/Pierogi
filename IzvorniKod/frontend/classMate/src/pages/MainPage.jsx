@@ -6,7 +6,7 @@ function TopBar({ currentTitle, toggleSidebar }) {
   return (
     <div className="topbar">
       <div className="logo">
-        <img src={logo} className="logo-image" alt="Logo"></img> 
+        <img src={logo} className="logo-image" alt="Logo"></img>
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
@@ -19,8 +19,28 @@ function TopBar({ currentTitle, toggleSidebar }) {
 }
 
 function Sidebar() {
+  const basebackendurl = "http://localhost:8080";
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentTitle, setCurrentTitle] = useState('Moj raspored');
+  const [subjects, setSubects] = useState(null);
+
+  const getSubjects = async (email) => {
+    try {
+      const response = await fetch(`${basebackendurl}/api/subjects/getByUserEmail?email=${email}`, { method: "GET", credentials: "include" });
+      if (response) {
+
+        const subjectsjson = await response.json();
+        var subjects = [];
+        for (var i = 0; i < subjectsjson.length; i++) {
+          subjects.push(subjectsjson[i].subjectName);
+        }
+        setSubects(subjects);
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const toggleSidebar = () => {
     if (window.innerWidth < 768) {
@@ -33,11 +53,14 @@ function Sidebar() {
   };
 
   useEffect(() => {
+    getSubjects(sessionStorage.getItem("loggedInUserEmail"));
     const handleResize = () => {
       if (window.innerWidth >= 768) {
         setIsSidebarOpen(true);
       }
     };
+
+    
 
     window.addEventListener('resize', handleResize);
     handleResize(); // Check immediately in case the screen is already large
@@ -45,53 +68,55 @@ function Sidebar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const subjects = ['Matematika', 'Hrvatski', 'Biologija', 'Povijest', 'Informatika', 'Vjeronauk', 'Latinski', 'Filozofija'];
+  //const subjects = ['Matematika', 'Hrvatski', 'Biologija', 'Povijest', 'Informatika', 'Vjeronauk', 'Latinski', 'Filozofija'];
 
   return (
-    <div className="app-container">
-      <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
-      <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <div className="section">
-          <h3>Osnovno</h3>
-          <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
-            <span>🗓️</span>
-            <a href="#schedule">Moj raspored</a>
-          </div>
-          <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
-            <span>🔔</span>
-            <a href="#notifications">Obavijesti</a>
-            <span className="badge">24</span>
-          </div>
-          <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
-            <span>💬</span>
-            <a href="#conversations">Razgovori</a>
-            <span className="badge">2</span>
-          </div>
-          <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
-            <span>📄</span>
-            <a href="#confirmations">Potvrde</a>
-          </div>
-        </div>
-
-        <div className="section subjects">
-          <h3>Predmeti</h3>
-          {subjects.map((subject) => (
-            <div className="menu-item" key={subject} onClick={() => handleMenuClick(subject)}>
-              <span>📂</span>
-              <a href={`#${subject.toLowerCase()}`}>{subject}</a>
+    (subjects &&
+      <div className="app-container">
+        <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
+        <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+          <div className="section">
+            <h3>Osnovno</h3>
+            <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
+              <span>🗓️</span>
+              <a href="#schedule">Moj raspored</a>
             </div>
-          ))}
-        </div>
+            <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
+              <span>🔔</span>
+              <a href="#notifications">Obavijesti</a>
+              <span className="badge">24</span>
+            </div>
+            <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
+              <span>💬</span>
+              <a href="/conversations">Razgovori</a>
+              <span className="badge">2</span>
+            </div>
+            <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
+              <span>📄</span>
+              <a href="#confirmations">Potvrde</a>
+            </div>
+          </div>
 
-        <div className="section">
-          <h3>Općenito</h3>
-          <div className="menu-item" onClick={() => handleMenuClick('Odjava')}>
-            <span>🚪</span>
-            <a href="#logout">Odjava</a>
+          <div className="section subjects">
+            <h3>Predmeti</h3>
+            {subjects.map((subject) => (
+              <div className="menu-item" key={subject} onClick={() => handleMenuClick(subject)}>
+                <span>📂</span>
+                <a href={`#${subject.toLowerCase()}`}>{subject}</a>
+              </div>
+            ))}
+          </div>
+
+          <div className="section">
+            <h3>Općenito</h3>
+            <div className="menu-item" onClick={() => handleMenuClick('Odjava')}>
+              <span>🚪</span>
+              <a href="#logout">Odjava</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    )
   );
 }
 

@@ -35,7 +35,7 @@ function LandingPage() {
   }, [])
 
   useEffect(() => {
-    if (users && loggedInEmail) {
+    if (users && loggedInEmail && sessionStorage.getItem("userName") && sessionStorage.getItem("userPfpUrl")) {
       for (var i = 0; i < users.length; i++) {
         if (loggedInEmail == users[i].email) {
           window.location.href = `${frontdomain}/main`;
@@ -64,6 +64,9 @@ function LandingPage() {
         onSuccess={credentialResponse => {
 
           sessionStorage.setItem("loggedInUserEmail", jwtDecode(credentialResponse.credential).email);
+          sessionStorage.setItem("userName", jwtDecode(credentialResponse.credential).name);
+          sessionStorage.setItem("userPfpUrl", jwtDecode(credentialResponse.credential).picture);
+          //console.log(jwtDecode(credentialResponse.credential));
           setLoggedInEmail(jwtDecode(credentialResponse.credential).email);
         }}
         onError={() => {

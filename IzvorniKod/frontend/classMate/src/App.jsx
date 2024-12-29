@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from "./pages/LandingPage";
 import RegisterPage from "./pages/RegisterPage";
 import MainPage from "./pages/MainPage"
+import MessagesPage from './pages/MessagesPage';
+
 
 function App() {
   return (
@@ -11,6 +13,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path='/main' element={<MainPage />} />
+        <Route path="/conversations" element={<MessagesPage />} />
       </Routes>
     </Router>
   );
