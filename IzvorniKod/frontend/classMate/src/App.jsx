@@ -1,15 +1,19 @@
-import RegisterPage from './pages/RegisterPage'
-import LandingPage from './pages/LandingPage'
-import MainPage from './pages/MainPage'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import LandingPage from "./pages/LandingPage";
+import RegisterPage from "./pages/RegisterPage";
+import MainPage from "./pages/MainPage"
 
-// Ako želite da se prikaže LandingPage, zamijenite RegisterPage s LandingPage u liniji 9.
 function App() {
-
   return (
-    <div>
-        <MainPage />
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path='/main' element={<MainPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

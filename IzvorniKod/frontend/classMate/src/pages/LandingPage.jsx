@@ -1,12 +1,53 @@
 import logo from '../assets/logo.svg'
 import homeExample from '../assets/home-example.svg'
 import '../styles/LandingPage.css'
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from 'react';
+import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect';
+
+const clientId = "932056831828-jn9cido6b78ao4hlhlssfjs09r5g1788.apps.googleusercontent.com"
 
 function LandingPage() {
 
-  function redirectToGoogleOAuth() {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  const frontdomain = "http://localhost:3000"
+  const backdomain = "http://localhost:8080"
+
+  const [users, setUsers] = useState(null);
+  const [loggedInEmail, setLoggedInEmail] = useState(null);
+
+  const getUsers = async () => {
+    try {
+      const response = await fetch(`${backdomain}/api/users`, { method: "GET", credentials: "include" });
+      if (response) {
+
+        const usersjson = await response.json();
+        setUsers(usersjson);
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  useEffect(() => {
+    getUsers();
+  }, [])
+
+  useEffect(() => {
+    if (users && loggedInEmail) {
+      for (var i = 0; i < users.length; i++) {
+        if (loggedInEmail == users[i].email) {
+          window.location.href = `${frontdomain}/main`;
+        }
+      }
+      window.location.href = `${frontdomain}/register`;
+    }
+  }, [users, loggedInEmail]);
+
+  /* function redirectToGoogleOAuth() {
+    window.location.href = "";
+  } */
 
   return (
 
@@ -19,7 +60,19 @@ function LandingPage() {
         <p>Trebate pouzdan sustav za digitalizaciju školskih procesa? Na pravom ste mjestu! Olakšajte svakodnevne zadatke, unaprijedite komunikaciju i uštedite vrijeme uz intuitivno rješenje za sve školske potrebe.</p>
       </div>
 
-      <button onClick={redirectToGoogleOAuth} className="gsi-material-button">
+      <GoogleLogin
+        onSuccess={credentialResponse => {
+
+          sessionStorage.setItem("loggedInUserEmail", jwtDecode(credentialResponse.credential).email);
+          setLoggedInEmail(jwtDecode(credentialResponse.credential).email);
+        }}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      />
+
+
+      {/* <button onClick={redirectToGoogleOAuth} className="gsi-material-button">
         <div className="gsi-material-button-state"></div>
         <div className="gsi-material-button-content-wrapper">
           <div className="gsi-material-button-icon">
@@ -52,7 +105,7 @@ function LandingPage() {
           <span className="gsi-material-button-contents">Prijava putem Googlea</span>
           <span style={{ display: "none" }}>Prijava putem Googlea</span>
         </div>
-      </button>
+      </button> */}
 
 
       <div>
