@@ -17,6 +17,10 @@ public class Confirmation {
     @ManyToOne
     private Student student;
 
+    @ManyToOne
+    private CertificateType certificateType;
+
+
     private LocalDateTime issueDate;
     private String documentUrl;
 
