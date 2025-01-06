@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/MainPage.css';
 import logo from '../assets/logo.svg';
+import { googleLogout } from '@react-oauth/google'
+import { useNavigate } from 'react-router-dom';
 
 function TopBar({ currentTitle, toggleSidebar }) {
   return (
@@ -52,6 +54,14 @@ function Sidebar() {
     setCurrentTitle(title); // Postavlja naslov u TopBar
   };
 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    googleLogout();
+    sessionStorage.clear();
+    navigate("/");
+  };
+
   useEffect(() => {
     getSubjects(sessionStorage.getItem("loggedInUserEmail"));
     const handleResize = () => {
@@ -60,7 +70,7 @@ function Sidebar() {
       }
     };
 
-    
+
 
     window.addEventListener('resize', handleResize);
     handleResize(); // Check immediately in case the screen is already large
@@ -111,7 +121,7 @@ function Sidebar() {
             <h3>Općenito</h3>
             <div className="menu-item" onClick={() => handleMenuClick('Odjava')}>
               <span>🚪</span>
-              <a href="#logout">Odjava</a>
+              <button onClick={handleLogout} className="logout-btn">Odjava</button>
             </div>
           </div>
         </div>
