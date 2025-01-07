@@ -36,8 +36,12 @@ public class User {
     @JoinColumn(name = "subjectId")
     private Subject subject;
 
-    // Getters and Setters
+    // Novi atributi
+    private Integer gradeNumber; // Broj razreda (1-4)
+    private Character gradeLetter; // Slovo razreda (A-F)
+    private Long classTeacherId; // ID razrednika (profesora)
 
+    // Getteri i setteri
     public Long getUserId() {
         return userId;
     }
@@ -93,12 +97,36 @@ public class User {
     public void setProgramme(Programme programme) {
         this.programme = programme;
     }
-    
+
     public Subject getSubject() {
         return subject;
     }
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public Integer getGradeNumber() {
+        return gradeNumber;
+    }
+
+    public void setGradeNumber(Integer gradeNumber) {
+        this.gradeNumber = gradeNumber;
+    }
+
+    public Character getGradeLetter() {
+        return gradeLetter;
+    }
+
+    public void setGradeLetter(Character gradeLetter) {
+        this.gradeLetter = gradeLetter;
+    }
+
+    public Long getClassTeacherId() {
+        return classTeacherId;
+    }
+
+    public void setClassTeacherId(Long classTeacherId) {
+        this.classTeacherId = classTeacherId;
     }
 }
