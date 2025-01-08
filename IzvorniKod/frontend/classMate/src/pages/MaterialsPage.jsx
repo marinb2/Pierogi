@@ -40,13 +40,8 @@ function MaterialsPage() {
   }, [userMail]);
 
   const role = user ? user[0]?.role?.roleName : null;
-  if (role === "ucenik") {
-    console.log("Role: ", role);
-  }
 
   const materialsCollection = useMemo(() => collection(db, "materials"), []);
-
-  console.log("materialsCollection reference:", materialsCollection);
 
   const storageRef = useMemo(() => {
     return file ? ref(storage, 'files/' + file.name) : null;
@@ -255,8 +250,6 @@ function MaterialsPage() {
     return materials;
   }, [role, materials, user]);
 
-  console.log("Filtered Materials:", filteredMaterials);
-
 
   // Group materials by subject for students
   const groupedMaterials = useMemo(() => {
@@ -269,8 +262,6 @@ function MaterialsPage() {
       return acc;
     }, {});
   }, [role, filteredMaterials]);
-
-  console.log("Grouped Materials:", groupedMaterials);
 
   // Function to format file size in a user-friendly way (KB, MB, GB)
   const formatFileSize = (size) => {
