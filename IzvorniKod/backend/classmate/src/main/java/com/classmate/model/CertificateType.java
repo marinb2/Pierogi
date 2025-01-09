@@ -17,7 +17,7 @@ public class CertificateType {
 
     private String template; // Opcionalno: putanja do šablone
 
-    // Getteri i setteri
+
     public Long getId() {
         return id;
     }

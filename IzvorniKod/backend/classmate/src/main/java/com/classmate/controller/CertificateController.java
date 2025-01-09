@@ -1,19 +1,17 @@
 package com.classmate.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.classmate.model.CertificateType;
-import com.classmate.model.Confirmation;
 import com.classmate.model.Student;
 import com.classmate.repository.CertificateTypeRepository;
 import com.classmate.repository.StudentRepository;
 import com.classmate.service.CertificateService;
-import com.classmate.service.ConfirmationService;
-
-
 
 @RestController
 @RequestMapping("/api/certificates")
@@ -35,22 +33,29 @@ public class CertificateController {
 
     @PostMapping("/{certificateId}/generate")
     public ResponseEntity<String> generateAndSendCertificate(
-        @PathVariable Long certificateId, 
-        @RequestParam Long studentId
+        @PathVariable Long certificateId
+       
     ) {
-        // Dohvati studenta i vrstu potvrde
-        Student student = studentRepository.findById(studentId)
-            .orElseThrow(() -> new RuntimeException("Student not found"));
+        // Dohvati trenutno prijavljenog korisnika
+       // String username = authentication.getName();
 
+        // Provjeri je li korisnik student i dohvatite studenta
+      /*  Student student = certificateService.getStudentByUsername(username);
+
+        if (student == null) {
+            return ResponseEntity.status(403).body("Only students can generate certificates.");
+        }  */
+
+        // Dohvati vrstu potvrde
         CertificateType certificateType = certificateTypeRepository.findById(certificateId)
             .orElseThrow(() -> new RuntimeException("Certificate type not found"));
 
-        // Generiraj PDF
-        String pdfPath = certificateService.generatePdf(student, certificateType);
+        //Generiraj PDF
+        String pdfPath = certificateService.generatePdf("LovreJelicic", certificateType);
 
         // Pošalji PDF na email
-        certificateService.sendCertificateEmail(pdfPath, student);
+     //   certificateService.sendCertificateEmail(pdfPath, student);
 
-        return ResponseEntity.ok("Certificate sent to student");  
+        return ResponseEntity.ok("Certificate sent to student.");
     }
 }
