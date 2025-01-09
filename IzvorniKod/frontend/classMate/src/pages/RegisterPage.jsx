@@ -197,6 +197,7 @@ function RegisterPage() {
                     body: JSON.stringify({
                         created_at: new Date(),
                         email: userDetails,
+                        username: sessionStorage.getItem("userName"),
                         role: {
                             "roleId": 1,
                             "roleName": "ucenik"
@@ -217,6 +218,7 @@ function RegisterPage() {
                     body: JSON.stringify({
                         created_at: new Date(),
                         email: userDetails,
+                        username: sessionStorage.getItem("userName"),
                         role: {
                             "roleId": 2,
                             "roleName": "nastavnik"
