@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/MainPage.css';
 import logo from '../assets/logo.svg';
+import { googleLogout } from '@react-oauth/google'
+import { useNavigate } from 'react-router-dom';
 
 function TopBar({ currentTitle, toggleSidebar }) {
   return (
@@ -45,6 +47,14 @@ function Sidebar() {
 
   const handleMenuClick = (title) => {
     setCurrentTitle(title);
+  };
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    googleLogout();
+    sessionStorage.clear();
+    navigate("/");
   };
 
   useEffect(() => {
@@ -126,7 +136,7 @@ function Sidebar() {
             <h3>Općenito</h3>
             <div className="menu-item" onClick={() => handleMenuClick('Odjava')}>
               <span>🚪</span>
-              <a href="#logout">Odjava</a>
+              <button onClick={handleLogout} className="logout-btn">Odjava</button>
             </div>
           </div>
         </div>
