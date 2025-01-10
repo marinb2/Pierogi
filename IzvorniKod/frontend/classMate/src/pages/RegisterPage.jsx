@@ -204,7 +204,8 @@ function RegisterPage() {
                             "roleName": "ucenik"
                         },
                         programme: user.major,
-                        school: user.school
+                        school: user.school,
+
                     })
                 }).then(() => {
                     window.location.href = `${frontdomain}/main`
