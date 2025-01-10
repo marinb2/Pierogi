@@ -24,7 +24,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/favicon.ico", "/error", "/login/*", "/oauth2/*", "api/**").permitAll() // Permit OAuth-related endpoints
                 .requestMatchers("/", "/favicon.ico", "/error", "/oauth2/authorization/google", "/login/oauth2/code/google").permitAll() // Permit OAuth-related endpoints
-                .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // Example: Allow unauthenticated access to user registration endpoint
+                .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll() // Example: Allow unauthenticated access to user registration endpoint
                 .anyRequest().authenticated() // Require authentication for other endpoints
             )
             .build();
