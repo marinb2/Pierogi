@@ -22,25 +22,20 @@ function Sidebar() {
   const basebackendurl = "http://localhost:8080";
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentTitle, setCurrentTitle] = useState('Moj raspored');
-  const [subjects, setSubects] = useState(null);
+  const [subjects, setSubjects] = useState(null);
 
   const getSubjects = async (email) => {
     try {
       const response = await fetch(`${basebackendurl}/api/subjects/getByUserEmail?email=${email}`, { method: "GET", credentials: "include" });
       if (response) {
-
         const subjectsjson = await response.json();
-        var subjects = [];
-        for (var i = 0; i < subjectsjson.length; i++) {
-          subjects.push(subjectsjson[i].subjectName);
-        }
-        setSubects(subjects);
-
+        const subjectsList = subjectsjson.map(subject => subject.subjectName);
+        setSubjects(subjectsList);
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const toggleSidebar = () => {
     if (window.innerWidth < 768) {
@@ -49,7 +44,7 @@ function Sidebar() {
   };
 
   const handleMenuClick = (title) => {
-    setCurrentTitle(title); // Postavlja naslov u TopBar
+    setCurrentTitle(title);
   };
 
   useEffect(() => {
@@ -60,18 +55,38 @@ function Sidebar() {
       }
     };
 
-    
-
     window.addEventListener('resize', handleResize);
-    handleResize(); // Check immediately in case the screen is already large
+    handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  //const subjects = ['Matematika', 'Hrvatski', 'Biologija', 'Povijest', 'Informatika', 'Vjeronauk', 'Latinski', 'Filozofija'];
+  const handleEnrollmentClick = async () => {
+      try {
+          const response = await fetch(`${basebackendurl}/api/users/enroll?email=${sessionStorage.getItem("loggedInUserEmail")}`, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+          });
+
+          if (!response.ok) {
+              const errorMessage = await response.text();
+              throw new Error(errorMessage);
+          }
+
+          const message = await response.text();
+          alert(message);  // Prikazuje obavijest korisniku
+          window.location.reload();
+
+      } catch (error) {
+          console.error("Greška prilikom upisa:", error);
+          alert("Greška prilikom upisa: " + error.message);
+      }
+  };
 
   return (
-    (subjects &&
+    subjects && (
       <div className="app-container">
         <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
         <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
@@ -114,6 +129,13 @@ function Sidebar() {
               <a href="#logout">Odjava</a>
             </div>
           </div>
+        </div>
+
+        {/* Gumb "Upis" u sredini ekrana */}
+        <div className="center-content">
+          <button className="enroll-button" onClick={handleEnrollmentClick}>
+            Upis
+          </button>
         </div>
       </div>
     )
