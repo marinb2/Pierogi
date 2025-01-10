@@ -12,7 +12,7 @@ import {
 } from "stream-chat-react"
 import { StreamChat } from "stream-chat"
 import "stream-chat-react/dist/css/v2/index.css"
-import "../styles/MessagesPage.css"
+//import "../styles/MessagesPage.css"
 
 const serverUrl = "http://localhost:8080"
 
