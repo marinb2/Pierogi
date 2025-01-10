@@ -274,10 +274,10 @@ function MaterialsPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <Sidebar />
-      <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Upload file</h1>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {role === "nastavnik" && (
           <div>
+            <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Upload file</h1>
             <input type="file" onChange={handleFileChange} />
             <button onClick={handleUpload} disabled={isUploading}>Upload</button>
             {progress > 0 && <p>Upload Progress: {Math.round(progress)}%</p>}
