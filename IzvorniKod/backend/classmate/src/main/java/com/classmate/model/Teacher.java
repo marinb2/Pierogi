@@ -27,11 +27,11 @@ public class Teacher {
     // Getters and Setters
 
     public Long getTeacherId() {
-        return teacherId;
+        return id;
     }    
 
     public void setTeacherId(Long teacherId) {
-        this.teacherId = teacherId;
+        this.id = id;
     }
 
     public String getTeacherName() {
