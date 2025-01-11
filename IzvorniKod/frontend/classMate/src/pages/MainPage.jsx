@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/MainPage.css';
 import logo from '../assets/logo.svg';
-import { googleLogout } from '@react-oauth/google'
+import { googleLogout } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
+import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject } from '@syncfusion/ej2-react-schedule';
 
 function TopBar({ currentTitle, toggleSidebar }) {
   return (
     <div className="topbar">
       <div className="logo">
-        <img src={logo} className="logo-image" alt="Logo"></img>
+        <img src={logo} className="logo-image" alt="Logo" />
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
@@ -25,11 +26,12 @@ function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentTitle, setCurrentTitle] = useState('Moj raspored');
   const [subjects, setSubjects] = useState(null);
+  const [isEnrolled, setIsEnrolled] = useState(false);
 
   const getSubjects = async (email) => {
     try {
       const response = await fetch(`${basebackendurl}/api/subjects/getByUserEmail?email=${email}`, { method: "GET", credentials: "include" });
-      if (response) {
+      if (response.ok) {
         const subjectsjson = await response.json();
         const subjectsList = subjectsjson.map(subject => subject.subjectName);
         setSubjects(subjectsList);
@@ -46,7 +48,7 @@ function Sidebar() {
   };
 
   const handleMenuClick = (title) => {
-    setCurrentTitle(title);
+    setCurrentTitle(title); 
   };
 
   const navigate = useNavigate();
@@ -58,7 +60,9 @@ function Sidebar() {
   };
 
   useEffect(() => {
-    getSubjects(sessionStorage.getItem("loggedInUserEmail"));
+    const email = sessionStorage.getItem("loggedInUserEmail");
+    getSubjects(email);
+
     const handleResize = () => {
       if (window.innerWidth >= 768) {
         setIsSidebarOpen(true);
@@ -72,29 +76,61 @@ function Sidebar() {
   }, []);
 
   const handleEnrollmentClick = async () => {
-      try {
-          const response = await fetch(`${basebackendurl}/api/users/enroll?email=${sessionStorage.getItem("loggedInUserEmail")}`, {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-          });
-
-          if (!response.ok) {
-              const errorMessage = await response.text();
-              throw new Error(errorMessage);
-          }
-
-          const message = await response.text();
-          alert(message);  // Prikazuje obavijest korisniku
-          window.location.reload();
-
-      } catch (error) {
-          console.error("Greška prilikom upisa:", error);
-          alert("Greška prilikom upisa: " + error.message);
+    try {
+      const response = await fetch(`${basebackendurl}/api/users/enroll?email=${sessionStorage.getItem("loggedInUserEmail")}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(errorMessage);
       }
+  
+      const message = await response.text();
+      alert(message);
+  
+    } catch (error) {
+      console.error("Greška prilikom upisa:", error);
+      alert("Greška prilikom upisa: " + error.message);
+    }
+
+    // Pozivanje funkcije za provjeru upisa nakon uspješnog upisa
+    const email = sessionStorage.getItem("loggedInUserEmail");
+    await checkEnrollmentStatus(email);
   };
 
+  const checkEnrollmentStatus = async (email) => {
+    try {
+      const response = await fetch(`${basebackendurl}/api/users/getByEmail?email=${email}`, {
+        method: "GET",
+        credentials: "include",
+      });
+  
+      if (response.ok) {
+        const userData = await response.json();  // Dodano: Deklaracija userData
+  
+        console.log("Podaci korisnika:", userData);  // Debugging
+  
+        // Ispravljen uvjet za provjeru upisa
+        if (userData.classTeacherId !== null && userData.gradeLetter !== null && userData.gradeNumber !== null) {
+          setIsEnrolled(true);  // Ako je upisan, prikazuje raspored
+        } else {
+          console.log("Korisnik nije upisan u razred.");  // Debugging
+          setIsEnrolled(false); // Ako nije upisan, prikazuje gumb Upis
+        }
+      } else {
+        console.error("Neuspješno dohvaćanje korisnika.");
+      }
+    } catch (error) {
+      console.error("Greška prilikom provjere upisa:", error);
+    }
+  };
+  
+  
+  
   return (
     subjects && (
       <div className="app-container">
@@ -141,12 +177,26 @@ function Sidebar() {
           </div>
         </div>
 
-        {/* Gumb "Upis" u sredini ekrana */}
-        <div className="center-content">
-          <button className="enroll-button" onClick={handleEnrollmentClick}>
-            Upis
-          </button>
-        </div>
+        {isEnrolled ? (
+          <div className="main-content">
+            <div className="schedule-container">
+              <ScheduleComponent
+                height="600px"
+                width="100%"
+                selectedDate={new Date()}
+              >
+                <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
+              </ScheduleComponent>
+            </div>
+          </div>
+        ) : (
+          <div className="center-content">
+            <button className="enroll-button" onClick={handleEnrollmentClick}>
+              Upis
+            </button>
+          </div>
+        )}
+
       </div>
     )
   );

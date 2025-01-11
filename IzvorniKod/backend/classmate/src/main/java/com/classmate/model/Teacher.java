@@ -31,7 +31,7 @@ public class Teacher {
     }    
 
     public void setTeacherId(Long teacherId) {
-        this.id = id;
+        this.id = teacherId;
     }
 
     public String getTeacherName() {

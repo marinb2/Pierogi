@@ -8,6 +8,9 @@ import MaterialsPage from './pages/MaterialsPage';
 import DocumentsPage from "./pages/DocumentsPage";
 import AccountsPage from "./pages/AccountsPage";
 
+import { registerLicense } from '@syncfusion/ej2-base';
+
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf0x3Qnxbf1x1ZFREalhXTnZcUj0eQnxTdEBjWH5ecXZRQGBfU0V0XQ==');
 
 function App() {
   return (
