@@ -63,55 +63,55 @@ public class CertificateService {
 
     // Generiraj PDF
     public String generatePdf(String username, CertificateType certificateType) {
-        String filePath = "generated_certificates/" + username + "_certificate.pdf";
-
+        String filePath = "generated_certificates/" + username + "_" + certificateType.getId() + "_certificate.pdf";
+    
         try {
-
-
+            // Provjeri i kreiraj direktorij ako ne postoji
             File directory = new File("generated_certificates/");
-                if (!directory.exists()) {
-                    directory.mkdirs();
-                 }
-
-                    
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+    
+            // Inicijalizacija PDF dokumenta
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, new FileOutputStream(filePath));
-
             document.open();
-
+    
+            // Dodaj naslov
             Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
-            Paragraph title = new Paragraph("POTVRDA O REDOVNOM ŠKOLOVANJU", titleFont);
+            Paragraph title = new Paragraph(certificateType.getName(), titleFont); // Dinamički naslov potvrde
             title.setAlignment(Element.ALIGN_CENTER);
             title.setSpacingAfter(20);
             document.add(title);
-
+    
+            // Dodaj sadržaj
             Font contentFont = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
             Paragraph content = new Paragraph(
-                "Ovo je potvrda o redovnom školovanju za studenta " +
-                username  ,
+                "\nOvo je " + certificateType.getName().toLowerCase() + " izdana za studenta imena " + username + ".",
                 contentFont
             );
             content.setAlignment(Element.ALIGN_LEFT);
             content.setSpacingAfter(30);
             document.add(content);
-
+    
+            // Dodaj dodatne informacije
             Paragraph additionalInfo = new Paragraph(
                 "Datum izdavanja: " + new java.util.Date(),
                 contentFont
             );
             additionalInfo.setAlignment(Element.ALIGN_LEFT);
             document.add(additionalInfo);
-
+    
             document.close();
-
+    
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-
+    
         return filePath;
     }
-
+    
 
     // Pošalji PDF na email
    /*  public void sendCertificateEmail(String pdfPath, Student student) {

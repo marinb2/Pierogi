@@ -33,7 +33,8 @@ public class CertificateController {
 
     @PostMapping("/{certificateId}/generate")
     public ResponseEntity<String> generateAndSendCertificate(
-        @PathVariable Long certificateId
+        @PathVariable Long certificateId,
+        @RequestParam String studentName // Dodano ime studenta kao query parametar
        
     ) {
         // Dohvati trenutno prijavljenog korisnika
@@ -51,7 +52,7 @@ public class CertificateController {
             .orElseThrow(() -> new RuntimeException("Certificate type not found"));
 
         //Generiraj PDF
-        String pdfPath = certificateService.generatePdf("LovreJelicic", certificateType);
+        String pdfPath = certificateService.generatePdf(studentName, certificateType);
 
         // Pošalji PDF na email
      //   certificateService.sendCertificateEmail(pdfPath, student);
