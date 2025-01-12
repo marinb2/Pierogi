@@ -19,6 +19,7 @@ public class User {
     private String username;
     private String email;
     private LocalDateTime createdAt;
+    private String pfpUrl;
 
     @ManyToOne
     @JoinColumn(name = "roleId")
@@ -129,4 +130,13 @@ public class User {
     public void setClassTeacherId(Long classTeacherId) {
         this.classTeacherId = classTeacherId;
     }
+
+    public String getPfpUrl() {
+        return this.pfpUrl;
+    }
+
+    public void setPfpUrp(String pfpUrl) {
+        this.pfpUrl = pfpUrl;
+    }
 }
+

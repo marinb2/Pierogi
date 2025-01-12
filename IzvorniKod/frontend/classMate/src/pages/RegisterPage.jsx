@@ -199,6 +199,7 @@ function RegisterPage() {
                         created_at: new Date(),
                         email: userDetails,
                         username: transformUserName(username),
+                        pfpUrl: sessionStorage.getItem("userPfpUrl"),
                         role: {
                             "roleId": 1,
                             "roleName": "ucenik"
@@ -221,6 +222,7 @@ function RegisterPage() {
                         created_at: new Date(),
                         email: userDetails,
                         username: transformUserName(username),
+                        pfpUrl: sessionStorage.getItem("userPfpUrl"),
                         role: {
                             "roleId": 2,
                             "roleName": "nastavnik"
