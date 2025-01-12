@@ -24,12 +24,12 @@ public class School {
 
     // Getteri i setteri
 
-    public Long getId() {
+    public long getSchoolId() {
         return schoolId;
     }
 
-    public void setId(Long id) {
-        this.schoolId = id;
+    public void setSchoolId(long schoolId) {
+        this.schoolId = schoolId;
     }
 
     public String getName() {
