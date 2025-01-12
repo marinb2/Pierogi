@@ -17,11 +17,14 @@ public class Confirmation {
     @ManyToOne
     private Student student;
 
+    @ManyToOne
+    private CertificateType certificateType;
+
+
     private LocalDateTime issueDate;
     private String documentUrl;
 
-    // Getters and Setters
-
+   
     public Long getId() {
         return id;
     }
