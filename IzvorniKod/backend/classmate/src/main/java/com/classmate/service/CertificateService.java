@@ -41,7 +41,7 @@ public class CertificateService {
     private UserRepository userRepository;
 
     @Autowired
-   // private EmailService emailService; // Ako već postoji
+    private EmailService emailService; // Ako već postoji
 
     // Dohvati sve dostupne potvrde
     public List<CertificateType> getAvailableCertificates() {
@@ -113,13 +113,13 @@ public class CertificateService {
     }
     
 
-    // Pošalji PDF na email
-   /*  public void sendCertificateEmail(String pdfPath, Student student) {
+    
+    public void sendCertificateEmail(String pdfPath, String email, String studentName) {
         emailService.sendEmailWithAttachment(
-            student.getEmail(),
+            email,
             "Vaša potvrda",
-            "Poštovani " + student.getName() + ", u prilogu se nalazi potvrda.",
+            "Poštovani " + studentName + ", u prilogu se nalazi potvrda.",
             pdfPath
         );
-    } */
+    } 
 }

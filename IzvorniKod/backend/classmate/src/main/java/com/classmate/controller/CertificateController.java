@@ -55,7 +55,7 @@ public class CertificateController {
         String pdfPath = certificateService.generatePdf(studentName, certificateType);
 
         // Pošalji PDF na email
-     //   certificateService.sendCertificateEmail(pdfPath, student);
+        certificateService.sendCertificateEmail(pdfPath, "jeliciclovre@gmail.com", studentName);
 
         return ResponseEntity.ok("Certificate sent to student.");
     }
