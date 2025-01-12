@@ -199,12 +199,14 @@ function RegisterPage() {
                         created_at: new Date(),
                         email: userDetails,
                         username: transformUserName(username),
+                        pfpUrl: sessionStorage.getItem("userPfpUrl"),
                         role: {
                             "roleId": 1,
                             "roleName": "ucenik"
                         },
                         programme: user.major,
-                        school: user.school
+                        school: user.school,
+
                     })
                 }).then(() => {
                     window.location.href = `${frontdomain}/main`
@@ -220,6 +222,7 @@ function RegisterPage() {
                         created_at: new Date(),
                         email: userDetails,
                         username: transformUserName(username),
+                        pfpUrl: sessionStorage.getItem("userPfpUrl"),
                         role: {
                             "roleId": 2,
                             "roleName": "nastavnik"
