@@ -27,6 +27,10 @@ function Sidebar() {
   const [currentTitle, setCurrentTitle] = useState('Moj raspored');
   const [subjects, setSubjects] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [weatherEvents, setWeatherEvents] = useState([]);
+
+  const apiKey = "19f1c82956a1d39ebf044e906eb0b900"
+  const city = "Zagreb"
 
   const getSubjects = async (email) => {
     try {
@@ -75,6 +79,7 @@ function Sidebar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Upis korisnika -> dodjela razreda i razrednika
   const handleEnrollmentClick = async () => {
     try {
       const response = await fetch(`${basebackendurl}/api/users/enroll?email=${sessionStorage.getItem("loggedInUserEmail")}`, {
@@ -102,6 +107,7 @@ function Sidebar() {
     await checkEnrollmentStatus(email);
   };
 
+  // Provjera upisa korisnika
   const checkEnrollmentStatus = async (email) => {
     try {
       const response = await fetch(`${basebackendurl}/api/users/getByEmail?email=${email}`, {
@@ -128,8 +134,51 @@ function Sidebar() {
       console.error("Greška prilikom provjere upisa:", error);
     }
   };
+
+  // Pokrece checkEnrollmentStatus funkciju pri učitavanju stranice
+  useEffect(() => {
+    const email = sessionStorage.getItem("loggedInUserEmail");
+    getSubjects(email);
+    checkEnrollmentStatus(email); // Pozivanje funkcije za provjeru upisa pri učitavanju
+
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsSidebarOpen(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
-  
+  // ✅ Funkcija za dohvat vremenske prognoze
+  const getWeatherForecast = async () => {
+    try {
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`);
+      if (response.ok) {
+        const data = await response.json();
+
+        // Mapiranje prognoze u evente za Scheduler
+        const events = data.list.slice(0, 7).map((forecast) => ({
+          Id: forecast.dt,
+          Subject: `🌡️ ${forecast.main.temp}°C, ${forecast.weather[0].description}`,
+          StartTime: new Date(forecast.dt * 1000),
+          EndTime: new Date((forecast.dt + 3600) * 1000),
+          IsAllDay: false,
+          isReadonly: true
+        }));
+        setWeatherEvents(events);
+      }
+    } catch (error) {
+      console.error("Greška pri dohvaćanju vremenske prognoze:", error);
+    }
+  };
+
+  useEffect(() => {
+    getWeatherForecast();  // Poziva vremensku prognozu pri učitavanju
+  }, []);
   
   return (
     subjects && (
@@ -184,7 +233,10 @@ function Sidebar() {
                 height="600px"
                 width="100%"
                 selectedDate={new Date()}
+                eventSettings={{ dataSource: weatherEvents }}
+                readonly={true}
               >
+
                 <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
               </ScheduleComponent>
             </div>

@@ -1,3 +1,10 @@
+.weather-icon {
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+
 /* Ensures the main content doesn't overlap with the sidebar and topbar */
 .schedule-container {
   margin: 20px;
