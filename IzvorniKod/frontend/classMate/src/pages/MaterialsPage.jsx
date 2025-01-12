@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import Sidebar from "./MainPage";
 import { db, storage } from "../config/Firebase";
-import { getDocs, collection, addDoc, doc, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
-import { Timestamp } from 'firebase/firestore'; // Import Firestore Timestamp
+import { Timestamp, getDoc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore'; // Import Firestore Timestamp
 
 function MaterialsPage() {
   const [file, setFile] = useState(null);
@@ -13,7 +13,6 @@ function MaterialsPage() {
   const [materials, setMaterials] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [user, setUser] = useState(null);
-  const [displayedSubjects, setDisplayedSubjects] = useState([]); // Track displayed subjects
 
   const backdomain = "http://localhost:8080";
   const userMail = sessionStorage.getItem("loggedInUserEmail");
@@ -24,7 +23,7 @@ function MaterialsPage() {
         const response = await fetch(`${backdomain}/api/users/getByEmail?email=${userMail}`, { method: "GET", credentials: "include" });
         if (response) {
           const userJSON = await response.json();
-          console.log('Fetched User:', userJSON);
+          //console.log('Fetched User:', userJSON);
           setUser(userJSON);
         }
       }
@@ -35,7 +34,7 @@ function MaterialsPage() {
     if (userMail) {
       getUser();
     } else {
-      console.log("No logged-in user email found.");
+      //console.log("No logged-in user email found.");
     }
   }, [userMail]);
 
@@ -108,27 +107,28 @@ function MaterialsPage() {
             subject: subject,
             school: school,
             programme: programme,
+            viewedBy: [],
           };
 
-          console.log("fileMetadata being added to Firestore:", fileMetadata);
+          //console.log("fileMetadata being added to Firestore:", fileMetadata);
 
           // Save file metadata to Firestore and capture the docRef.id (materialId)
           addDoc(materialsCollection, fileMetadata)
             .then((docRef) => {
               // After uploading, store the material ID (docRef.id)
               const materialId = docRef.id;
-              console.log("File uploaded with ID:", materialId);
-              console.log("Successfully added to Firestore:", docRef.id);
+              //console.log("File uploaded with ID:", materialId);
+              //console.log("Successfully added to Firestore:", docRef.id);
 
               // Add the new material to the state with its materialId
-              setMaterials((prevMaterials) => [
+              /*setMaterials((prevMaterials) => [
                 ...prevMaterials,
                 {
                   ...fileMetadata,
                   id: materialId, // Save the materialId (Firestore document ID)
                   date: fileMetadata.date.toDate().toLocaleDateString('hr-HR'),
                 },
-              ]);
+              ]);*/
             })
             .catch((error) => {
               console.error("Error saving metadata to Firestore:", error);
@@ -144,6 +144,38 @@ function MaterialsPage() {
     );
   };
 
+  const handleViewFile = async (materialId) => {
+    try {
+      const studentEmail = user[0]?.email; // Current student's email
+      if (!studentEmail) {
+        console.error("No student email found.");
+        return;
+      }
+
+      const materialDocRef = doc(db, "materials", materialId);
+
+      // Get the current material document
+      const materialDoc = await getDoc(materialDocRef);
+      if (materialDoc.exists()) {
+        const materialData = materialDoc.data();
+        const { viewedBy = [] } = materialData;
+
+        // Check if the student has already viewed the file
+        if (!viewedBy.includes(studentEmail)) {
+          // Add the student's email to the viewedBy array
+          await updateDoc(materialDocRef, {
+            viewedBy: arrayUnion(studentEmail), // Use arrayUnion for safe updates
+          });
+          //console.log(`Added ${studentEmail} to viewedBy for material ${materialId}`);
+        }
+      }
+    } catch (error) {
+      console.error("Error updating viewedBy:", error);
+    }
+  };
+
+
+
   const handleDeleteMaterial = (materialId, materialUrl) => {
     if (!materialId) {
       console.error("Material ID is undefined or null.");
@@ -157,7 +189,7 @@ function MaterialsPage() {
     const decodedPath = decodeURIComponent(filePath);
 
     // Log to verify the extracted path
-    console.log("Deleting file at path:", decodedPath);
+    //console.log("Deleting file at path:", decodedPath);
 
     if (!decodedPath) {
       console.error("File path extraction failed.");
@@ -170,7 +202,7 @@ function MaterialsPage() {
     // Delete the file from storage
     deleteObject(materialRef)
       .then(() => {
-        console.log("File deleted from storage");
+        //console.log("File deleted from storage");
 
         // Create a reference to the document in Firestore
         const materialDocRef = doc(db, "materials", materialId);
@@ -178,7 +210,7 @@ function MaterialsPage() {
         // Delete the document from Firestore
         deleteDoc(materialDocRef)
           .then(() => {
-            console.log("Material document deleted from Firestore");
+            //console.log("Material document deleted from Firestore");
 
             // Remove the material from the state to reflect the deletion
             setMaterials((prevMaterials) =>
@@ -203,33 +235,26 @@ function MaterialsPage() {
   }, []);
 
   useEffect(() => {
-    const getMaterials = async () => {
-      try {
-        const data = await getDocs(materialsCollection);
-        const filteredData = data.docs.map((doc) => ({
-          ...doc.data(),
+    const unsubscribe = onSnapshot(materialsCollection, (snapshot) => {
+      const updatedMaterials = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        const formattedDate = data.date
+          ? data.date.toDate().toLocaleDateString('hr-HR')
+          : 'No Date';
+
+        return {
+          ...data,
           id: doc.id,
-        }));
+          date: formattedDate,
+        };
+      });
 
-        // Format the date to display only day, month, year (if date exists)
-        const updatedMaterials = filteredData.map((material) => {
-          const formattedDate = material.date
-            ? material.date.toDate().toLocaleDateString('hr-HR') // Convert Firestore timestamp to Date object and format
-            : 'No Date';
-          return {
-            ...material,
-            date: formattedDate,
-          };
-        });
+      setMaterials(updatedMaterials);
+    });
 
-        setMaterials(updatedMaterials);
-      } catch (error) {
-        console.error("Error fetching materials:", error);
-      }
-    };
+    return () => unsubscribe(); // Clean up listener on unmount
+  }, [materialsCollection]);
 
-    getMaterials();
-  }, []);
 
   // Logic to filter materials based on role
   const filteredMaterials = useMemo(() => {
@@ -274,10 +299,10 @@ function MaterialsPage() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       <Sidebar />
-      <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Upload file</h1>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {role === "nastavnik" && (
           <div>
+            <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Upload file</h1>
             <input type="file" onChange={handleFileChange} />
             <button onClick={handleUpload} disabled={isUploading}>Upload</button>
             {progress > 0 && <p>Upload Progress: {Math.round(progress)}%</p>}
@@ -296,7 +321,7 @@ function MaterialsPage() {
                   <p>{material.date}</p>
                   <p>{formatFileSize(material.size)}</p>
                   <p>
-                    <a href={material.url} target="_blank" rel="noopener noreferrer">View File</a>
+                    <a href={material.url} target="_blank" rel="noopener noreferrer" onClick={() => handleViewFile(material.id)}>View File</a>
                   </p>
                 </div>
               ))}
@@ -313,6 +338,7 @@ function MaterialsPage() {
               <p>
                 <a href={material.url} target="_blank" rel="noopener noreferrer">View File</a>
               </p>
+              <p>Viewed by: {material.viewedBy?.length || 0} students</p>
               <button onClick={() => handleDeleteMaterial(material.id, material.url)}>
                 Delete
               </button>
