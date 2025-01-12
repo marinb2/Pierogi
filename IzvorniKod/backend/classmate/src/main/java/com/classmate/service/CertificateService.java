@@ -47,21 +47,15 @@ public class CertificateService {
     private CertificateRequestRepository certificateRequestRepository;
 
     @Autowired
-    private EmailService emailService; // Ako već postoji
+    private EmailService emailService; 
 
-    // Dohvati sve dostupne potvrde
+    
     public List<CertificateType> getAvailableCertificates() {
         return certificateTypeRepository.findAll();
     }
 
 
-   /**
-     * Kreira novi zahtjev za potvrdu.
-     *
-     * @param personName      Ime i prezime osobe kojoj pripada potvrda.
-     * @param certificateType Tip potvrde.
-     * @return Novi zahtjev za potvrdu.
-     */
+  
     public CertificateRequest createCertificateRequest(String personName, CertificateType certificateType) {
         CertificateRequest request = new CertificateRequest();
         request.setPersonName(personName);
@@ -70,22 +64,12 @@ public class CertificateService {
         return certificateRequestRepository.save(request);
     }
 
-    /**
-     * Dohvati sve zahtjeve koji su u statusu PENDING.
-     *
-     * @return Lista zahtjeva s statusom PENDING.
-     */
+   
     public List<CertificateRequest> getPendingRequests() {
         return certificateRequestRepository.findByStatus(CertificateRequest.Status.PENDING);
     }
 
-    /**
-     * Ažurira status zahtjeva.
-     *
-     * @param requestId ID zahtjeva koji treba ažurirati.
-     * @param status    Novi status.
-     * @return Ažurirani zahtjev.
-     */
+   
     public CertificateRequest updateRequestStatus(Long requestId, CertificateRequest.Status status) {
     CertificateRequest request = certificateRequestRepository.findById(requestId)
             .orElseThrow(() -> new RuntimeException("Request not found"));
@@ -93,7 +77,7 @@ public class CertificateService {
     return certificateRequestRepository.save(request);
 }
 
-    // Generiraj PDF
+    
     public String generatePdf(String username, CertificateType certificateType) {
         String filePath = "generated_certificates/" + username + "_" + certificateType.getId() + "_certificate.pdf";
     
@@ -143,10 +127,6 @@ public class CertificateService {
     
         return filePath;
     }
-
-
-
-    
 
     
     public void sendCertificateEmail(String pdfPath, String email, String studentName) {

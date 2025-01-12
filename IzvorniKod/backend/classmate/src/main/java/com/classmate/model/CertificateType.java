@@ -13,9 +13,9 @@ public class CertificateType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // npr. "Potvrda o redovnom školovanju"
+    private String name; 
 
-    private String template; // Opcionalno: putanja do šablone
+    private String template;
 
 
     public Long getId() {

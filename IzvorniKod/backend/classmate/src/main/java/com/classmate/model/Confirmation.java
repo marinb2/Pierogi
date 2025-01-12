@@ -24,8 +24,7 @@ public class Confirmation {
     private LocalDateTime issueDate;
     private String documentUrl;
 
-    // Getters and Setters
-
+   
     public Long getId() {
         return id;
     }

@@ -13,7 +13,7 @@ public class CertificateRequest {
     @JoinColumn(name = "certificate_type_id", nullable = false)
     private CertificateType certificateType;
 
-    private String personName; // Ime i prezime osobe kojoj pripada
+    private String personName; 
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -22,7 +22,7 @@ public class CertificateRequest {
         PENDING, APPROVED, REJECTED
     }
 
-    // Getteri i setteri
+    
 
     public Long getId() {
         return id;
