@@ -17,7 +17,7 @@
 
 }
 
-.back-to-main-button-ucenik{
+.back-to-main-button-ucenik {
 
 }
 
@@ -28,6 +28,11 @@
     grid-row: 1/11;
 }
 
+.notif-display-ucenik-naslov {
+    display: flex;
+    justify-content: center;
+}
+
 .notif-izbornik-ucenik {
     background-color: white;
     border: 1px solid black;
@@ -35,9 +40,29 @@
     grid-row: 2/11;
 }
 
+.notif-izbornik-instance-ucenik{
 
+}
 
-.notif-root-nastavnik{
+.notif-izbornik-instance-subject-name-ucenik{
+    display: flex;
+    justify-content: center;
+}
+
+.notif-izbornik-instance-subject-name-ucenik p{
+    margin: 0;
+    margin-top: 4%;
+}
+
+.notif-izbornik-instance-button-ucenik{
+    display: flex;
+    justify-content: center;
+}
+.notif-izbornik-instance-button-ucenik button{
+    margin-bottom: 3%;
+}
+
+.notif-root-nastavnik {
     height: 100%;
     width: 100%;
     display: grid;
@@ -45,7 +70,7 @@
     grid-template-rows: repeat(10, 10%);
 }
 
-.header-nastavnik{
+.header-nastavnik {
     background-color: white;
     border: 1px solid black;
     grid-row: 1/1;
@@ -54,24 +79,48 @@
 
 }
 
-.back-to-main-button-nastavnik{
+.back-to-main-button-nastavnik {
     margin-left: 4%;
 }
 
-.which-subject-nastavnik{
+.which-subject-nastavnik {
     margin-left: 25%;
     font-weight: 500;
 }
 
-.notif-display-nastavnik{
+.notif-display-nastavnik {
     position: relative;
     background-color: white;
     border: 1px solid black;
     grid-row: 2/11;
+}
+
+.notif-instance-nastavnik {
 
 }
 
-.new-notif-form-nastavnik{
+.date-notif-instance {
+    display: flex;
+    justify-content: center;
+}
+
+.date-notif-instance p {
+    margin: 0;
+    margin-top: 1%;
+    color: rgba(0,0,0,0.5);
+}
+
+.content-notif-instance {
+    display: flex;
+    justify-content: center;
+}
+
+.content-notif-instance p {
+    margin: 0;
+    margin-bottom: 1%;
+}
+
+.new-notif-form {
     position: absolute;
     bottom: 0;
     left: 40%;
