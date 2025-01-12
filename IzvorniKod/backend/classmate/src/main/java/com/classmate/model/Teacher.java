@@ -16,6 +16,8 @@ public class Teacher {
     private Long id;
     private String name;
 
+    private boolean isClassTeacher;
+
     @OneToOne
     private Subject professed_subject;
 
@@ -24,19 +26,19 @@ public class Teacher {
 
     // Getters and Setters
 
-    public Long getId() {
+    public Long getTeacherId() {
         return id;
-    }
+    }    
 
-    public void setId(Long id) {
+    public void setTeacherId(Long teacherId) {
         this.id = id;
     }
 
-    public String getName() {
+    public String getTeacherName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setTeacherName(String name) {
         this.name = name;
     }
 
@@ -44,8 +46,8 @@ public class Teacher {
         return professed_subject;
     }
 
-    public void getProfessedSubject(Subject subject) {
-        this.professed_subject = subject;
+    public void setProfessedSubject(Subject professed_subject) {
+        this.professed_subject = professed_subject;
     }
 
     public List<UnavailableTime> getUnavailableTimes() {
@@ -56,4 +58,11 @@ public class Teacher {
         this.unavailableTimes = unavailableTimes;
     }
 
+    public boolean isClassTeacher() {
+        return isClassTeacher;
+    }
+
+    public void setIsClassTeacher(boolean isClassTeacher) {
+        this.isClassTeacher = isClassTeacher;
+    }
 }

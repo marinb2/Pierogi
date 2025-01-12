@@ -1,3 +1,31 @@
+
+/* Gumb "Upis" centriran na ekranu */
+.center-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.enroll-button {
+  background-color: rgba(103, 58, 183, 1);
+  color: white;
+  padding: 20px 40px;
+  font-size: 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.enroll-button:hover {
+  background-color: rgba(63, 31, 105, 1);
+  transform: scale(1.1);
+}
+
+
 /* General layout */
 .app-container {
     display: flex;
@@ -168,5 +196,7 @@
     .topbar .logo .logo-image {
         height: 1em; /* Smaller logo size on mobile */
     }
+
+    
   }
   
