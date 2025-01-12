@@ -192,6 +192,7 @@
   .user-name {
     font-weight: bold;
     margin: 0;
+    color: black;
   }
 
   .user-email {
