@@ -23,7 +23,7 @@ function MaterialsPage() {
         const response = await fetch(`${backdomain}/api/users/getByEmail?email=${userMail}`, { method: "GET", credentials: "include" });
         if (response) {
           const userJSON = await response.json();
-          console.log('Fetched User:', userJSON);
+          //console.log('Fetched User:', userJSON);
           setUser(userJSON);
         }
       }
@@ -34,7 +34,7 @@ function MaterialsPage() {
     if (userMail) {
       getUser();
     } else {
-      console.log("No logged-in user email found.");
+      //console.log("No logged-in user email found.");
     }
   }, [userMail]);
 
@@ -110,15 +110,15 @@ function MaterialsPage() {
             viewedBy: [],
           };
 
-          console.log("fileMetadata being added to Firestore:", fileMetadata);
+          //console.log("fileMetadata being added to Firestore:", fileMetadata);
 
           // Save file metadata to Firestore and capture the docRef.id (materialId)
           addDoc(materialsCollection, fileMetadata)
             .then((docRef) => {
               // After uploading, store the material ID (docRef.id)
               const materialId = docRef.id;
-              console.log("File uploaded with ID:", materialId);
-              console.log("Successfully added to Firestore:", docRef.id);
+              //console.log("File uploaded with ID:", materialId);
+              //console.log("Successfully added to Firestore:", docRef.id);
 
               // Add the new material to the state with its materialId
               /*setMaterials((prevMaterials) => [
@@ -166,7 +166,7 @@ function MaterialsPage() {
           await updateDoc(materialDocRef, {
             viewedBy: arrayUnion(studentEmail), // Use arrayUnion for safe updates
           });
-          console.log(`Added ${studentEmail} to viewedBy for material ${materialId}`);
+          //console.log(`Added ${studentEmail} to viewedBy for material ${materialId}`);
         }
       }
     } catch (error) {
@@ -189,7 +189,7 @@ function MaterialsPage() {
     const decodedPath = decodeURIComponent(filePath);
 
     // Log to verify the extracted path
-    console.log("Deleting file at path:", decodedPath);
+    //console.log("Deleting file at path:", decodedPath);
 
     if (!decodedPath) {
       console.error("File path extraction failed.");
@@ -202,7 +202,7 @@ function MaterialsPage() {
     // Delete the file from storage
     deleteObject(materialRef)
       .then(() => {
-        console.log("File deleted from storage");
+        //console.log("File deleted from storage");
 
         // Create a reference to the document in Firestore
         const materialDocRef = doc(db, "materials", materialId);
@@ -210,7 +210,7 @@ function MaterialsPage() {
         // Delete the document from Firestore
         deleteDoc(materialDocRef)
           .then(() => {
-            console.log("Material document deleted from Firestore");
+            //console.log("Material document deleted from Firestore");
 
             // Remove the material from the state to reflect the deletion
             setMaterials((prevMaterials) =>
