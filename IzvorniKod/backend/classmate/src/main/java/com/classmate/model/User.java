@@ -19,6 +19,7 @@ public class User {
     private String username;
     private String email;
     private LocalDateTime createdAt;
+    private String pfpUrl;
 
     @ManyToOne
     @JoinColumn(name = "roleId")
@@ -101,4 +102,39 @@ public class User {
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
+<<<<<<< Updated upstream
+=======
+
+    public Integer getGradeNumber() {
+        return gradeNumber;
+    }
+
+    public void setGradeNumber(Integer gradeNumber) {
+        this.gradeNumber = gradeNumber;
+    }
+
+    public Character getGradeLetter() {
+        return gradeLetter;
+    }
+
+    public void setGradeLetter(Character gradeLetter) {
+        this.gradeLetter = gradeLetter;
+    }
+
+    public Long getClassTeacherId() {
+        return classTeacherId;
+    }
+
+    public void setClassTeacherId(Long classTeacherId) {
+        this.classTeacherId = classTeacherId;
+    }
+
+    public String getpfpUrl() {
+        return pfpUrl;
+    }
+
+    public void setPfpUrl(String pfpUrl) {
+        this.pfpUrl = pfpUrl;
+    }
+>>>>>>> Stashed changes
 }
