@@ -1,3 +1,113 @@
+.weather-icon {
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+
+/* Ensures the main content doesn't overlap with the sidebar and topbar */
+.schedule-container {
+  margin: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+/* Makes the app content flexible next to the sidebar */
+.app-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Adjusts sidebar size and responsiveness */
+.sidebar {
+  width: 250px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar:not(.open) {
+  transform: translateX(-100%);
+}
+
+/* Adjusts topbar styling */
+.topbar {
+  width: 100%;
+  height: 60px;
+  background-color: #343a40;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Ensures content starts below the topbar */
+.main-content {
+  margin-top: 60px;
+  margin-left: 250px;
+  padding: 20px;
+  width: calc(100% - 250px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .schedule-container {
+    padding: 10px;
+    margin: 10px;
+  }
+}
+
+/* Gumb "Upis" centriran na ekranu */
+.center-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.enroll-button {
+  background-color: rgba(103, 58, 183, 1);
+  color: white;
+  padding: 20px 40px;
+  font-size: 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.enroll-button:hover {
+  background-color: rgba(63, 31, 105, 1);
+  transform: scale(1.1);
+}
+
+
 /* General layout */
 .app-container {
     display: flex;
@@ -198,5 +308,7 @@
     .topbar .logo .logo-image {
         height: 1em; /* Smaller logo size on mobile */
     }
+
+    
   }
   

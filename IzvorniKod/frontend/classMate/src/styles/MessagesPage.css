@@ -1,0 +1,67 @@
+
+#chatroot, #root {
+  height: 100%;
+}
+html,body{
+  height: 100%;
+  min-height: 100%;
+}
+body {
+  margin: 0;
+}
+#chatroot {
+  display: flex;
+}
+
+.add_new_contacts{
+  width: 15%;
+  background-color: white;
+  border-color: black;
+  border-style: solid;
+  display: flex;
+  text-align: center;
+  vertical-align: middle;
+  flex-direction: column;
+  flex-wrap: wrap;
+  
+}
+
+.new_contacts_header{
+  color: white;
+  background-color: black;
+  height: 9%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new_contact_image{
+  max-width: 50px;
+  max-height: 50px;
+  border-radius: 50px;
+}
+
+.new_contact_username{
+
+}
+
+.new_contacts_person{
+  height: 7%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.str-chat__channel-list {
+  width: 20%;
+  height: 100%;
+}
+.str-chat__channel {
+  width: 90%;
+}
+.str-chat__thread {
+  width: 45%;
+}
