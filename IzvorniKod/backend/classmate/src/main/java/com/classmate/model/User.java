@@ -37,8 +37,12 @@ public class User {
     @JoinColumn(name = "subjectId")
     private Subject subject;
 
-    // Getters and Setters
+    // Novi atributi
+    private Integer gradeNumber; // Broj razreda (1-4)
+    private Character gradeLetter; // Slovo razreda (A-F)
+    private Long classTeacherId; // ID razrednika (profesora)
 
+    // Getteri i setteri
     public Long getUserId() {
         return userId;
     }
@@ -94,7 +98,7 @@ public class User {
     public void setProgramme(Programme programme) {
         this.programme = programme;
     }
-    
+
     public Subject getSubject() {
         return subject;
     }
@@ -102,8 +106,6 @@ public class User {
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
-<<<<<<< Updated upstream
-=======
 
     public Integer getGradeNumber() {
         return gradeNumber;
@@ -129,12 +131,11 @@ public class User {
         this.classTeacherId = classTeacherId;
     }
 
-    public String getpfpUrl() {
-        return pfpUrl;
+    public String getPfpUrl() {
+        return this.pfpUrl;
     }
 
-    public void setPfpUrl(String pfpUrl) {
+    public void setPfpUrp(String pfpUrl) {
         this.pfpUrl = pfpUrl;
     }
->>>>>>> Stashed changes
 }

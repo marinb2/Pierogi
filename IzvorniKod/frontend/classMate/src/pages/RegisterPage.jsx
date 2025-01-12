@@ -115,6 +115,7 @@ function RegisterPage() {
         major: '',
         subject: ''
     });
+    var username = sessionStorage.getItem("userName");
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -197,11 +198,8 @@ function RegisterPage() {
                     body: JSON.stringify({
                         created_at: new Date(),
                         email: userDetails,
-<<<<<<< Updated upstream
-=======
                         username: transformUserName(username),
                         pfpUrl: sessionStorage.getItem("userPfpUrl"),
->>>>>>> Stashed changes
                         role: {
                             "roleId": 1,
                             "roleName": "ucenik"
@@ -223,11 +221,8 @@ function RegisterPage() {
                     body: JSON.stringify({
                         created_at: new Date(),
                         email: userDetails,
-<<<<<<< Updated upstream
-=======
                         username: transformUserName(username),
                         pfpUrl: sessionStorage.getItem("userPfpUrl"),
->>>>>>> Stashed changes
                         role: {
                             "roleId": 2,
                             "roleName": "nastavnik"
@@ -244,6 +239,15 @@ function RegisterPage() {
         }
     }
 
+    function transformUserName(input) {
+
+        input = input.replace("č", "c")
+        input = input.replace("ć", "c")
+        input = input.replace("š", "s")
+        input = input.replace("đ", "d")
+        input = input.replace("ž", "z")
+        return input;
+    }
 
     useEffect(() => {
         if (userDetails && users)
