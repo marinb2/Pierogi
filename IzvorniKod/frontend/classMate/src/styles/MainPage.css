@@ -59,6 +59,36 @@
     overflow: hidden;     /* Hides overflow */
     text-overflow: ellipsis; /* Adds ellipsis for overflowed text */
   }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+  .user-profile-pic {
+    width: 50px; /* Veličina slike profila */
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+
+  .user-details {
+    display: flex;
+    flex-direction: column; /* Postavlja korisničko ime i email jedan ispod drugog */
+    align-items: flex-start;
+  }
+
+  .user-name {
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .user-email {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0;
+  }
   
   /* Sidebar styling */
   .sidebar {

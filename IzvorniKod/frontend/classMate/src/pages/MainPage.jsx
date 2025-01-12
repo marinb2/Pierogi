@@ -5,13 +5,30 @@ import { googleLogout } from '@react-oauth/google'
 import { useNavigate } from 'react-router-dom';
 
 function TopBar({ currentTitle, toggleSidebar }) {
+
+  const userPfpUrl = sessionStorage.getItem("userPfpUrl");
+  const userName = sessionStorage.getItem("userName");
+  const userEmail = sessionStorage.getItem("loggedInUserEmail");
+
+
   return (
     <div className="topbar">
       <div className="logo">
-        <img src={logo} className="logo-image" alt="Logo"></img>
+        <img src={logo} className="logo-image" alt="Logo" />
         <button className="sidebar-toggle" onClick={toggleSidebar}>
           ☰
         </button>
+      </div>
+      <div className="user-info">
+        <img
+          src={userPfpUrl}
+          alt="User Profile"
+          className="user-profile-pic"
+        />
+        <div className="user-details">
+          <p className="user-name">{userName}</p>
+          <p className="user-email">{userEmail}</p>
+        </div>
       </div>
       <div className="title">
         <p>{currentTitle}</p>
