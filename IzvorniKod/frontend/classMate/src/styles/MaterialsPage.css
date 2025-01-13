@@ -1,0 +1,172 @@
+.materials-page-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.materials-page-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center; /* Aligns the content to the left */
+    padding: 20px; /* Optional padding */
+    margin-left: 250px; /* Ensure this margin matches the sidebar width*/
+}
+
+.upload-file-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px; /* Space between the upload section and the files */
+}
+
+.browse-and-upload {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 50px; /* Adds space between the elements */
+}
+
+/*.file-upload-btn {
+    padding: 10px 20px;
+    background-color: rgba(103, 58, 183, 1);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease
+}*/
+
+/*.file-upload-btn:hover {
+    background-color: #d1c8e0;
+}*/
+
+.browse-btn {
+    display: none;
+}
+
+.custom-browse-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(103, 58, 183, 1);
+    color: white;
+    padding: 5px 15px; /* Padding for button */
+    font-size: 15px; /* Font size */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Change cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+    border: 1px solid rgba(103, 58, 183, 1); /* Border color */
+}
+
+.custom-browse-btn:hover {
+    background-color: transparent;
+    color: rgba(103, 58, 183, 1);
+    border: 1px solid rgba(103, 58, 183, 1);
+}
+
+.custom-browse-btn .MuiSvgIcon-root {
+    margin-right: 8px; /* Add some space between the icon and the text */
+}
+
+.materials-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    animation: collapse-list 0.4s ease-out forwards; /* Default collapse animation */
+}
+
+/* When expanded class is added */
+.materials-list.expanded {
+    animation: expand-list 0.4s ease-out forwards; /* Animation for expanding */
+}
+
+/* Keyframe animation for smooth expansion */
+@keyframes expand-list {
+    0% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+}
+
+/* Keyframe animation for smooth collapse */
+@keyframes collapse-list {
+    0% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+}
+
+.materials-list-teacher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.material-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align each file to the left */
+    width: 250px; /* Set width of each file item (you can adjust this) */
+    padding: 10px;
+    justify-content: center;
+    border-radius: 5px;
+    margin-bottom: 15px; /* Space between file items */
+    background-color: rgba(204, 195, 220, 0.957);
+}
+
+.material-item h3 {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.material-item p {
+    font-size: 0.9em;
+}
+
+.material-item button {
+    padding: 5px 10px;
+    background-color: rgba(103, 58, 183, 1);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.material-item button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: rgba(137, 89, 219, 0.8);
+}
+
+.subject-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subject-view h2 {
+    cursor: pointer;
+    color: rgba(103, 58, 183, 1);
+    transition: color 0.3s ease;
+}
+
+.subject-view h2:hover {
+    color: rgba(164, 133, 217, 0.8);
+}

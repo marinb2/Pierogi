@@ -1,11 +1,16 @@
 import { useEffect, useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import Sidebar from "./MainPage";
 import { db, storage } from "../config/Firebase";
 import { collection, addDoc, doc, deleteDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { Timestamp, getDoc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore'; // Import Firestore Timestamp
+import '../styles/MaterialsPage.css';
+import { Button } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { green } from "@mui/material/colors";
 
-function MaterialsPage() {
+const MaterialsPage = ({ showSchedule }) => {
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [uploadedFileRef, setUploadedFileRef] = useState(null);
@@ -13,8 +18,11 @@ function MaterialsPage() {
   const [materials, setMaterials] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [user, setUser] = useState(null);
+  const [visibleSubjects, setVisibleSubjects] = useState({});
+
 
   const backdomain = "http://localhost:8080";
+  const userName = sessionStorage.getItem("userName");
   const userMail = sessionStorage.getItem("loggedInUserEmail");
 
   useEffect(() => {
@@ -45,6 +53,16 @@ function MaterialsPage() {
   const storageRef = useMemo(() => {
     return file ? ref(storage, 'files/' + file.name) : null;
   }, [file]);
+
+  const toggleSubjectVisibility = (subject) => {
+    setVisibleSubjects((prev) => {
+      const newState = {
+        ...prev,
+        [subject]: !prev[subject], // Toggle the visibility for the clicked subject
+      };
+      return newState;
+    });
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -92,7 +110,8 @@ function MaterialsPage() {
           // Set the reference to the uploaded file for deletion later
           setUploadedFileRef(uploadTask.snapshot.ref);
 
-          const uploadedBy = user ? user[0]?.email : "unknown user";
+          // TREBA IC IME I PREZIME NA UPLOADED BY A NE EMAIL!!!!!!!!!!!!!!
+          const uploadedBy = user ? user[0]?.username : "unknown user";
           const subject = user ? user[0]?.subject?.subjectName : "unknown subject";
           const school = user ? user[0]?.school.name : "unknown school";
           const programme = role === "nastavnik" ? user[0]?.subject?.programme?.programName : user[0]?.programme?.programName;
@@ -114,9 +133,9 @@ function MaterialsPage() {
 
           // Save file metadata to Firestore and capture the docRef.id (materialId)
           addDoc(materialsCollection, fileMetadata)
-            .then((docRef) => {
+            .then((/*docRef*/) => {
               // After uploading, store the material ID (docRef.id)
-              const materialId = docRef.id;
+              //const materialId = docRef.id;
               //console.log("File uploaded with ID:", materialId);
               //console.log("Successfully added to Firestore:", docRef.id);
 
@@ -262,7 +281,7 @@ function MaterialsPage() {
 
     if (role === "nastavnik") {
       // Filter materials uploaded by the teacher (uploadedBy = user email)
-      return materials.filter(material => material.uploadedBy === user[0]?.email);
+      return materials.filter(material => material.uploadedBy === user[0]?.email || material.uploadedBy === user[0]?.username);
     }
 
     if (role === "ucenik") {
@@ -297,58 +316,85 @@ function MaterialsPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-      <Sidebar />
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        {role === "nastavnik" && (
-          <div>
-            <h1 style={{ textAlign: 'center', margin: '20px 0' }}>Upload file</h1>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleUpload} disabled={isUploading}>Upload</button>
-            {progress > 0 && <p>Upload Progress: {Math.round(progress)}%</p>}
+    <div className="materials-page-container">
+      {/* Sidebar is always displayed */}
+      <Sidebar showSchedule={showSchedule} />
+
+      <div className="materials-page-content"
+        style={{
+          //marginLeft: showSchedule ? '250px' : '0', // Apply margin-left if the sidebar is visible
+        }}
+      >
+        {/* Upload file section for 'nastavnik' */}
+        {role === 'nastavnik' && (
+          <div className="upload-file-section">
+            <h1 style={{ textAlign: 'center', margin: '20px 0' }}>{user[0]?.subject?.subjectName}</h1>
+            <div className="browse-and-upload">
+              <input id="file-input" className="browse-btn" type="file" onChange={handleFileChange} style={{display: 'none'}} />
+              <label htmlFor="file-input" className="custom-browse-btn">
+                <CloudUploadIcon /> TRAŽI
+              </label>
+              {file && <p className="file-name-display">{file.name}</p>}
+              <Button variant="outlined" onClick={handleUpload} disabled={isUploading} sx={{
+                 color: 'rgba(103, 58, 183, 1)', borderColor: 'rgba(103, 58, 183, 1)', ":hover": { backgroundColor: 'rgba(103, 58, 183, 1)', color: 'white' }
+              }} >Postavi</Button>
+              {progress > 0 && <p>Upload Progress: {Math.round(progress)}%</p>}
+            </div>
+          </div>
+        )}
+
+        {/* Display materials for 'ucenik' */}
+        {role === 'ucenik' && Object.keys(groupedMaterials).length > 0 && (
+          Object.keys(groupedMaterials).map((subject) => (
+            <div className="subject-view" key={subject}>
+              <h2 onClick={() => toggleSubjectVisibility(subject)}>
+                {subject}
+              </h2>
+              {visibleSubjects[subject] && (
+              <div className={`materials-list ${visibleSubjects[subject] ? "expanded" : ""}`}>
+                {groupedMaterials[subject].map((material) => (
+                  <div className="material-item" key={material.id}>
+                    <h3>{material.name}</h3>
+                    <p>{`Postavio: ${material.uploadedBy}\nDatum: ${material.date}`}</p>
+                    <p>Veličina: {formatFileSize(material.size)}</p>
+                    <p>
+                      <a href={material.url} target="_blank" rel="noopener noreferrer" onClick={() => handleViewFile(material.id)}>Pregledaj datoteku</a>
+                    </p>
+                  </div>
+                ))}
+              </div>
+              )}
+            </div>
+          ))
+        )}
+
+        {/* Display materials for 'nastavnik' */}
+        {role === 'nastavnik' && filteredMaterials.length > 0 && (
+          <div className="materials-list-teacher">
+            {filteredMaterials.map((material) => (
+              <div className="material-item" key={material.id}>
+                <h3>{material.name}</h3>
+                <p>{`Postavio: ${material.uploadedBy}\nDatum: ${material.date}`}</p>
+                <p>Veličina: {formatFileSize(material.size)}</p>
+                <p>
+                  <a href={material.url} target="_blank" rel="noopener noreferrer">Pregledaj datoteku</a>
+                </p>
+                <p>Pregledalo studenata: {material.viewedBy?.length || 0}</p>
+                <button onClick={() => handleDeleteMaterial(material.id, material.url)}>
+                  Obriši
+                </button>
+              </div>
+            ))}
           </div>
         )}
       </div>
-
-      <div>
-        {role === "ucenik" && Object.keys(groupedMaterials).length > 0 && (
-          Object.keys(groupedMaterials).map((subject) => (
-            <div key={subject}>
-              <h2>{subject}</h2>
-              {groupedMaterials[subject].map((material) => (
-                <div key={material.id}>
-                  <h3>{material.name}</h3>
-                  <p>{material.date}</p>
-                  <p>{formatFileSize(material.size)}</p>
-                  <p>
-                    <a href={material.url} target="_blank" rel="noopener noreferrer" onClick={() => handleViewFile(material.id)}>View File</a>
-                  </p>
-                </div>
-              ))}
-            </div>
-          ))
-        )}
-
-        {role === "nastavnik" && filteredMaterials.length > 0 && (
-          filteredMaterials.map((material) => (
-            <div key={material.id}>
-              <h3>{material.name}</h3>
-              <p>{material.date}</p>
-              <p>{formatFileSize(material.size)}</p>
-              <p>
-                <a href={material.url} target="_blank" rel="noopener noreferrer">View File</a>
-              </p>
-              <p>Viewed by: {material.viewedBy?.length || 0} students</p>
-              <button onClick={() => handleDeleteMaterial(material.id, material.url)}>
-                Delete
-              </button>
-            </div>
-          ))
-        )}
-
-      </div>
     </div>
   );
+
+
 }
+MaterialsPage.propTypes = {
+  showSchedule: PropTypes.bool.isRequired,
+};
 
 export default MaterialsPage;
