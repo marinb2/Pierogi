@@ -16,6 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u from User u WHERE u.email = ?1")
     List<User> findByEmail(String email);
 
+    // Pronađi korisnike po školi, programu i razredu
+    List<User> findBySchool_SchoolIdAndProgramme_ProgrammeIdAndGradeNumber(Long schoolId, Long programmeId, Integer gradeNumber);
 
     @Override
     public List<User> findAll();

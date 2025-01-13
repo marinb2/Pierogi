@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.classmate.model.Programme;
 import com.classmate.model.Subject;
 import com.classmate.model.User;
-import com.classmate.service.ProgrammeService;
 import com.classmate.service.SubjectService;
 import com.classmate.service.UserService;
 
@@ -31,8 +29,6 @@ public class SubjectController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private ProgrammeService programmeService;
 
     @GetMapping
     public List<Subject> getAllSubjects() {
@@ -59,7 +55,7 @@ public class SubjectController {
 
         List<User> users = userService.getUserByEmail(email);
 
-        if (users.size() == 0) {
+        if (users.isEmpty()) {
             return null;
         }
 
@@ -69,14 +65,14 @@ public class SubjectController {
 
         if (user.getRole().getRoleName().equals("nastavnik")) {
             Optional<Subject> subject = subjectService.getSubjectById(user.getSubject().getSubjectId());
-            List<Subject> return_this = new ArrayList<Subject>();
+            List<Subject> return_this = new ArrayList<>();
             return_this.add(subject.get());
             return return_this;
         }
 
         List<Subject> all_subjects = subjectService.getAllSubjects();
 
-        List<Subject> subjects = new ArrayList<Subject>();
+        List<Subject> subjects = new ArrayList<>();
 
         for (int i = 0; i < all_subjects.size(); i++) {
             if (all_subjects.get(i).getProgramme().equals(user.getProgramme())) {
