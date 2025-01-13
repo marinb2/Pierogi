@@ -235,7 +235,7 @@ const Sidebar = ({ showSchedule = true }) => {
           </div>
           <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
             <span>🔔</span>
-            <a href="#notifications">Obavijesti</a>
+            <a href="/notifications">Obavijesti</a>
             <span className="badge">24</span>
           </div>
           <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
