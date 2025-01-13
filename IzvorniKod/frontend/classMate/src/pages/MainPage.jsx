@@ -6,12 +6,25 @@ import { googleLogout } from '@react-oauth/google';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject } from '@syncfusion/ej2-react-schedule';
 
-function TopBar({ currentTitle, toggleSidebar }) {
+function TopBar({ toggleSidebar }) {
 
   const userPfpUrl = sessionStorage.getItem("userPfpUrl");
   const userName = sessionStorage.getItem("userName");
   const userEmail = sessionStorage.getItem("loggedInUserEmail");
+  const location = useLocation();
+  const [currentTitle, setCurrentTitle] = useState("Moj raspored");
 
+  useEffect(() => {
+    // Map the pathnames to titles
+    const titles = {
+      "/predmeti": "Predmeti",
+      "/main": "Moj raspored",
+      "/documents": "Potvrde",
+    };
+
+    const newTitle = titles[location.pathname] || "Moj raspored";
+    setCurrentTitle(newTitle);
+  }, [location]);
 
   return (
     <div className="topbar">
@@ -40,15 +53,15 @@ function TopBar({ currentTitle, toggleSidebar }) {
 }
 
 TopBar.propTypes = {
-  currentTitle: PropTypes.string.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
 };
 
 
 const Sidebar = ({ showSchedule = true }) => {
-Sidebar.propTypes = {
-  showSchedule: PropTypes.bool,
-};
+  Sidebar.propTypes = {
+    showSchedule: PropTypes.bool,
+  };
+
   const basebackendurl = "http://localhost:8080";
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentTitle, setCurrentTitle] = useState('Moj raspored');
@@ -218,7 +231,7 @@ Sidebar.propTypes = {
           <h3>Osnovno</h3>
           <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
             <span>🗓️</span>
-            <a href="#schedule">Moj raspored</a>
+            <a href="/main">Moj raspored</a>
           </div>
           <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
             <span>🔔</span>
@@ -232,11 +245,11 @@ Sidebar.propTypes = {
           </div>
           <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
             <span>📄</span>
-            <a href="#confirmations">Potvrde</a>
+            <a href="/documents">Potvrde</a>
           </div>
           <div className="menu-item" onClick={() => handleMenuClick('Predmeti')}>
             <span>📂</span>
-            <a href="/materials">Predmeti</a>
+            <a href="/predmeti">Predmeti</a>
           </div>
         </div>
 

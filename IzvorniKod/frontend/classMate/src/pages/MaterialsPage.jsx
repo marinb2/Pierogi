@@ -8,7 +8,6 @@ import { Timestamp, getDoc, updateDoc, arrayUnion, onSnapshot } from 'firebase/f
 import '../styles/MaterialsPage.css';
 import { Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { green } from "@mui/material/colors";
 
 const MaterialsPage = ({ showSchedule }) => {
   const [file, setFile] = useState(null);
@@ -19,7 +18,6 @@ const MaterialsPage = ({ showSchedule }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [user, setUser] = useState(null);
   const [visibleSubjects, setVisibleSubjects] = useState({});
-
 
   const backdomain = "http://localhost:8080";
   const userName = sessionStorage.getItem("userName");
@@ -320,15 +318,11 @@ const MaterialsPage = ({ showSchedule }) => {
       {/* Sidebar is always displayed */}
       <Sidebar showSchedule={showSchedule} />
 
-      <div className="materials-page-content"
-        style={{
-          //marginLeft: showSchedule ? '250px' : '0', // Apply margin-left if the sidebar is visible
-        }}
-      >
+      <div className="materials-page-content">
         {/* Upload file section for 'nastavnik' */}
         {role === 'nastavnik' && (
           <div className="upload-file-section">
-            <h1 style={{ textAlign: 'center', margin: '20px 0' }}>{user[0]?.subject?.subjectName}</h1>
+            <h1 style={{ textAlign: 'center', margin: '20px 0', color: 'rgba(103, 58, 183, 1)' }}>{user[0]?.subject?.subjectName}</h1>
             <div className="browse-and-upload">
               <input id="file-input" className="browse-btn" type="file" onChange={handleFileChange} style={{display: 'none'}} />
               <label htmlFor="file-input" className="custom-browse-btn">
