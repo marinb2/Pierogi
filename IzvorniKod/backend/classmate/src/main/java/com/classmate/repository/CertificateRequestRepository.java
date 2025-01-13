@@ -10,4 +10,6 @@ import com.classmate.model.CertificateRequest;
 @Repository
 public interface CertificateRequestRepository extends JpaRepository<CertificateRequest, Long> {
     List<CertificateRequest> findByStatus(CertificateRequest.Status status);
+    long count();
+    long countByStatus(CertificateRequest.Status status);
 }

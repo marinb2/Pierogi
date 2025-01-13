@@ -129,7 +129,6 @@ public class CertificateService {
         return filePath;
     }
 
-
     public void sendCertificateEmail(String pdfPath, String email, String studentName) {
         String emailBody = "Poštovani " + studentName + ",\n\n" +
                            "Vaša potvrda je odobrena i priložena je u ovom e-mailu.\n\n" +
@@ -141,5 +140,17 @@ public class CertificateService {
             pdfPath
         );
     }
+  
+    public long getTotalCertificateRequests() {
+        return certificateRequestRepository.count(); 
+    }
 
+    public long getPendingCertificateRequests() {
+        return certificateRequestRepository.countByStatus(CertificateRequest.Status.PENDING);
+    }
+
+    public long getApprovedCertificateRequests() {
+        return certificateRequestRepository.countByStatus(CertificateRequest.Status.APPROVED);
+    }
+    
 }

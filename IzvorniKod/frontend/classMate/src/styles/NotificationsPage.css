@@ -18,7 +18,7 @@
 }
 
 .back-to-main-button-ucenik {
-
+    max-width: 70%;
 }
 
 .notif-display-ucenik {
@@ -38,6 +38,11 @@
     border: 1px solid black;
     grid-column: 1/1;
     grid-row: 2/11;
+}
+
+.notif-display-no-notifs{
+    display: flex;
+    justify-content: center;
 }
 
 .notif-izbornik-instance-ucenik{

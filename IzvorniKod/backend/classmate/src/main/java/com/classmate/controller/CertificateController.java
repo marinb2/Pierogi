@@ -59,6 +59,25 @@ public class CertificateController {
         return certificateService.getPendingRequests();
     }
 
+    @GetMapping("/statistics/total-requests")
+    public ResponseEntity<Long> getTotalCertificateRequests() {
+        long totalRequests = certificateService.getTotalCertificateRequests();
+        return ResponseEntity.ok(totalRequests);
+    }
+
+    @GetMapping("/statistics/pending-requests")
+    public ResponseEntity<Long> getPendingCertificateRequests() {
+        long pendingRequests = certificateService.getPendingCertificateRequests();
+        return ResponseEntity.ok(pendingRequests);
+    }
+
+    @GetMapping("/statistics/approved-requests")
+    public ResponseEntity<Long> getApprovedCertificateRequests() {
+        long approvedRequests = certificateService.getApprovedCertificateRequests();
+        return ResponseEntity.ok(approvedRequests);
+    }
+
+
 
     @PutMapping("/pending-requests/{requestId}/approve")
     public ResponseEntity<String> approveRequest(

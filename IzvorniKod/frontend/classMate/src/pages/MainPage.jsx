@@ -69,10 +69,23 @@ const Sidebar = ({ showSchedule = true }) => {
   //const [subjects, setSubjects] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [weatherEvents, setWeatherEvents] = useState([]);
+  const [userDetails, setUserDetails] = useState(null);
 
   const apiKey = "19f1c82956a1d39ebf044e906eb0b900"
   const city = "Zagreb"
   const location = useLocation();
+
+  const getUserDetails = async (email) => {
+    try {
+      const response = await fetch(`${basebackendurl}/api/users/getByEmail?email=${email}`, { method: "GET", credentials: "include" });
+      if (response.ok) {
+        const userjson = await response.json();
+        setUserDetails(userjson[0]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   /*const getSubjects = async (email) => {
     try {
@@ -120,6 +133,11 @@ const Sidebar = ({ showSchedule = true }) => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    if (userDetails)
+      console.log(userDetails)
+  }, [userDetails])
 
   // Upis korisnika -> dodjela razreda i razrednika
   const handleEnrollmentClick = async () => {
@@ -182,6 +200,7 @@ const Sidebar = ({ showSchedule = true }) => {
   // Pokrece checkEnrollmentStatus funkciju pri učitavanju stranice
   useEffect(() => {
     const email = sessionStorage.getItem("loggedInUserEmail");
+    getUserDetails(email);
     //getSubjects(email);
     checkEnrollmentStatus(email); // Pozivanje funkcije za provjeru upisa pri učitavanju
 
@@ -224,72 +243,82 @@ const Sidebar = ({ showSchedule = true }) => {
     getWeatherForecast();  // Poziva vremensku prognozu pri učitavanju
   }, []);
 
-  return (
-    <div className="app-container">
-      <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
-      <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <div className="section">
-          <h3>Osnovno</h3>
-          <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
-            <span>🗓️</span>
-            <a href="/main">Moj raspored</a>
-          </div>
-          <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
-            <span>🔔</span>
-            <a href="/notifications">Obavijesti</a>
-            <span className="badge">24</span>
-          </div>
-          <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
-            <span>💬</span>
-            <a href="/conversations">Razgovori</a>
-            <span className="badge">2</span>
-          </div>
-          <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
-            <span>📄</span>
-            <a href="/documents">Potvrde</a>
-          </div>
-          <div className="menu-item" onClick={() => handleMenuClick('Predmeti')}>
-            <span>📂</span>
-            <a href="/predmeti">Predmeti</a>
-          </div>
-        </div>
+  if (userDetails)
+    return (
+      <div className="app-container">
+        <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
+        <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
+          <div className="section">
+            <h3>Osnovno</h3>
+            <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
+              <span>🗓️</span>
+              <a href="/main">Moj raspored</a>
+            </div>
+            <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
+              <span>🔔</span>
+              <a href="/notifications">Obavijesti</a>
+              <span className="badge">24</span>
+            </div>
+            <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
+              <span>💬</span>
+              <a href="/conversations">Razgovori</a>
+              <span className="badge">2</span>
+            </div>
+            <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
+              <span>📄</span>
+              <a href="/documents">Potvrde</a>
+            </div>
+            <div className="menu-item" onClick={() => handleMenuClick('Predmeti')}>
+              <span>📂</span>
+              <a href="/predmeti">Predmeti</a>
+            </div>
+            {userDetails.role.roleId === 6 && (
 
-        <div className="section">
-          <h3>Općenito</h3>
-          <div className="menu-item" onClick={() => handleMenuClick('Odjava')}>
-            <span>🚪</span>
-            <button onClick={handleLogout} className="logout-btn">Odjava</button>
+              <div className="menu-item" onClick={() => handleMenuClick('Predmeti')}>
+                <span>!!!</span>
+                <a href="/accounts">Pregledaj Sve Korisnike</a>
+              </div>
+            )
+            }
           </div>
-        </div>
-      </div>
 
-      {/* Conditionally render the ScheduleComponent or the fallback content */}
-      {location.pathname !== '/materials' && showSchedule && (
-        isEnrolled ? (
-          <div className="main-content">
-            <div className="schedule-container">
-              <ScheduleComponent
-                height="600px"
-                width="100%"
-                selectedDate={new Date()}
-                eventSettings={{ dataSource: weatherEvents }}
-                readonly={true}
-              >
-                <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
-              </ScheduleComponent>
+          <div className="section">
+            <h3>Općenito</h3>
+            <div className="menu-item" onClick={() => handleMenuClick('Odjava')}>
+              <span>🚪</span>
+              <button onClick={handleLogout} className="logout-btn">Odjava</button>
             </div>
           </div>
-        ) : (
-          <div className="center-content">
-            <button className="enroll-button" onClick={handleEnrollmentClick}>
-              Upis
-            </button>
-          </div>
-        )
-      )}
+        </div>
 
-    </div>
-  );
+        {/* Conditionally render the ScheduleComponent or the fallback content */}
+        {location.pathname !== '/materials' && showSchedule && (
+          isEnrolled ? (
+            <div className="main-content">
+              <div className="schedule-container">
+                <ScheduleComponent
+                  height="600px"
+                  width="100%"
+                  selectedDate={new Date()}
+                  eventSettings={{ dataSource: weatherEvents }}
+                  readonly={true}
+                >
+                  <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
+                </ScheduleComponent>
+              </div>
+            </div>
+          ) : (
+            <div className="center-content">
+              <button className="enroll-button" onClick={handleEnrollmentClick}>
+                Upis
+              </button>
+            </div>
+          )
+        )}
+
+      </div>
+    );
+    else return(<h1>Učitavanje</h1>)
 };
 
 export default Sidebar;

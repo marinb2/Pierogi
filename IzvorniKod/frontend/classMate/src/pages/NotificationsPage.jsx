@@ -8,7 +8,6 @@ const date_formatter = new Intl.DateTimeFormat("hr-HR", {
     dateStyle: "full",
     timeStyle: "medium",
     timeZone: "GMT",
-    
 });
 
 function NotificationsPage() {
@@ -129,8 +128,8 @@ function NotificationsPage() {
             console.log(notifications);
     }, [notifications])
 
-    if (user) {
-        if (user.role.roleId == 1 && subjects && pickedSubject && notifications) {
+    if (user && notifications) {
+        if (user.role.roleId == 1 && subjects && pickedSubject && notifications.length == 0) {
 
             return (
                 <div className="notif-root-ucenik">
@@ -142,7 +141,44 @@ function NotificationsPage() {
                             <h1>{pickedSubject.subjectName}</h1>
                         </div>
 
+                        <div className="notif-display-no-notifs">
+                            
+                        <h1>Nema obavijesti</h1>
 
+                        </div>
+                    </div>
+
+
+
+
+                    <div className="notif-izbornik-ucenik">
+                        {subjects.map((e) => (
+                            <div key={e.subjectId} className="notif-izbornik-instance-ucenik">
+                                <div className="notif-izbornik-instance-subject-name-ucenik">
+                                    <p>{e.subjectName}</p>
+                                </div>
+                                <div className="notif-izbornik-instance-button-ucenik">
+                                    <button onClick={() => { handleChooseSubject(e.subjectId); }}>Odaberi</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+        else if (user.role.roleId == 1 && subjects && pickedSubject) {
+
+            return (
+                <div className="notif-root-ucenik">
+                    <div className="back-to-main-ucenik">
+                        <button className="back-to-main-button-ucenik" onClick={() => { goToMain(); }}>natrag na glavnu stranicu</button>
+                    </div>
+                    <div className="notif-display-ucenik">
+                        <div className="notif-display-ucenik-naslov">
+                            <h1>{pickedSubject.subjectName}</h1>
+                        </div>
+
+                        
                         {notifications.map((e) => (
                             <div key={e.id} className="notif-instance">
                                 <div className="date-notif-instance">
