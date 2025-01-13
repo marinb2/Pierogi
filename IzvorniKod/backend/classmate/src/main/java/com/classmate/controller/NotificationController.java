@@ -2,6 +2,8 @@ package com.classmate.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import com.classmate.model.Notification;
 import com.classmate.service.NotificationService;
@@ -28,15 +30,14 @@ public class NotificationController {
         return notificationService.createNotification(notification);
     }
 
-    @PutMapping("/{id}")
-    public Notification updateNotification(@PathVariable Long id, @RequestBody Notification notification) {
-        return notificationService.updateNotification(id, notification);
-    }
-
     @DeleteMapping("/{id}")
     public void deleteNotification(@PathVariable Long id) {
         notificationService.deleteNotification(id);
     }
 
-   
+    @GetMapping("/bySubjectId")
+    public List<Notification> getNotificationsBySubjectId(@RequestParam Long id) {
+        return notificationService.getNotificationsBySubjectId(id);
+    }
+
 }

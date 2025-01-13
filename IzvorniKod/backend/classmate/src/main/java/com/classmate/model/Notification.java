@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -17,10 +18,8 @@ public class Notification {
     private LocalDateTime sentAt;
 
     @ManyToOne
-    private User sender;
-
-    @ManyToOne
-    private User recipient;
+    @JoinColumn(name = "subjectId")
+    private Subject subject;
 
     // Getters and Setters
 
@@ -48,19 +47,11 @@ public class Notification {
         this.sentAt = sentAt;
     }
 
-    public User getSender() {
-        return sender;
+    public Subject getSubject(){
+        return this.subject;
+    }
+    public void setSubject(Subject subject){
+        this.subject = subject;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public User getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
-    }
 }
