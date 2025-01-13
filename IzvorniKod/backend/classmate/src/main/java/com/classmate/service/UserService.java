@@ -46,57 +46,71 @@ public class UserService {
                 .stream()
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Korisnik nije pronađen."));
-
+    
         // 2. Provjera da li korisnik već ima dodijeljen razred
         if (user.getGradeNumber() != null && user.getGradeLetter() != null) {
             throw new RuntimeException("Korisnik je već upisan u razred.");
         }
-
-        // 3. Pronađi slobodnog razrednika
-        Teacher availableTeacher = teacherRepository.findFirstByIsClassTeacherFalseOrIsClassTeacherNull()
-            .orElseThrow(() -> new RuntimeException("Nema dostupnih razrednika."));
-
-        // 4. Dodijeli razredniku učenika i postavi isClassTeacher na TRUE
-        user.setClassTeacherId(availableTeacher.getTeacherId());
-        availableTeacher.setIsClassTeacher(true);
-        teacherRepository.save(availableTeacher);
-
-        // 5. Dodjela razreda (GradeNumber)
+    
+        // 3. Postavi početni broj razreda
         Integer nextGradeNumber = user.getGradeNumber() == null ? 1 : user.getGradeNumber() + 1;
         if (nextGradeNumber > 4) {
             throw new RuntimeException("Upis nije moguć. Maksimalni broj razreda je 4.");
         }
-        user.setGradeNumber(nextGradeNumber);
-
-        // 6. Dodjela slova razreda (GradeLetter)
-        List<User> sameGradeUsers = userRepository.findBySchool_SchoolIdAndProgramme_ProgrammeIdAndGradeNumber(
-                user.getSchool().getSchoolId(), 
-                user.getProgramme().getProgrammeId(), 
-                nextGradeNumber
-        );
-
-        // Prebroji korisnike po slovo razreda
-        Map<Character, Long> gradeLetterCounts = sameGradeUsers.stream()
-                .filter(u -> u.getGradeLetter() != null)
-                .collect(Collectors.groupingBy(User::getGradeLetter, Collectors.counting()));
-
-        // Provjeri koja su slova slobodna (A-F)
-        char assignedLetter = 0;
+    
+        // 4. Pronađi sve razrednike za određeni razred
+        List<Teacher> classTeachers = teacherRepository.findByIsClassTeacherTrue();
+    
+        boolean assigned = false;
+    
+        // 5. Pokušaj dodijeliti korisnika postojećem razredniku s manjim od 25 učenika
         for (char letter = 'A'; letter <= 'F'; letter++) {
-            Long count = gradeLetterCounts.getOrDefault(letter, 0L);
-            if (count < 25) {
-                assignedLetter = letter;
-                break;
+            for (Teacher teacher : classTeachers) {
+                List<User> studentsInClass = userRepository.findByClassTeacherIdAndGradeNumberAndGradeLetter(
+                        teacher.getTeacherId(), nextGradeNumber, letter);
+    
+                if (studentsInClass.size() < 25) {
+                    // Dodijeli korisnika razredniku i razredu
+                    user.setClassTeacherId(teacher.getTeacherId());
+                    user.setGradeNumber(nextGradeNumber);
+                    user.setGradeLetter(letter);
+    
+                    userRepository.save(user);
+                    assigned = true;
+                    break;
+                }
+            }
+            if (assigned) break;
+        }
+    
+        // 6. Ako nema mjesta u postojećim razredima, kreiraj novi razred s dostupnim profesorom
+        if (!assigned) {
+            // Pronađi slobodnog profesora koji nije razrednik
+            Teacher availableTeacher = teacherRepository.findFirstByIsClassTeacherFalseOrIsClassTeacherNull()
+                    .orElseThrow(() -> new RuntimeException("Nema dostupnih profesora za novi razred."));
+    
+            // Postavi profesora kao razrednika
+            availableTeacher.setIsClassTeacher(true);
+            teacherRepository.save(availableTeacher);
+    
+            // Dodijeli novo slovo razreda (A-F)
+            for (char letter = 'A'; letter <= 'F'; letter++) {
+                List<User> studentsInNewClass = userRepository.findByGradeNumberAndGradeLetter(nextGradeNumber, letter);
+                if (studentsInNewClass.isEmpty()) {
+                    // Dodijeli korisnika u novi razred
+                    user.setClassTeacherId(availableTeacher.getTeacherId());
+                    user.setGradeNumber(nextGradeNumber);
+                    user.setGradeLetter(letter);
+    
+                    userRepository.save(user);
+                    assigned = true;
+                    break;
+                }
+            }
+    
+            if (!assigned) {
+                throw new RuntimeException("Nema dostupnih mjesta za novi razred.");
             }
         }
-
-        if (assignedLetter == 0) {
-            throw new RuntimeException("Sva mjesta u razredima su popunjena.");
-        }
-
-        user.setGradeLetter(assignedLetter);
-
-        // 7. Spremi ažuriranog korisnika
-        userRepository.save(user);
     }
 }

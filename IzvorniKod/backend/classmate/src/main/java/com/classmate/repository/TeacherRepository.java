@@ -1,5 +1,6 @@
 package com.classmate.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,9 @@ import com.classmate.model.Teacher;
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     
-    // Pronađi prvog učitelja koji nije razrednik
+    // Pronađi sve profesore koji su razrednici
+    List<Teacher> findByIsClassTeacherTrue();
+
+    // Pronađi prvog profesora koji nije razrednik ili mu nije postavljena vrijednost
     Optional<Teacher> findFirstByIsClassTeacherFalseOrIsClassTeacherNull();
 }

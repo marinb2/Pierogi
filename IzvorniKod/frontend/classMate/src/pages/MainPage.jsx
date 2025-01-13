@@ -121,7 +121,7 @@ function Sidebar() {
         console.log("Podaci korisnika:", userData);  // Debugging
   
         // Ispravljen uvjet za provjeru upisa
-        if (userData.classTeacherId !== null && userData.gradeLetter !== null && userData.gradeNumber !== null) {
+        if (userData[0].classTeacherId !== null && userData[0].gradeLetter !== null && userData[0].gradeNumber !== null) {
           setIsEnrolled(true);  // Ako je upisan, prikazuje raspored
         } else {
           console.log("Korisnik nije upisan u razred.");  // Debugging
