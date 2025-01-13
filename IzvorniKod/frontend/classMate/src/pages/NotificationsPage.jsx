@@ -8,7 +8,6 @@ const date_formatter = new Intl.DateTimeFormat("hr-HR", {
     dateStyle: "full",
     timeStyle: "medium",
     timeZone: "GMT",
-    
 });
 
 function NotificationsPage() {
