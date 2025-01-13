@@ -40,6 +40,11 @@
     grid-row: 2/11;
 }
 
+.notif-display-no-notifs{
+    display: flex;
+    justify-content: center;
+}
+
 .notif-izbornik-instance-ucenik{
 
 }
