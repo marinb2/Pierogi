@@ -4,20 +4,27 @@ import "../styles/NotificationsPage.css"
 
 const serverUrl = "http://localhost:8080"
 
+const date_formatter = new Intl.DateTimeFormat("hr-HR", {
+    dateStyle: "full",
+    timeStyle: "medium",
+    timeZone: "GMT",
+    
+});
+
 function NotificationsPage() {
 
     const [user, setUser] = useState(null);
     const [subjects, setSubjects] = useState(null);
-    const [pickedSubject, setPicekdSubject] = useState(null);
+    const [pickedSubject, setPickedSubject] = useState(null);
+    const [notifications, setNotifications] = useState(null);
 
-    function goToMain() {
-        window.location.href = "/main"
-    }
+    //console.log(Intl.DateTimeFormat.supportedLocalesOf())
 
+    
     async function getUser() {
         try {
             const res = await fetch(`${serverUrl}/api/users/getByEmail?email=${sessionStorage.getItem("loggedInUserEmail")}`)
-
+            
             if (res) {
                 const userjson = await res.json();
                 setUser(userjson[0]);
@@ -26,7 +33,7 @@ function NotificationsPage() {
             console.log(e)
         }
     }
-
+    
     const getSubjects = async (email) => {
         try {
             const response = await fetch(`${serverUrl}/api/subjects/getByUserEmail?email=${email}`, { method: "GET", credentials: "include" });
@@ -38,9 +45,59 @@ function NotificationsPage() {
             console.log(error);
         }
     };
+    
+    const getNotifications = async (id) => {
+        try {
+            const res = await fetch(`${serverUrl}/api/notifications/bySubjectId?id=${id}`);
+            
+            if (res) {
+                const notifsjson = await res.json();
+                setNotifications(notifsjson);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const registerNewNotification = async(data, subject) => {
+        try{
+            await fetch(`${serverUrl}/api/notifications`, {
+                method: "post",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "Application/json"
+                },
+                body: JSON.stringify({
+                    content: data,
+                    sentAt: new Date(),
+                    subject: subject
+                })});
+        } catch(e){
+            console.log(e);
+        }
+    }
+    
+    function goToMain() {
+        window.location.href = "/main"
+    }
 
     function handleChooseSubject(subjectId) {
-        console.log(subjectId);
+        for (var i = 0; i < subjects.length; i++) {
+            if (subjects[i].subjectId === subjectId) {
+                setPickedSubject(subjects[i]);
+                getNotifications(subjectId);
+                return;
+            }
+        }
+    }
+
+    function handleForm(){
+        const data = document.getElementById("form-content").value;
+        console.log(data);
+        console.log(user.subject);
+        registerNewNotification(data, user.subject);
+        window.location.reload();
+        //getNotifications(user.subject.subjectId);
     }
 
     useEffect(() => {
@@ -48,7 +105,7 @@ function NotificationsPage() {
     }, [])
     useEffect(() => {
         if (user) {
-            console.log(user)
+            //console.log(user)
             getSubjects(user.email);
         }
     }, [user])
@@ -57,17 +114,23 @@ function NotificationsPage() {
     }, [])
     useEffect(() => {
         if (subjects) {
-            console.log(subjects);
-            setPicekdSubject(subjects[0]);
+            //console.log(subjects);
+            setPickedSubject(subjects[0]);
         }
     }, [subjects])
     useEffect(() => {
-        if (pickedSubject)
-            console.log(pickedSubject)
+        if (pickedSubject) {
+            getNotifications(pickedSubject.subjectId);
+        }
+        //console.log(pickedSubject)
     }, [pickedSubject])
+    useEffect(() => {
+        if (notifications)
+            console.log(notifications);
+    }, [notifications])
 
     if (user) {
-        if (user.role.roleId == 1 && subjects && pickedSubject) {
+        if (user.role.roleId == 1 && subjects && pickedSubject && notifications) {
 
             return (
                 <div className="notif-root-ucenik">
@@ -78,14 +141,18 @@ function NotificationsPage() {
                         <div className="notif-display-ucenik-naslov">
                             <h1>{pickedSubject.subjectName}</h1>
                         </div>
-                        <div className="notif-instance">
-                            <div className="date-notif-instance">
-                                <p>1.1.2000.</p>
+
+
+                        {notifications.map((e) => (
+                            <div key={e.id} className="notif-instance">
+                                <div className="date-notif-instance">
+                                    {e.sentAt ? <p>{date_formatter.format(Date.parse(e.sentAt))}</p> : <p>Vrijeme nepoznato</p>}
+                                </div>
+                                <div className="content-notif-instance">
+                                   {e.content ? <p>{e.content}</p> : <p>Sadržaj se ne može dohvatiti</p> } 
+                                </div>
                             </div>
-                            <div className="content-notif-instance">
-                                <p>ovo je primjer obavijesti</p>
-                            </div>
-                        </div>
+                        ))}
 
                     </div>
 
@@ -93,14 +160,6 @@ function NotificationsPage() {
 
 
                     <div className="notif-izbornik-ucenik">
-                        {/* <div className="notif-izbornik-instance-ucenik">
-                            <div className="notif-izbornik-instance-subject-name-ucenik">
-                                <p>silikoniziranje</p>
-                            </div>
-                            <div className="notif-izbornik-instance-button-ucenik">
-                                <button onClick={() => { handleChooseSubject(); }}>Odaberi</button>
-                            </div>
-                        </div> */}
                         {subjects.map((e) => (
                             <div key={e.subjectId} className="notif-izbornik-instance-ucenik">
                                 <div className="notif-izbornik-instance-subject-name-ucenik">
@@ -115,7 +174,7 @@ function NotificationsPage() {
                 </div>
             );
         }
-        else if (user.role.roleId == 2) {
+        else if (user.role.roleId == 2 && notifications) {
             return (
                 <div className="notif-root-nastavnik">
                     <div className="header-nastavnik">
@@ -123,17 +182,21 @@ function NotificationsPage() {
                         <span className="which-subject-nastavnik">Obavijesti za predmet: {user.subject.subjectName}</span>
                     </div>
                     <div className="notif-display-nastavnik">
-                        <div className="notif-instance">
+                        {notifications.map((e) => (
+                            <div key={e.id} className="notif-instance">
                             <div className="date-notif-instance">
-                                <p>1.1.2000.</p>
+                            {e.sentAt ? <p>{date_formatter.format(Date.parse(e.sentAt))}</p> : <p>Vrijeme nepoznato</p>}
                             </div>
                             <div className="content-notif-instance">
-                                <p>ovo je primjer obavijesti</p>
+                            {e.content ? <p>{e.content}</p> : <p>Sadržaj se ne može dohvatiti</p> } 
                             </div>
                         </div>
-                        <form className="new-notif-form">
-                            <p><label>Nova Obavijest: <input type="text" name="notification" defaultValue="" placeholder="upišite obavijest" /></label></p>
+                        ))}
+                        
+                        <form id="new-notif-form">
+                            <p><label>Nova Obavijest: <input type="text" id="form-content" name="notification" defaultValue="" placeholder="upišite obavijest" /></label></p>
                         </form>
+                        <button onClick={() => {handleForm()}} className="new-notif-form-submit">Objavi Obavijest</button>
                     </div>
                 </div>
             );

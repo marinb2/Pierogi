@@ -120,8 +120,14 @@
     margin-bottom: 1%;
 }
 
-.new-notif-form {
+#new-notif-form {
     position: absolute;
-    bottom: 0;
+    bottom: 3.5%;
     left: 40%;
+}
+
+.new-notif-form-submit{
+    position: absolute;
+    bottom: 2%;
+    left: 45%;
 }
