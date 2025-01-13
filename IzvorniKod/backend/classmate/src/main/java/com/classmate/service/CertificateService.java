@@ -140,5 +140,17 @@ public class CertificateService {
             pdfPath
         );
     }
+
+    public long getTotalCertificateRequests() {
+        return certificateRequestRepository.count(); 
+    }
+
+    public long getPendingCertificateRequests() {
+        return certificateRequestRepository.countByStatus(CertificateRequest.Status.PENDING);
+    }
+
+    public long getApprovedCertificateRequests() {
+        return certificateRequestRepository.countByStatus(CertificateRequest.Status.APPROVED);
+    }
     
 }

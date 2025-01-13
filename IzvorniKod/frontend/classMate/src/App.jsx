@@ -18,6 +18,7 @@ function App() {
         <Route path='/main' element={<MainPage />} />
         <Route path="/conversations" element={<MessagesPage />} />
         <Route path="/materials" element={<MaterialsPage />}/>
+        <Route path="/accounts" element={<AccountsPage />}/>
         <Route path="/documents" element={<DocumentsPage />}/>
         <Route path="/accounts" element={<AccountsPage />}/>
       </Routes>
