@@ -201,7 +201,7 @@ export default function MessagesPage() {
     sessionStorage.getItem("userName");
     sessionStorage.getItem("userPfpUrl"); */
 
-    if (!client || user.id == '-1') return <div>Setting up client & connection...</div>;
+    if (!client || user.id == '-1' || !nonEstConvos) return <div>Setting up client & connection...</div>;
 
 
     return (
@@ -210,10 +210,9 @@ export default function MessagesPage() {
                 <div className="new_contacts_header"><span>Započnite novi razgovor</span></div>
 
                 {nonEstConvos.map((e) => (
-
                     <div className="new_contacts_person" key={e.userId}>
                         <img src={e.pfpUrl === null ? "https://placehold.co/50x50" : e.pfpUrl} alt="https://placehold.co/50x50" className="new_contact_image"></img>
-                        <span className="new_contact_username">{e.username}</span>
+                        <span className="new_contact_username">{e.username ? e.username : "noname"}</span>
                         <button onClick={() => { handleDodaj(e) }}><span>Dodaj</span></button>
                     </div>
                 ))}
