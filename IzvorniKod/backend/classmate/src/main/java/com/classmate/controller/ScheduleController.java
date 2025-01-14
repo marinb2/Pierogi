@@ -2,47 +2,36 @@ package com.classmate.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.classmate.model.Schedule;
 import com.classmate.service.ScheduleService;
 
 @RestController
-@RequestMapping("/api/schedules")
+@RequestMapping("/api/schedule")
 public class ScheduleController {
 
-    @Autowired
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
-    @GetMapping
-    public List<Schedule> getAllSchedules() {
-        return scheduleService.getAllSchedules();
+    public ScheduleController(ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
     }
-
-    @PostMapping
-    public Schedule createSchedule(@RequestBody Schedule schedule) {
-        return scheduleService.createSchedule(schedule);
-    }
-
-    @GetMapping("/{id}")
-    public Schedule getScheduleById(@PathVariable Long id) {
-        return scheduleService.getScheduleById(id);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteSchedule(@PathVariable Long id) {
-        scheduleService.deleteSchedule(id);
-    }
-
     
+    // API za generiranje rasporeda za akademsku godinu
+    @PostMapping("/generate")
+    public String generateSchedule() {
+        scheduleService.generateScheduleForAcademicYear();
+        return "Raspored za akademsku godinu je uspješno generiran!";
+    }
+
+    // API za dohvat rasporeda prema razredu (npr. 1A)
+    @GetMapping("/{gradeNumber}/{gradeLetter}")
+    public List<Schedule> getScheduleForClass(@PathVariable Integer gradeNumber, @PathVariable Character gradeLetter) {
+        return scheduleService.getScheduleForClass(gradeNumber, gradeLetter);
+    }
 
 }
-
-
