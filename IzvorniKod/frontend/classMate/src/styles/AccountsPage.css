@@ -1,0 +1,48 @@
+.accounts-root {
+    width: 100%;
+    height: 100%;
+    /* background-color: white; */
+}
+
+.accounts-header {
+    height: 10%;
+    display: flex;
+    align-items: center;
+}
+
+.go-to-main-button{
+    margin-left: 3%;
+}
+
+.accounts-header-title{
+    margin-left: 30%;
+}
+
+.accounts-body {
+    height: 90%;
+}
+
+.accounts-table{
+    border: 1px solid black;
+    width: 100%;
+}
+.accounts-table th{
+    border: 1px solid black;
+}
+.accounts-table td{
+    border: 1px solid black;
+}
+.accounts-table-header{
+    height: 50px;
+}
+.accounts-table-row{
+    height: 40px;
+}
+.accounts-table-row td{
+    text-align: center;
+}
+
+.table-image{
+    max-height: 50px;
+    border-radius: 100px;
+}

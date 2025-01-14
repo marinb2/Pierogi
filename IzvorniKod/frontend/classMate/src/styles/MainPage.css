@@ -113,7 +113,7 @@
     display: flex;
     flex-direction: column;
   }
-  
+
   .topbar {
     display: flex;
     justify-content: space-between;
@@ -129,21 +129,20 @@
     z-index: 1100;
     background-color: #f8f9fa;
     flex-direction: row;
-    
+
   }
-  
+
   .topbar .logo {
     display: flex;
     align-items: center;
+  }
 
-  }
-  
-  .topbar .logo logo-image {
+  .logo-image {
     width: auto;  /* Set width if needed, like width: 100px; */
-    height: 1.5em; /* Matches the font size of 1.5em from the previous text logo */
     margin-right: 10px;
+    margin-top: -20px;
   }
-  
+
   /* Sidebar toggle button, visible only on mobile */
   .sidebar-toggle {
     font-size: 1.5em;
@@ -153,14 +152,14 @@
     display: none; /* Hidden by default */
     z-index: 1100;
   }
-  
+
   /* Display the toggle button only on screens smaller than 768px */
   @media (max-width: 768px) {
     .sidebar-toggle {
       display: block;
     }
   }
-  
+
   .topbar .title p {
     font-size: 1em;
     color: #555;
@@ -169,7 +168,38 @@
     overflow: hidden;     /* Hides overflow */
     text-overflow: ellipsis; /* Adds ellipsis for overflowed text */
   }
-  
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+  .user-profile-pic {
+    width: 50px; /* Veličina slike profila */
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+
+  .user-details {
+    display: flex;
+    flex-direction: column; /* Postavlja korisničko ime i email jedan ispod drugog */
+    align-items: flex-start;
+  }
+
+  .user-name {
+    font-weight: bold;
+    margin: 0;
+    color: black;
+  }
+
+  .user-email {
+    font-size: 0.9em;
+    color: #666;
+    margin: 0;
+  }
+
   /* Sidebar styling */
   .sidebar {
     width: 250px;
@@ -186,37 +216,42 @@
     transition: transform 0.3s ease;
     z-index: 1000;
   }
-  
+
   .sidebar.open {
     transform: translateX(0);
   }
-  
+
   .section {
     margin-top: 20px; /* Added margin to increase spacing between sections */
   }
-  
+
   .section h3 {
     font-size: 1em;
     color: #888;
     margin-bottom: 10px;
     text-transform: uppercase;
   }
-  
+
   .menu-item {
     display: flex;
+    flex-direction: row;
     align-items: center;
     padding: 10px 0;
     font-size: 0.9em;
     color: #333;
   }
-  
+
+  .menu-item span {
+    margin-right: 8px;
+  }
+
   .menu-item a {
     text-decoration: none;
     color: inherit;
     margin-left: 8px;
     flex-grow: 1;
   }
-  
+
   .menu-item .badge {
     background-color: #888;
     color: #fff;
@@ -228,22 +263,40 @@
   .menu-item a:hover {
     color: #555; /* Optional: Change color on hover */
   }
-  
+
+  .logout-btn {
+    background-color: #e45a68;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+    margin-bottom: 15px;
+    margin-left: 8px;
+  }
+
+  .logout-btn:hover {
+    background-color: #d33f4e;
+  }
+
   /* Responsive styling */
   @media (max-width: 768px) {
     .sidebar {
       width: 200px;
       transform: translateX(-100%);
     }
-  
+
     .sidebar.open {
       transform: translateX(0);
     }
-  
+
     .topbar .logo h2 {
       font-size: 1.2em;
     }
-  
+
     .topbar .title p {
       font-size: 0.9em;
     }
@@ -251,26 +304,26 @@
         height: 1.2em; /* Smaller logo size on tablets */
     }
   }
-  
+
   @media (max-width: 480px) {
     .sidebar {
       width: 150px;
       padding: 80px 10px 10px; /* Extra padding for fixed topbar */
     }
-  
+
     .topbar {
       padding: 10px;
     }
-  
+
     .sidebar-toggle {
       font-size: 1.2em;
     }
-  
+
     .menu-item {
       font-size: 0.8em;
       padding: 8px 0;
     }
-  
+
     .menu-item .badge {
       padding: 2px 6px;
       font-size: 0.7em;
@@ -279,6 +332,5 @@
         height: 1em; /* Smaller logo size on mobile */
     }
 
-    
+
   }
-  

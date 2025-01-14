@@ -1,0 +1,138 @@
+.notif-root-ucenik {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 10% 90%;
+    grid-template-rows: repeat(10, 10%);
+}
+
+.back-to-main-ucenik {
+    background-color: white;
+    border: 1px solid black;
+    grid-column: 1/1;
+    grid-row: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.back-to-main-button-ucenik {
+    max-width: 70%;
+}
+
+.notif-display-ucenik {
+    background-color: white;
+    border: 1px solid black;
+    grid-column: 2/2;
+    grid-row: 1/11;
+}
+
+.notif-display-ucenik-naslov {
+    display: flex;
+    justify-content: center;
+}
+
+.notif-izbornik-ucenik {
+    background-color: white;
+    border: 1px solid black;
+    grid-column: 1/1;
+    grid-row: 2/11;
+}
+
+.notif-display-no-notifs{
+    display: flex;
+    justify-content: center;
+}
+
+.notif-izbornik-instance-ucenik{
+
+}
+
+.notif-izbornik-instance-subject-name-ucenik{
+    display: flex;
+    justify-content: center;
+}
+
+.notif-izbornik-instance-subject-name-ucenik p{
+    margin: 0;
+    margin-top: 4%;
+}
+
+.notif-izbornik-instance-button-ucenik{
+    display: flex;
+    justify-content: center;
+}
+.notif-izbornik-instance-button-ucenik button{
+    margin-bottom: 3%;
+}
+
+.notif-root-nastavnik {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(10, 10%);
+}
+
+.header-nastavnik {
+    background-color: white;
+    border: 1px solid black;
+    grid-row: 1/1;
+    display: flex;
+    align-items: center;
+
+}
+
+.back-to-main-button-nastavnik {
+    margin-left: 4%;
+}
+
+.which-subject-nastavnik {
+    margin-left: 25%;
+    font-weight: 500;
+}
+
+.notif-display-nastavnik {
+    position: relative;
+    background-color: white;
+    border: 1px solid black;
+    grid-row: 2/11;
+}
+
+.notif-instance-nastavnik {
+
+}
+
+.date-notif-instance {
+    display: flex;
+    justify-content: center;
+}
+
+.date-notif-instance p {
+    margin: 0;
+    margin-top: 1%;
+    color: rgba(0,0,0,0.5);
+}
+
+.content-notif-instance {
+    display: flex;
+    justify-content: center;
+}
+
+.content-notif-instance p {
+    margin: 0;
+    margin-bottom: 1%;
+}
+
+#new-notif-form {
+    position: absolute;
+    bottom: 3.5%;
+    left: 40%;
+}
+
+.new-notif-form-submit{
+    position: absolute;
+    bottom: 2%;
+    left: 45%;
+}

@@ -1,11 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import '../styles/MainPage.css';
 import logo from '../assets/logo.svg';
 import { googleLogout } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject } from '@syncfusion/ej2-react-schedule';
 
-function TopBar({ currentTitle, toggleSidebar }) {
+function TopBar({ toggleSidebar }) {
+
+  const userPfpUrl = sessionStorage.getItem("userPfpUrl");
+  const userName = sessionStorage.getItem("userName");
+  const userEmail = sessionStorage.getItem("loggedInUserEmail");
+  const location = useLocation();
+  const [currentTitle, setCurrentTitle] = useState("Moj raspored");
+
+  useEffect(() => {
+    // Map the pathnames to titles
+    const titles = {
+      "/predmeti": "Predmeti",
+      "/main": "Moj raspored",
+      "/documents": "Potvrde",
+      "/notifications": "Obavijesti",
+    };
+
+    const newTitle = titles[location.pathname] || "Moj raspored";
+    setCurrentTitle(newTitle);
+  }, [location]);
+
   return (
     <div className="topbar">
       <div className="logo">
@@ -14,6 +35,17 @@ function TopBar({ currentTitle, toggleSidebar }) {
           ☰
         </button>
       </div>
+      <div className="user-info">
+        <img
+          src={userPfpUrl}
+          alt="User Profile"
+          className="user-profile-pic"
+        />
+        <div className="user-details">
+          <p className="user-name">{userName}</p>
+          <p className="user-email">{userEmail}</p>
+        </div>
+      </div>
       <div className="title">
         <p>{currentTitle}</p>
       </div>
@@ -21,19 +53,43 @@ function TopBar({ currentTitle, toggleSidebar }) {
   );
 }
 
-function Sidebar() {
+TopBar.propTypes = {
+  toggleSidebar: PropTypes.func.isRequired,
+};
+
+
+const Sidebar = ({ showSchedule = true }) => {
+  Sidebar.propTypes = {
+    showSchedule: PropTypes.bool,
+  };
+
   const basebackendurl = "http://localhost:8080";
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentTitle, setCurrentTitle] = useState('Moj raspored');
-  const [subjects, setSubjects] = useState(null);
+  //const [subjects, setSubjects] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [weatherEvents, setWeatherEvents] = useState([]);
   const [scheduleEvents, setScheduleEvents] = useState([]);
+  const [userDetails, setUserDetails] = useState(null);
+
 
   const apiKey = "19f1c82956a1d39ebf044e906eb0b900"
   const city = "Zagreb"
+  const location = useLocation();
 
-  const getSubjects = async (email) => {
+  const getUserDetails = async (email) => {
+    try {
+      const response = await fetch(`${basebackendurl}/api/users/getByEmail?email=${email}`, { method: "GET", credentials: "include" });
+      if (response.ok) {
+        const userjson = await response.json();
+        setUserDetails(userjson[0]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /*const getSubjects = async (email) => {
     try {
       const response = await fetch(`${basebackendurl}/api/subjects/getByUserEmail?email=${email}`, { method: "GET", credentials: "include" });
       if (response.ok) {
@@ -44,7 +100,7 @@ function Sidebar() {
     } catch (error) {
       console.log(error);
     }
-  };
+  };*/
 
   const toggleSidebar = () => {
     if (window.innerWidth < 768) {
@@ -53,7 +109,7 @@ function Sidebar() {
   };
 
   const handleMenuClick = (title) => {
-    setCurrentTitle(title); 
+    setCurrentTitle(title);
   };
 
   const navigate = useNavigate();
@@ -65,8 +121,8 @@ function Sidebar() {
   };
 
   useEffect(() => {
-    const email = sessionStorage.getItem("loggedInUserEmail");
-    getSubjects(email);
+    //const email = sessionStorage.getItem("loggedInUserEmail");
+    //getSubjects(email);
 
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -80,6 +136,11 @@ function Sidebar() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if (userDetails)
+      console.log(userDetails)
+  }, [userDetails])
+
   // Upis korisnika -> dodjela razreda i razrednika
   const handleEnrollmentClick = async () => {
     try {
@@ -89,15 +150,15 @@ function Sidebar() {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (!response.ok) {
         const errorMessage = await response.text();
         throw new Error(errorMessage);
       }
-  
+
       const message = await response.text();
       alert(message);
-  
+
     } catch (error) {
       console.error("Greška prilikom upisa:", error);
       alert("Greška prilikom upisa: " + error.message);
@@ -115,12 +176,13 @@ function Sidebar() {
         method: "GET",
         credentials: "include",
       });
-  
+
       if (response.ok) {
         const userData = await response.json();  // Dodano: Deklaracija userData
-  
+
         console.log("Podaci korisnika:", userData);  // Debugging
-  
+        console.log("Teacher id: ", userData[0].classTeacherId);  // Debugging
+
         // Ispravljen uvjet za provjeru upisa
         if (userData[0].classTeacherId !== null && userData[0].gradeLetter !== null && userData[0].gradeNumber !== null) {
           setIsEnrolled(true);  // Ako je upisan, prikazuje raspored
@@ -140,7 +202,8 @@ function Sidebar() {
   // Pokrece checkEnrollmentStatus funkciju pri učitavanju stranice
   useEffect(() => {
     const email = sessionStorage.getItem("loggedInUserEmail");
-    getSubjects(email);
+    getUserDetails(email);
+    //getSubjects(email);
     checkEnrollmentStatus(email); // Pozivanje funkcije za provjeru upisa pri učitavanju
 
     const handleResize = () => {
@@ -154,7 +217,7 @@ function Sidebar() {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   // ✅ Funkcija za dohvat vremenske prognoze
   const getWeatherForecast = async () => {
     try {
@@ -291,9 +354,8 @@ function Sidebar() {
     }
   };
   
-  
-  return (
-    subjects && (
+  if (userDetails)
+    return (
       <div className="app-container">
         <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
         <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
@@ -301,11 +363,11 @@ function Sidebar() {
             <h3>Osnovno</h3>
             <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
               <span>🗓️</span>
-              <a href="#schedule">Moj raspored</a>
+              <a href="/main">Moj raspored</a>
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
               <span>🔔</span>
-              <a href="#notifications">Obavijesti</a>
+              <a href="/notifications">Obavijesti</a>
               <span className="badge">24</span>
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
@@ -315,18 +377,20 @@ function Sidebar() {
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
               <span>📄</span>
-              <a href="#confirmations">Potvrde</a>
+              <a href="/documents">Potvrde</a>
             </div>
-          </div>
+            <div className="menu-item" onClick={() => handleMenuClick('Predmeti')}>
+              <span>📂</span>
+              <a href="/predmeti">Predmeti</a>
+            </div>
+            {userDetails.role.roleId === 6 && (
 
-          <div className="section subjects">
-            <h3>Predmeti</h3>
-            {subjects.map((subject) => (
-              <div className="menu-item" key={subject} onClick={() => handleMenuClick(subject)}>
-                <span>📂</span>
-                <a href={`#${subject.toLowerCase()}`}>{subject}</a>
+              <div className="menu-item" onClick={() => handleMenuClick('Predmeti')}>
+                <span>!!!</span>
+                <a href="/accounts">Pregledaj Sve Korisnike</a>
               </div>
-            ))}
+            )
+            }
           </div>
 
           <div className="section">
@@ -338,10 +402,12 @@ function Sidebar() {
           </div>
         </div>
 
-        {isEnrolled ? (
-          <div className="main-content">
-            <div className="schedule-container">
-              <ScheduleComponent
+        {/* Conditionally render the ScheduleComponent or the fallback content */}
+        {location.pathname !== '/materials' && showSchedule && (
+          isEnrolled ? (
+            <div className="main-content">
+              <div className="schedule-container">
+                <ScheduleComponent
                 height="600px"
                 width="100%"
                 selectedDate={new Date()}
@@ -352,18 +418,19 @@ function Sidebar() {
 
                 <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
               </ScheduleComponent>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="center-content">
-            <button className="enroll-button" onClick={handleEnrollmentClick}>
-              Upis
-            </button>
-          </div>
+          ) : (
+            <div className="center-content">
+              <button className="enroll-button" onClick={handleEnrollmentClick}>
+                Upis
+              </button>
+            </div>
+          )
         )}
       </div>
-    )
-  );
-}
+    );
+    else return(<h1>Učitavanje</h1>)
+};
 
 export default Sidebar;

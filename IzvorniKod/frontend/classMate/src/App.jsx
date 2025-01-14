@@ -7,7 +7,7 @@ import MessagesPage from './pages/MessagesPage';
 import MaterialsPage from './pages/MaterialsPage';
 import DocumentsPage from "./pages/DocumentsPage";
 import AccountsPage from "./pages/AccountsPage";
-//import ChatMaintenance from './pages/ChatMaintenance';
+import NotificationsPage from './pages/NotificationsPage';
 
 import { registerLicense } from '@syncfusion/ej2-base';
 
@@ -21,10 +21,11 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path='/main' element={<MainPage />} />
         <Route path="/conversations" element={<MessagesPage />} />
-        <Route path="/materials" element={<MaterialsPage />}/>
+        <Route path="/predmeti" element={<MaterialsPage showSchedule={false} />}/>
         <Route path="/documents" element={<DocumentsPage />}/>
         <Route path="/accounts" element={<AccountsPage />}/>
-        {/* <Route path="/cm" element={<ChatMaintenance />}/> */}
+        <Route path="/notifications" element={<NotificationsPage />}/>
+        
       </Routes>
     </Router>
   );
