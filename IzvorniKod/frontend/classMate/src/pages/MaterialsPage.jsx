@@ -65,7 +65,7 @@ const MaterialsPage = ({ showSchedule }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const maxFileSize = 100 * 1024 * 1024; // 100 MB limit
+      const maxFileSize = 100 * 1024 * 1024;
       if (file.size > maxFileSize) {
         alert("File size exceeds 100 MB limit.");
         return;
