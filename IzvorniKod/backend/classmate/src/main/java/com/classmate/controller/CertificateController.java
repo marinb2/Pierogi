@@ -35,25 +35,25 @@ public class CertificateController {
     @PostMapping("/{certificateId}/generate")
     public ResponseEntity<String> generateAndSendCertificate(
         @PathVariable Long certificateId,
-        @RequestParam String studentName, // Dodano ime studenta kao query parametar
-        @RequestParam String studentEmail
+        @RequestParam String studentName // Dodano ime studenta kao query parametar
+       
     ) {
-
+        
         // Dohvati vrstu potvrde
         CertificateType certificateType = certificateTypeRepository.findById(certificateId)
             .orElseThrow(() -> new RuntimeException("Certificate type not found"));
 
-
+        
 
         // Kreiraj request
-        certificateService.createCertificateRequest(studentName, studentEmail, certificateType);
+        certificateService.createCertificateRequest(studentName, certificateType);
 
 
 
         return ResponseEntity.ok("Request created.");
     }
 
-
+    
      @GetMapping("/pending-requests")
     public List<CertificateRequest> getPendingRequests() {
         return certificateService.getPendingRequests();
@@ -83,7 +83,7 @@ public class CertificateController {
     public ResponseEntity<String> approveRequest(
     @PathVariable Long requestId,
     @RequestParam String email // Dodan email kao query parametar
-    )
+    ) 
     {
     // Dohvati zahtjev i ažuriraj status na APPROVED
     CertificateRequest request = certificateService.updateRequestStatus(requestId, CertificateRequest.Status.APPROVED);
@@ -98,5 +98,5 @@ public class CertificateController {
     }
 
 
-
+    
 }
