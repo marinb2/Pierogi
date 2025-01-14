@@ -1,0 +1,21 @@
+{
+  "id": "da7d121e-52f7-40af-9135-4858d4b4ba64",
+  "version": "2.0",
+  "name": "classMate",
+  "url": "",
+  "tests": [{
+    "id": "4edf9652-5bc1-491a-96f6-6787306ae1ac",
+    "name": "Untitled",
+    "commands": []
+  }],
+  "suites": [{
+    "id": "1a786c3a-1701-44b0-9427-2f7ca0a8b03c",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["4edf9652-5bc1-491a-96f6-6787306ae1ac"]
+  }],
+  "urls": [],
+  "plugins": []
+}

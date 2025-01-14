@@ -7,9 +7,24 @@ function DocumentsPage() {
 
     const [confirmations, setConfirmations] = useState([]);
     const [pendingRequests, setPendingRequests] = useState([]);
+    const [user, setUser] = useState(null);
     const backdomain = 'http://localhost:8080';
     const userMail = sessionStorage.getItem("loggedInUserEmail");
     const userName = sessionStorage.getItem("userName");
+
+
+    async function getUser() {
+        try {
+            const res = await fetch(`${backdomain}/api/users/getByEmail?email=${sessionStorage.getItem("loggedInUserEmail")}`)
+
+            if (res) {
+                const userjson = await res.json();
+                setUser(userjson[0]);
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     const getConfirmations = async () => {
         try {
@@ -40,6 +55,13 @@ function DocumentsPage() {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        getUser();
+    }, [])
+    useEffect(() => {
+        console.log(user)
+    }, [user])
 
     useEffect(() => {
         if (userMail) {
@@ -79,44 +101,53 @@ function DocumentsPage() {
             console.log(error);
         }
     }
+    if (user) {
+        if (user.role.roleId == 1 || user.role.roleId == 5) {
+            return (
+                <div className="documents-container">
+                    <Sidebar showSchedule={false} />
 
-    return (
-        <div className="documents-container">
-            <Sidebar showSchedule={false}/>
+                    {/* Display confirmations */}
+                    {user.role.roleId == 1 && (
 
-            {/* Display confirmations */}
-            <div className="confirmations-list">
-                {confirmations.map((confirmation, index) => (
-                    <div key={index} className="confirmation-item">
-                        {/* Render individual confirmation data */}
-                        <h4>{confirmation.name}</h4>
-                        <div className="request-button">
-                            <Button onClick={() => handleRequest(confirmation)} variant="contained" sx={{ backgroundColor: 'rgba(103, 58, 183, 1)'}}>Zatraži</Button>
+                        <div className="confirmations-list">
+                            {confirmations.map((confirmation, index) => (
+                                <div key={index} className="confirmation-item">
+                                    {/* Render individual confirmation data */}
+                                    <h4>{confirmation.name}</h4>
+                                    <div className="request-button">
+                                        <Button onClick={() => handleRequest(confirmation)} variant="contained" sx={{ backgroundColor: 'rgba(103, 58, 183, 1)' }}>Zatraži</Button>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </div>
-                ))}
-            </div>
+                    )}
 
-            {/* Display pending requests for staff */}
-            <div className="pending-requests-list">
-                {pendingRequests.length > 0 ? (
-                    pendingRequests.map((request, index) => (
-                        <div key={index} className="pending-request-item">
-                            <h4>Molba: {request.certificateType.name}</h4>
-                            <p>Zahtjev poslao: {request.personName}</p>
-                            {request.status === 'PENDING' && (
-                                <Button onClick={() => handleApproveRequest(request.id, request)} variant="contained" sx={{ backgroundColor: 'green' }}>
-                                    Odobri
-                                </Button>
+                    {/* Display pending requests for staff */}
+                    {user.role.roleId == 5 && (
+
+                        <div className="pending-requests-list">
+                            {pendingRequests.length > 0 ? (
+                                pendingRequests.map((request, index) => (
+                                    <div key={index} className="pending-request-item">
+                                        <h4>Molba: {request.certificateType.name}</h4>
+                                        <p>Zahtjev poslao: {request.personName}</p>
+                                        {request.status === 'PENDING' && (
+                                            <Button onClick={() => handleApproveRequest(request.id, request)} variant="contained" sx={{ backgroundColor: 'green' }}>
+                                                Odobri
+                                            </Button>
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <p>Trenutno nema čekajućih zahtjeva.</p>
                             )}
                         </div>
-                    ))
-                ) : (
-                    <p>Trenutno nema čekajućih zahtjeva.</p>
-                )}
-            </div>
-        </div>
-    );
+                    )}
+                </div>
+            );
+        } else return (<h1>Nemate pravo pristupa</h1>)
+    } else return (<h1>Učitavanje</h1>)
 }
 
 export default DocumentsPage;
