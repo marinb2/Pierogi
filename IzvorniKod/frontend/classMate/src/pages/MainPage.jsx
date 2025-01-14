@@ -28,6 +28,7 @@ function Sidebar() {
   const [subjects, setSubjects] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [weatherEvents, setWeatherEvents] = useState([]);
+  const [scheduleEvents, setScheduleEvents] = useState([]);
 
   const apiKey = "19f1c82956a1d39ebf044e906eb0b900"
   const city = "Zagreb"
@@ -123,8 +124,9 @@ function Sidebar() {
         // Ispravljen uvjet za provjeru upisa
         if (userData[0].classTeacherId !== null && userData[0].gradeLetter !== null && userData[0].gradeNumber !== null) {
           setIsEnrolled(true);  // Ako je upisan, prikazuje raspored
+          generateScheduleIfNotExists(userData[0].gradeNumber, userData[0].gradeLetter);  // Generiranje rasporeda
+          getClassSchedule(userData[0].gradeNumber, userData[0].gradeLetter);  // Dohvat rasporeda
         } else {
-          console.log("Korisnik nije upisan u razred.");  // Debugging
           setIsEnrolled(false); // Ako nije upisan, prikazuje gumb Upis
         }
       } else {
@@ -160,6 +162,8 @@ function Sidebar() {
       if (response.ok) {
         const data = await response.json();
 
+        console.log("Vremenska prognoza:", data);  // Debugging
+
         // Mapiranje prognoze u evente za Scheduler
         const events = data.list.slice(0, 7).map((forecast) => ({
           Id: forecast.dt,
@@ -179,6 +183,114 @@ function Sidebar() {
   useEffect(() => {
     getWeatherForecast();  // Poziva vremensku prognozu pri učitavanju
   }, []);
+
+  const getClassSchedule = async (gradeNumber, gradeLetter) => {
+    try {
+      const response = await fetch(`${basebackendurl}/api/schedule/${gradeNumber}/${gradeLetter}`, {
+        method: "GET",
+        credentials: "include",
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+  
+        console.log("Raspored:", data);
+  
+        // Hrvatski državni blagdani
+        const hrvatskiBlagdani = [
+          "2024-10-08", "2024-11-01", "2024-12-25", "2024-12-26",
+          "2025-01-01", "2025-01-06", "2025-04-20", "2025-04-21",
+          "2025-05-01", "2025-06-22", "2025-06-25"
+        ];
+  
+        const bozicniPrazniciStart = new Date("2024-12-24");
+        const bozicniPrazniciEnd = new Date("2025-01-06");
+        const uskrsStart = new Date("2025-04-17");
+        const uskrsEnd = new Date("2025-04-23");
+  
+        const jePraznik = (datum) => {
+          const dateStr = datum.toISOString().split('T')[0];
+          return hrvatskiBlagdani.includes(dateStr) ||
+            (datum >= bozicniPrazniciStart && datum <= bozicniPrazniciEnd) ||
+            (datum >= uskrsStart && datum <= uskrsEnd);
+        };
+  
+        const startDate = new Date("2024-10-01");
+        const endDate = new Date("2025-06-15");
+        const generatedEvents = [];
+  
+        const radniDani = [1, 2, 3, 4, 5]; // Ponedjeljak - Petak
+        const dnevniTermini = [9, 10, 11, 12, 13, 14, 15]; // Satnice od 9 do 15 sati
+  
+        let predmetIndex = 0;
+  
+        for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+          const dan = date.getDay();
+  
+          if (radniDani.includes(dan) && !jePraznik(date)) {
+            for (let i = 0; i < dnevniTermini.length; i++) {
+              if (predmetIndex >= data.length) {
+                predmetIndex = 0; // Restart kad se prođe kroz sve predmete
+              }
+  
+              const predmet = data[predmetIndex];
+  
+              const eventStart = new Date(date);
+              eventStart.setHours(dnevniTermini[i], 0);
+  
+              const eventEnd = new Date(date);
+              eventEnd.setHours(dnevniTermini[i], 45); // Traje 45 minuta
+  
+              generatedEvents.push({
+                Id: `${predmet.id}-${date.toISOString().split('T')[0]}-${i}`,
+                Subject: `📚 ${predmet.subject.subjectName}`,
+                StartTime: eventStart,
+                EndTime: eventEnd,
+                IsAllDay: false,
+                isReadonly: true,
+                Location: predmet.classroom
+              });
+  
+              predmetIndex++; // Sljedeći predmet
+            }
+          }
+        }
+  
+        setScheduleEvents(generatedEvents);
+  
+      } else {
+        console.error("Neuspješno dohvaćanje rasporeda.");
+      }
+    } catch (error) {
+      console.error("Greška pri dohvaćanju rasporeda:", error);
+    }
+  };    
+
+  const generateScheduleIfNotExists = async (gradeNumber, gradeLetter) => {
+    try {
+      const response = await fetch(`${basebackendurl}/api/schedule/${gradeNumber}/${gradeLetter}`, {
+        method: "GET",
+        credentials: "include",
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        if (data.length === 0) {
+          // Ako raspored ne postoji, generiraj ga
+          await fetch(`${basebackendurl}/api/schedule/generate`, {
+            method: "POST",
+            credentials: "include",
+          });
+  
+          // Nakon generacije, ponovo dohvatiti raspored
+          await getClassSchedule(gradeNumber, gradeLetter);
+        }
+      }
+    } catch (error) {
+      console.error("Greška pri provjeri/generaciji rasporeda:", error);
+    }
+  };
+  
   
   return (
     subjects && (
@@ -233,8 +345,9 @@ function Sidebar() {
                 height="600px"
                 width="100%"
                 selectedDate={new Date()}
-                eventSettings={{ dataSource: weatherEvents }}
+                eventSettings={{ dataSource: scheduleEvents }}
                 readonly={true}
+                workDays={[0, 1, 2, 3, 4]}
               >
 
                 <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
@@ -248,7 +361,6 @@ function Sidebar() {
             </button>
           </div>
         )}
-
       </div>
     )
   );
