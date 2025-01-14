@@ -5,6 +5,17 @@
 }
 
 
+.date-header {
+  display: flex;
+  flex-direction: column; /* Prikazuje skraćenicu dana i broj dana jedan ispod drugog */
+  align-items: center; /* Centriranje po horizontalnoj osi */
+  justify-content: center; /* Centriranje po vertikalnoj osi */
+  font-size: 1.2em; /* Povećanje fonta */
+  font-weight: bold; /* Podebljan tekst */
+  height: 100%; /* Pruža visinu ćelije */
+  color: #333; /* Tamna boja za dobru čitljivost */
+}
+
 /* Ensures the main content doesn't overlap with the sidebar and topbar */
 .schedule-container {
   margin: 20px;

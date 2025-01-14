@@ -71,7 +71,7 @@ const Sidebar = ({ showSchedule = true }) => {
   const [weatherEvents, setWeatherEvents] = useState([]);
   const [scheduleEvents, setScheduleEvents] = useState([]);
   const [userDetails, setUserDetails] = useState(null);
-
+  const [weatherData, setWeatherData] = useState([]);
 
   const apiKey = "19f1c82956a1d39ebf044e906eb0b900"
   const city = "Zagreb"
@@ -221,31 +221,53 @@ const Sidebar = ({ showSchedule = true }) => {
   // ✅ Funkcija za dohvat vremenske prognoze
   const getWeatherForecast = async () => {
     try {
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`);
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`
+      );
       if (response.ok) {
         const data = await response.json();
 
-        console.log("Vremenska prognoza:", data);  // Debugging
+        // Filtriranje prognoze - samo jedna po danu
+        const dailyForecasts = data.list
+          .filter((item, index) => index % 8 === 0) // 8 vremenskih razmaka na dan
+          .map((forecast) => ({
+            date: new Date(forecast.dt * 1000).toLocaleDateString("hr-HR"),
+            temperature: forecast.main.temp,
+            description: forecast.weather[0].description,
+          }));
 
-        // Mapiranje prognoze u evente za Scheduler
-        const events = data.list.slice(0, 7).map((forecast) => ({
-          Id: forecast.dt,
-          Subject: `🌡️ ${forecast.main.temp}°C, ${forecast.weather[0].description}`,
-          StartTime: new Date(forecast.dt * 1000),
-          EndTime: new Date((forecast.dt + 3600) * 1000),
-          IsAllDay: false,
-          isReadonly: true
-        }));
-        setWeatherEvents(events);
+        setWeatherData(dailyForecasts);
       }
     } catch (error) {
       console.error("Greška pri dohvaćanju vremenske prognoze:", error);
     }
   };
 
+
   useEffect(() => {
     getWeatherForecast();  // Poziva vremensku prognozu pri učitavanju
   }, []);
+
+  const dateHeaderTemplate = (date) => {
+    const dayShortName = new Date(date.date).toLocaleDateString("hr-HR", { weekday: 'short' }); // Engleska skraćenica dana
+    const dayOfMonth = new Date(date.date).getDate(); // Broj dana u mjesecu
+    const forecast = weatherData.find(
+      (data) => data.date === new Date(date.date).toLocaleDateString("hr-HR")
+    );
+  
+    return (
+      <div className="date-header">
+        <div>{dayShortName}</div> {/* Prikazuje skraćenicu dana */}
+        <div>{dayOfMonth}</div> {/* Prikazuje broj dana */}
+        {forecast && (
+          <div style={{ fontSize: "12px", color: "#555", marginTop: "5px" }}>
+            🌡️ {forecast.temperature}°C, {forecast.description}
+          </div>
+        )}
+      </div>
+    );
+  };
+
 
   const getClassSchedule = async (gradeNumber, gradeLetter) => {
     try {
@@ -412,6 +434,7 @@ const Sidebar = ({ showSchedule = true }) => {
                 width="100%"
                 selectedDate={new Date()}
                 eventSettings={{ dataSource: scheduleEvents }}
+                dateHeaderTemplate={dateHeaderTemplate} // Dodano za prilagodbu zaglavlja dana
                 readonly={true}
                 workDays={[0, 1, 2, 3, 4]}
               >
