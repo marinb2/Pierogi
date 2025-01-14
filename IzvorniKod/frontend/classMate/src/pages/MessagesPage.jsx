@@ -38,6 +38,10 @@ export default function MessagesPage() {
     })
     const [nonEstConvos, setNonEstConvos] = useState(null);
 
+    function goToMainPage() {
+        window.location.href = "/main";
+    }
+
     async function getUser() {
         try {
             const res = await fetch(`${serverUrl}/api/users/getByEmail?email=${sessionStorage.getItem("loggedInUserEmail")}`)
@@ -207,7 +211,10 @@ export default function MessagesPage() {
     return (
         <div id="chatroot">
             <div className="add_new_contacts">
-                <div className="new_contacts_header"><span>Započnite novi razgovor</span></div>
+                <div className="new_contacts_header">
+                    <button onClick={() => { goToMainPage(); }}>Povratak na glavnu stranicu</button>
+                    <span>Započnite novi razgovor</span>
+                </div>
 
                 {nonEstConvos.map((e) => (
                     <div className="new_contacts_person" key={e.userId}>
