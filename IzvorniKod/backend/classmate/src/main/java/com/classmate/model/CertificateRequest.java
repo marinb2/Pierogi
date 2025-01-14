@@ -13,18 +13,16 @@ public class CertificateRequest {
     @JoinColumn(name = "certificate_type_id", nullable = false)
     private CertificateType certificateType;
 
-    private String personName;
-
-    private String email; // NOVI ATRIBUT
+    private String personName; 
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     public enum Status {
-        PENDING,
-        APPROVED,
-        REJECTED
+        PENDING, APPROVED, REJECTED
     }
+
+    
 
     public Long getId() {
         return id;
@@ -48,14 +46,6 @@ public class CertificateRequest {
 
     public void setPersonName(String personName) {
         this.personName = personName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Status getStatus() {
