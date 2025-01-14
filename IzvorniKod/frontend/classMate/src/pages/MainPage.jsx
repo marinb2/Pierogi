@@ -20,6 +20,7 @@ function TopBar({ toggleSidebar }) {
       "/predmeti": "Predmeti",
       "/main": "Moj raspored",
       "/documents": "Potvrde",
+      "/notifications": "Obavijesti",
     };
 
     const newTitle = titles[location.pathname] || "Moj raspored";
@@ -366,7 +367,7 @@ const Sidebar = ({ showSchedule = true }) => {
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
               <span>🔔</span>
-              <a href="#notifications">Obavijesti</a>
+              <a href="/notifications">Obavijesti</a>
               <span className="badge">24</span>
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
