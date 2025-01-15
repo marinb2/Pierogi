@@ -426,7 +426,7 @@ const Sidebar = ({ showSchedule = true }) => {
 
         {/* Conditionally render the ScheduleComponent or the fallback content */}
         {location.pathname !== '/materials' && showSchedule && (
-          isEnrolled ? (
+          (isEnrolled || userDetails.role.roleId != 1) ? (
             <div className="main-content">
               <div className="schedule-container">
                 <ScheduleComponent

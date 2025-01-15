@@ -172,9 +172,9 @@ export default function MessagesPage() {
     useEffect(() => {
 
         if (userDetails) {
-
+            
             getNonEstConvos(userDetails[0].userId);
-            setRazredId(userDetails[0].gradeNumber + "_" + userDetails[0].gradeLetter + "_" + userDetails[0].school.name);
+            setRazredId(userDetails[0].gradeNumber + "_" + userDetails[0].gradeLetter + "_" + userDetails[0].school ? "a" : userDetails[0].school.name);
             setRazredName(userDetails[0].gradeNumber + "." + userDetails[0].gradeLetter);
             setUser({
                 id: userDetails[0].userId.toString(),
