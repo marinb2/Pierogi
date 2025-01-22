@@ -100,8 +100,10 @@ SelectField.propTypes = {
     ).isRequired
 };
 function RegisterPage() {
-    const frontdomain = "http://localhost:3000"
-    const backdomain = "http://localhost:8080"
+    //const frontdomain = "http://localhost:3000"
+    const frontdomain = "https://pierogi-theta.vercel.app/"
+    //const backdomain = "http://localhost:8080"
+    const backdomain = "https://pierogi2-1m4p.onrender.com"
     const [forceRerender, setForceRerender] = useState(0);
     const [activeStep, setActiveStep] = React.useState(0);
     const [userDetails, setUserDetails] = useState("");
