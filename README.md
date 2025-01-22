@@ -6,7 +6,9 @@
 
 ## 💻 Pregled projekta
 
-Dobrodošli u ClassMate GitHub repozitorij! Cilj ovog projekta je razviti aplikaciju koja organizira rad nastavnika i učenika u suvremenim obrazovnim institucijama putem elektroničkih sredstava.
+- Dobrodošli u ClassMate GitHub repozitorij! Cilj ovog projekta je razviti aplikaciju koja organizira rad nastavnika i učenika u suvremenim obrazovnim institucijama putem elektroničkih sredstava.
+
+- Ovaj projekt je rezultat timskog rada u sklopu projeknog zadatka kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu
 
 ---
 
