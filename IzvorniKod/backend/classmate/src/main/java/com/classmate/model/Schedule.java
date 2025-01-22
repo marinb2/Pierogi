@@ -1,35 +1,44 @@
 package com.classmate.model;
 
-import java.time.DayOfWeek;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "schedule")
 public class Schedule {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    @ManyToOne
-    private Teacher teacher;
+    @Column(nullable = false)
+    private Integer gradeNumber;  // Razred (1-4)
 
-    @ManyToOne
-    private Resource resource;
-    
-    private DayOfWeek dayOfWeek;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    @Column(nullable = false)
+    private Character gradeLetter;  // Odjeljenje (A-F)
 
-    // Getters and Setters
+    @Column(nullable = false)
+    private LocalDateTime startTime;
 
+    @Column(nullable = false)
+    private LocalDateTime endTime;
+
+    @Column(nullable = false)
+    private String classroom;  // Lokacija učionice
+
+    // Getteri i Setteri
     public Long getId() {
         return id;
     }
@@ -46,44 +55,44 @@ public class Schedule {
         this.subject = subject;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public Integer getGradeNumber() {
+        return gradeNumber;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setGradeNumber(Integer gradeNumber) {
+        this.gradeNumber = gradeNumber;
     }
 
-    public Resource getResource() {
-        return resource;
+    public Character getGradeLetter() {
+        return gradeLetter;
     }
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    public void setGradeLetter(Character gradeLetter) {
+        this.gradeLetter = gradeLetter;
     }
 
-    public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
     }
 
 }
