@@ -15,7 +15,8 @@ import { StreamChat } from "stream-chat"
 import "stream-chat-react/dist/css/v2/index.css"
 import "../styles/MessagesPage.css"
 
-const serverUrl = "http://localhost:8080"
+//const serverUrl = "http://localhost:8080"
+const serverUrl = "https://pierogi2-1m4p.onrender.com"
 
 var sort;
 var filters;

@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 
 import "../styles/NotificationsPage.css"
 
-const serverUrl = "http://localhost:8080"
+//const serverUrl = "http://localhost:8080"
+const serverUrl = "https://pierogi2-1m4p.onrender.com"
 
 const date_formatter = new Intl.DateTimeFormat("hr-HR", {
     dateStyle: "full",
