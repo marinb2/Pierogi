@@ -11,7 +11,7 @@ import NotificationsPage from './pages/NotificationsPage';
 
 import { registerLicense } from '@syncfusion/ej2-base';
 
-registerLicense('Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf0x3Qnxbf1x1ZFREalhXTnZcUj0eQnxTdEBjWH5ecXZRQGBfU0V0XQ==');
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWX5cc3VXQ2dfU0N2WUE=');
 
 function App() {
   return (

@@ -73,7 +73,7 @@ const Sidebar = ({ showSchedule = true }) => {
   const [userDetails, setUserDetails] = useState(null);
   const [weatherData, setWeatherData] = useState([]);
 
-  const apiKey = "19f1c82956a1d39ebf044e906eb0b900"
+  const apiKey = "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWX5cc3VXQ2dfU0N2WUE="
   const city = "Zagreb"
   const location = useLocation();
 
@@ -268,7 +268,7 @@ const Sidebar = ({ showSchedule = true }) => {
     );
   };
 
-
+  // Dohvat rasporeda
   const getClassSchedule = async (gradeNumber, gradeLetter) => {
     try {
       const response = await fetch(`${basebackendurl}/api/schedule/${gradeNumber}/${gradeLetter}`, {
@@ -305,29 +305,45 @@ const Sidebar = ({ showSchedule = true }) => {
         const generatedEvents = [];
   
         const radniDani = [1, 2, 3, 4, 5]; // Ponedjeljak - Petak
-        const dnevniTermini = [9, 10, 11, 12, 13, 14, 15]; // Satnice od 9 do 15 sati
-  
         let predmetIndex = 0;
+        let lastSubject = null;
+        let consecutiveCount = 0;
   
         for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
           const dan = date.getDay();
   
           if (radniDani.includes(dan) && !jePraznik(date)) {
-            for (let i = 0; i < dnevniTermini.length; i++) {
+            let currentStartTime = new Date(date);
+            currentStartTime.setHours(9, 0); // Početni termin u 9:00
+  
+            while (currentStartTime.getHours() < 15) { // Raspored traje do 15:00
               if (predmetIndex >= data.length) {
                 predmetIndex = 0; // Restart kad se prođe kroz sve predmete
               }
   
               const predmet = data[predmetIndex];
   
-              const eventStart = new Date(date);
-              eventStart.setHours(dnevniTermini[i], 0);
+              // Check if the same subject is about to be scheduled for the third consecutive time
+              if (predmet.subject.subjectName === lastSubject) {
+                consecutiveCount++;
+                if (consecutiveCount >= 3) {
+                  predmetIndex++;
+                  if (predmetIndex >= data.length) {
+                    predmetIndex = 0;
+                  }
+                  continue;
+                }
+              } else {
+                lastSubject = predmet.subject.subjectName;
+                consecutiveCount = 1;
+              }
   
-              const eventEnd = new Date(date);
-              eventEnd.setHours(dnevniTermini[i], 45); // Traje 45 minuta
+              const eventStart = new Date(currentStartTime);
+              const eventEnd = new Date(currentStartTime);
+              eventEnd.setMinutes(eventStart.getMinutes() + 45); // Traje 45 minuta
   
               generatedEvents.push({
-                Id: `${predmet.id}-${date.toISOString().split('T')[0]}-${i}`,
+                Id: `${predmet.id}-${date.toISOString().split('T')[0]}-${currentStartTime.getHours()}`,
                 Subject: `📚 ${predmet.subject.subjectName}`,
                 StartTime: eventStart,
                 EndTime: eventEnd,
@@ -337,6 +353,7 @@ const Sidebar = ({ showSchedule = true }) => {
               });
   
               predmetIndex++; // Sljedeći predmet
+              currentStartTime = new Date(eventEnd); // Postavlja početak sljedećeg termina na kraj prethodnog
             }
           }
         }
@@ -349,7 +366,8 @@ const Sidebar = ({ showSchedule = true }) => {
     } catch (error) {
       console.error("Greška pri dohvaćanju rasporeda:", error);
     }
-  };    
+  };
+  
 
   const generateScheduleIfNotExists = async (gradeNumber, gradeLetter) => {
     try {
