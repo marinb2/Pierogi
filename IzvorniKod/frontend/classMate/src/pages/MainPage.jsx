@@ -63,8 +63,8 @@ const Sidebar = ({ showSchedule = true }) => {
     showSchedule: PropTypes.bool,
   };
 
-  //const basebackendurl = "http://localhost:8080";
-  const basebackendurl = "https://pierogi2-1m4p.onrender.com";
+  const basebackendurl = "http://localhost:8080";
+  //const basebackendurl = "https://pierogi2-1m4p.onrender.com";
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentTitle, setCurrentTitle] = useState('Moj raspored');
   //const [subjects, setSubjects] = useState(null);
@@ -89,6 +89,13 @@ const Sidebar = ({ showSchedule = true }) => {
       console.log(error);
     }
   }
+
+  const role = userDetails ? userDetails?.role?.roleName : null;
+  const gradeNumber = userDetails ? userDetails?.gradeNumber : null;
+  const gradeLetter = userDetails ? userDetails?.gradeLetter : null;
+  const schoolName = userDetails ? userDetails?.school.name : null;
+  const programmeName = role === "nastavnik" ? userDetails?.subject?.programme?.programName : userDetails?.programme?.programName;
+
 
   /*const getSubjects = async (email) => {
     try {
@@ -255,7 +262,7 @@ const Sidebar = ({ showSchedule = true }) => {
     const forecast = weatherData.find(
       (data) => data.date === new Date(date.date).toLocaleDateString("hr-HR")
     );
-  
+
     return (
       <div className="date-header">
         <div>{dayShortName}</div> {/* Prikazuje skraćenicu dana */}
@@ -355,6 +362,7 @@ const Sidebar = ({ showSchedule = true }) => {
   
               predmetIndex++; // Sljedeći predmet
               currentStartTime = new Date(eventEnd); // Postavlja početak sljedećeg termina na kraj prethodnog
+              currentStartTime.setMinutes(currentStartTime.getMinutes() + 15); // Dodaje 15 minuta pauze
             }
           }
         }
@@ -369,14 +377,13 @@ const Sidebar = ({ showSchedule = true }) => {
     }
   };
   
-
   const generateScheduleIfNotExists = async (gradeNumber, gradeLetter) => {
     try {
       const response = await fetch(`${basebackendurl}/api/schedule/${gradeNumber}/${gradeLetter}`, {
         method: "GET",
         credentials: "include",
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         if (data.length === 0) {
@@ -385,7 +392,7 @@ const Sidebar = ({ showSchedule = true }) => {
             method: "POST",
             credentials: "include",
           });
-  
+
           // Nakon generacije, ponovo dohvatiti raspored
           await getClassSchedule(gradeNumber, gradeLetter);
         }
@@ -394,13 +401,24 @@ const Sidebar = ({ showSchedule = true }) => {
       console.error("Greška pri provjeri/generaciji rasporeda:", error);
     }
   };
-  
+
   if (userDetails)
     return (
       <div className="app-container">
         <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
         <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
           <div className="section">
+          {userDetails.role.roleId === 1 && gradeNumber && gradeLetter && (
+            <div>
+              <h4>{`Razred: ${gradeNumber}.${gradeLetter}`}</h4>
+            </div>
+          )}
+            <h4>{`${schoolName}`}</h4>
+            {userDetails.role.roleId === 1 && (
+              <div>
+                <h4>{`${programmeName}`}</h4>
+              </div>
+            )}
             <h3>Osnovno</h3>
             <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
               <span>🗓️</span>
@@ -409,12 +427,12 @@ const Sidebar = ({ showSchedule = true }) => {
             <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
               <span>🔔</span>
               <a href="/notifications">Obavijesti</a>
-              <span className="badge">24</span>
+              {/*<span className="badge">24</span>*/}
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
               <span>💬</span>
               <a href="/conversations">Razgovori</a>
-              <span className="badge">2</span>
+              {/*<span className="badge">2</span>*/}
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
               <span>📄</span>
@@ -462,7 +480,7 @@ const Sidebar = ({ showSchedule = true }) => {
                 selectedDate={new Date()}
                 eventSettings={{ dataSource: scheduleEvents }}
                 dateHeaderTemplate={dateHeaderTemplate} // Dodano za prilagodbu zaglavlja dana
-                readonly={true}
+                readonly={userDetails.role.roleId !== 2}
                 workDays={[0, 1, 2, 3, 4]}
               >
 
