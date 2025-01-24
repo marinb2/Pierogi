@@ -10,10 +10,10 @@ const clientId = "932056831828-jn9cido6b78ao4hlhlssfjs09r5g1788.apps.googleuserc
 
 function LandingPage() {
 
-  const frontdomain = "http://localhost:3000"
-  //const frontdomain = "https://pierogi-theta.vercel.app/"
-  const backdomain = "http://localhost:8080"
-  //const backdomain = "https://pierogi2-1m4p.onrender.com"
+  //const frontdomain = "http://localhost:3000"
+  const frontdomain = "https://pierogi-theta.vercel.app/"
+  //const backdomain = "http://localhost:8080"
+  const backdomain = "https://pierogi2-1m4p.onrender.com"
 
   const [users, setUsers] = useState(null);
   const [loggedInEmail, setLoggedInEmail] = useState(null);

@@ -9,8 +9,8 @@ const date_formatter = new Intl.DateTimeFormat("hr-HR", {
 
 function AccountsPage() {
 
-    const serverUrl = "http://localhost:8080"
-    //const serverUrl = "https://pierogi2-1m4p.onrender.com"
+    //const serverUrl = "http://localhost:8080"
+    const serverUrl = "https://pierogi2-1m4p.onrender.com"
 
     const missingtext = "nema"
 
