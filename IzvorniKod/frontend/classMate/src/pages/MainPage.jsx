@@ -377,8 +377,6 @@ const Sidebar = ({ showSchedule = true }) => {
     }
   };
   
-
-
   const generateScheduleIfNotExists = async (gradeNumber, gradeLetter) => {
     try {
       const response = await fetch(`${basebackendurl}/api/schedule/${gradeNumber}/${gradeLetter}`, {
@@ -410,13 +408,17 @@ const Sidebar = ({ showSchedule = true }) => {
         <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
         <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
           <div className="section">
+          {userDetails.role.roleId === 1 && gradeNumber && gradeLetter && (
+            <div>
+              <h4>{`Razred: ${gradeNumber}.${gradeLetter}`}</h4>
+            </div>
+          )}
+            <h4>{`${schoolName}`}</h4>
             {userDetails.role.roleId === 1 && (
               <div>
-                <h4>{`Razred: ${gradeNumber}.${gradeLetter}`}</h4>
+                <h4>{`${programmeName}`}</h4>
               </div>
             )}
-            <h4>{`${schoolName}`}</h4>
-            <h4>{`${programmeName}`}</h4>
             <h3>Osnovno</h3>
             <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
               <span>🗓️</span>
@@ -478,7 +480,7 @@ const Sidebar = ({ showSchedule = true }) => {
                 selectedDate={new Date()}
                 eventSettings={{ dataSource: scheduleEvents }}
                 dateHeaderTemplate={dateHeaderTemplate} // Dodano za prilagodbu zaglavlja dana
-                readonly={true}
+                readonly={userDetails.role.roleId !== 2}
                 workDays={[0, 1, 2, 3, 4]}
               >
 
