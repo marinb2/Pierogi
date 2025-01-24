@@ -202,9 +202,9 @@ export default function MessagesPage() {
     }, [userDetails]);
 
     useEffect(() => {
-        if (user.id != -1)
+        if (user.id != -1 && token)
             init();
-    }, [user])
+    }, [user, token])
 
     useEffect(() => {
         if (nonEstConvos) {
