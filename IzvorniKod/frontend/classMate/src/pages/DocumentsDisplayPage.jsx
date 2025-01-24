@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const serverUrl = "http://localhost:8080"
+//const serverUrl = "http://localhost:8080"
+const serverUrl = "https://pierogi2-1m4p.onrender.com"
 import "../styles/DocumentsDisplayPage.css"
 
 function DocumentsDisplayPage() {
