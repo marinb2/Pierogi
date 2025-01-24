@@ -74,6 +74,7 @@ function NotificationsPage() {
                     subject: subject
                 })
             });
+            window.location.reload();
         } catch (e) {
             console.log(e);
         }
@@ -98,7 +99,7 @@ function NotificationsPage() {
         console.log(data);
         console.log(user.subject);
         registerNewNotification(data, user.subject);
-        window.location.reload();
+        
         //getNotifications(user.subject.subjectId);
     }
 
