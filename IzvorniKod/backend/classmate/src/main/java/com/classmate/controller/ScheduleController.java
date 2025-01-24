@@ -32,6 +32,11 @@ public class ScheduleController {
     @GetMapping("/{gradeNumber}/{gradeLetter}")
     public List<Schedule> getScheduleForClass(@PathVariable Integer gradeNumber, @PathVariable Character gradeLetter) {
         return scheduleService.getScheduleForClass(gradeNumber, gradeLetter);
+    } 
+
+    @GetMapping("/all")
+    public List<Schedule> getAllSchedules() {
+        return scheduleService.getAllSchedules();
     }
 
 }
