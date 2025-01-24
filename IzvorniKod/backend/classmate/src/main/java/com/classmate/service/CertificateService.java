@@ -54,7 +54,7 @@ public class CertificateService {
         return certificateTypeRepository.findAll();
     }
 
-
+    
 
     public CertificateRequest createCertificateRequest(String personName, String email, CertificateType certificateType) {
         CertificateRequest request = new CertificateRequest();
@@ -69,6 +69,11 @@ public class CertificateService {
     public List<CertificateRequest> getPendingRequests() {
         return certificateRequestRepository.findByStatus(CertificateRequest.Status.PENDING);
     }
+
+    public List<CertificateRequest> getApprovedRequests() {
+        return certificateRequestRepository.findByStatus(CertificateRequest.Status.APPROVED);
+    }
+
 
 
     public CertificateRequest updateRequestStatus(Long requestId, CertificateRequest.Status status) {

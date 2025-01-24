@@ -21,6 +21,7 @@ import com.classmate.service.UserService;
 
 import io.getstream.chat.java.models.framework.StreamRequest;
 
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

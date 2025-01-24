@@ -145,9 +145,7 @@ export default function MessagesPage() {
         const chatclient = StreamChat.getInstance(apiKey)
         if (user.id != -1) {
             //console.log(userDetails)
-
             await chatclient.connectUser(user, token);
-
             if (userDetails[0].role.roleId == 1) {
                 const chatchannel = chatclient.channel("messaging", razredId, {
                     image: "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
