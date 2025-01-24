@@ -8,8 +8,8 @@ function DocumentsPage() {
     const [confirmations, setConfirmations] = useState([]);
     const [pendingRequests, setPendingRequests] = useState([]);
     const [user, setUser] = useState(null);
-    //const backdomain = 'http://localhost:8080';
-    const backdomain = 'https://pierogi2-1m4p.onrender.com';
+    const backdomain = 'http://localhost:8080';
+    //const backdomain = 'https://pierogi2-1m4p.onrender.com';
     const userMail = sessionStorage.getItem("loggedInUserEmail");
     const userName = sessionStorage.getItem("userName");
 

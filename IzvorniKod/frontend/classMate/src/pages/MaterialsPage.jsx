@@ -19,8 +19,8 @@ const MaterialsPage = ({ showSchedule }) => {
   const [user, setUser] = useState(null);
   const [visibleSubjects, setVisibleSubjects] = useState({});
 
-  //const backdomain = "http://localhost:8080";
-  const backdomain = "https://pierogi2-1m4p.onrender.com";
+  const backdomain = "http://localhost:8080";
+  //const backdomain = "https://pierogi2-1m4p.onrender.com";
   const userName = sessionStorage.getItem("userName");
   const userMail = sessionStorage.getItem("loggedInUserEmail");
 
