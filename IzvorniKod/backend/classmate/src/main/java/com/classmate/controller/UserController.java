@@ -1,7 +1,9 @@
 package com.classmate.controller;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.classmate.model.User;
 import com.classmate.service.UserService;
+
+import io.getstream.chat.java.models.framework.StreamRequest;
 
 @RestController
 @RequestMapping("/api/users")
@@ -57,12 +61,14 @@ public class UserController {
 
     @GetMapping("/chattoken")
     public String chatToken(@RequestParam String id){
-
+        var calendar = new GregorianCalendar();
+        calendar.add(calendar.MINUTE, 60);
         System.out.println("-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*");
         //String token = io.getstream.chat.java.models.User.createToken("john", null, null);
         //System.out.println(token);
         System.out.println(System.getenv("STREAM_KEY"));
-        return io.getstream.chat.java.models.User.createToken(id, null, null);
+        
+        return io.getstream.chat.java.models.User.createToken(id, calendar.getTime(), null);
     }
 
 }

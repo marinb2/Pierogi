@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useSyncExternalStore } from "react"
 import {
     Chat,
     Channel,
@@ -9,7 +9,8 @@ import {
     MessageInput,
     Thread,
     LoadingIndicator,
-    ChannelActionContext
+    ChannelActionContext,
+    useMessageTextStreaming
 } from "stream-chat-react"
 import { StreamChat } from "stream-chat"
 import "stream-chat-react/dist/css/v2/index.css"
@@ -38,6 +39,7 @@ export default function MessagesPage() {
         role: ""
     })
     const [nonEstConvos, setNonEstConvos] = useState(null);
+    const [token, setToken] = useState(null);
 
     function goToMainPage() {
         window.location.href = "/main";
@@ -50,6 +52,18 @@ export default function MessagesPage() {
             if (res) {
                 const userjson = await res.json();
                 setUserDetails(userjson);
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async function getToken(id) {
+        try {
+            const res = await fetch(`${serverUrl}/api/users/chattoken?id=${id}`);
+            if (res) {
+                const tokenjson = await res.json();
+                setToken(tokenjson);
             }
         } catch (e) {
             console.log(e)
@@ -173,7 +187,7 @@ export default function MessagesPage() {
     useEffect(() => {
 
         if (userDetails) {
-            
+            getToken(userDetails[0].userId.toString());
             getNonEstConvos(userDetails[0].userId);
             setRazredId(userDetails[0].gradeNumber + "_" + userDetails[0].gradeLetter + "_" + userDetails[0].school ? "a" : userDetails[0].school.name);
             setRazredName(userDetails[0].gradeNumber + "." + userDetails[0].gradeLetter);
@@ -182,9 +196,6 @@ export default function MessagesPage() {
                 name: sessionStorage.getItem("userName"),
                 image: sessionStorage.getItem("userPfpUrl")
             });
-
-
-
 
         }
 
@@ -200,7 +211,7 @@ export default function MessagesPage() {
         }
     }, [nonEstConvos])
 
-
+    useEffect(() => {console.log(token)}, [token]);
 
     /* sessionStorage.getItem("loggedInUserEmail");
     sessionStorage.getItem("userName");
