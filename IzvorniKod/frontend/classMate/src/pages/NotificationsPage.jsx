@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 
 import "../styles/NotificationsPage.css"
 
-const serverUrl = "http://localhost:8080"
+//const serverUrl = "http://localhost:8080"
+const serverUrl = "https://pierogi2-1m4p.onrender.com"
 
 const date_formatter = new Intl.DateTimeFormat("hr-HR", {
     dateStyle: "full",
@@ -73,6 +74,7 @@ function NotificationsPage() {
                     subject: subject
                 })
             });
+            window.location.reload();
         } catch (e) {
             console.log(e);
         }
@@ -97,7 +99,7 @@ function NotificationsPage() {
         console.log(data);
         console.log(user.subject);
         registerNewNotification(data, user.subject);
-        window.location.reload();
+        
         //getNotifications(user.subject.subjectId);
     }
 

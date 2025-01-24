@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useSyncExternalStore } from "react"
 import {
     Chat,
     Channel,
@@ -9,13 +9,15 @@ import {
     MessageInput,
     Thread,
     LoadingIndicator,
-    ChannelActionContext
+    ChannelActionContext,
+    useMessageTextStreaming
 } from "stream-chat-react"
 import { StreamChat } from "stream-chat"
 import "stream-chat-react/dist/css/v2/index.css"
 import "../styles/MessagesPage.css"
 
-const serverUrl = "http://localhost:8080"
+//const serverUrl = "http://localhost:8080"
+const serverUrl = "https://pierogi2-1m4p.onrender.com"
 
 var sort;
 var filters;
@@ -37,6 +39,7 @@ export default function MessagesPage() {
         role: ""
     })
     const [nonEstConvos, setNonEstConvos] = useState(null);
+    const [token, setToken] = useState(null);
 
     function goToMainPage() {
         window.location.href = "/main";
@@ -49,6 +52,18 @@ export default function MessagesPage() {
             if (res) {
                 const userjson = await res.json();
                 setUserDetails(userjson);
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async function getToken(id) {
+        try {
+            const res = await fetch(`${serverUrl}/api/users/chattoken?id=${id}`);
+            if (res) {
+                const tokenjson = await res.text();
+                setToken(tokenjson);
             }
         } catch (e) {
             console.log(e)
@@ -130,8 +145,7 @@ export default function MessagesPage() {
         const chatclient = StreamChat.getInstance(apiKey)
         if (user.id != -1) {
             //console.log(userDetails)
-            await chatclient.connectUser(user, chatclient.devToken(user.id));
-            console.log(chatclient.devToken(user.id));
+            await chatclient.connectUser(user, token);
             if (userDetails[0].role.roleId == 1) {
                 const chatchannel = chatclient.channel("messaging", razredId, {
                     image: "https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp",
@@ -171,7 +185,7 @@ export default function MessagesPage() {
     useEffect(() => {
 
         if (userDetails) {
-            
+            getToken(userDetails[0].userId.toString());
             getNonEstConvos(userDetails[0].userId);
             setRazredId(userDetails[0].gradeNumber + "_" + userDetails[0].gradeLetter + "_" + userDetails[0].school ? "a" : userDetails[0].school.name);
             setRazredName(userDetails[0].gradeNumber + "." + userDetails[0].gradeLetter);
@@ -181,24 +195,19 @@ export default function MessagesPage() {
                 image: sessionStorage.getItem("userPfpUrl")
             });
 
-
-
-
         }
 
     }, [userDetails]);
 
     useEffect(() => {
-        if (user.id != -1)
+        if (user.id != -1 && token)
             init();
-    }, [user])
+    }, [user, token])
 
     useEffect(() => {
         if (nonEstConvos) {
         }
     }, [nonEstConvos])
-
-
 
     /* sessionStorage.getItem("loggedInUserEmail");
     sessionStorage.getItem("userName");

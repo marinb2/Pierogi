@@ -63,7 +63,8 @@ const Sidebar = ({ showSchedule = true }) => {
     showSchedule: PropTypes.bool,
   };
 
-  const basebackendurl = "http://localhost:8080";
+  //const basebackendurl = "http://localhost:8080";
+  const basebackendurl = "https://pierogi2-1m4p.onrender.com";
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [currentTitle, setCurrentTitle] = useState('Moj raspored');
   //const [subjects, setSubjects] = useState(null);
