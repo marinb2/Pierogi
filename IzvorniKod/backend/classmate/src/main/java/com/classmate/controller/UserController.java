@@ -56,12 +56,13 @@ public class UserController {
     }
 
     @GetMapping("/chattoken")
-    public void chatToken(){
+    public String chatToken(@RequestParam String id){
 
         System.out.println("-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*");
         //String token = io.getstream.chat.java.models.User.createToken("john", null, null);
         //System.out.println(token);
         System.out.println(System.getenv("STREAM_KEY"));
+        return io.getstream.chat.java.models.User.createToken(id, null, null);
     }
 
 }
