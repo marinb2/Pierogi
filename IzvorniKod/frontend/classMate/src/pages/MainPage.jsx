@@ -74,7 +74,7 @@ const Sidebar = ({ showSchedule = true }) => {
   const [userDetails, setUserDetails] = useState(null);
   const [weatherData, setWeatherData] = useState([]);
 
-  const apiKey = "Ngo9BigBOggjHTQxAR8/V1NMaF5cXmBCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWX5cc3VXQ2dfU0N2WUE="
+  const apiKey = "19f1c82956a1d39ebf044e906eb0b900"
   const city = "Zagreb"
   const location = useLocation();
 
