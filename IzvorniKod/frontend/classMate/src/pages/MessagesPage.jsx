@@ -62,7 +62,7 @@ export default function MessagesPage() {
         try {
             const res = await fetch(`${serverUrl}/api/users/chattoken?id=${id}`);
             if (res) {
-                const tokenjson = await res.json();
+                const tokenjson = await res.text();
                 setToken(tokenjson);
             }
         } catch (e) {
