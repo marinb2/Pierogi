@@ -283,54 +283,54 @@ const Sidebar = ({ showSchedule = true }) => {
         method: "GET",
         credentials: "include",
       });
-
+  
       if (response.ok) {
         const data = await response.json();
-
+  
         console.log("Raspored:", data);
-
+  
         // Hrvatski državni blagdani
         const hrvatskiBlagdani = [
           "2024-10-08", "2024-11-01", "2024-12-25", "2024-12-26",
           "2025-01-01", "2025-01-06", "2025-04-20", "2025-04-21",
           "2025-05-01", "2025-06-22", "2025-06-25"
         ];
-
+  
         const bozicniPrazniciStart = new Date("2024-12-24");
         const bozicniPrazniciEnd = new Date("2025-01-06");
         const uskrsStart = new Date("2025-04-17");
         const uskrsEnd = new Date("2025-04-23");
-
+  
         const jePraznik = (datum) => {
           const dateStr = datum.toISOString().split('T')[0];
           return hrvatskiBlagdani.includes(dateStr) ||
             (datum >= bozicniPrazniciStart && datum <= bozicniPrazniciEnd) ||
             (datum >= uskrsStart && datum <= uskrsEnd);
         };
-
+  
         const startDate = new Date("2024-10-01");
         const endDate = new Date("2025-06-15");
         const generatedEvents = [];
-
+  
         const radniDani = [1, 2, 3, 4, 5]; // Ponedjeljak - Petak
         let predmetIndex = 0;
         let lastSubject = null;
         let consecutiveCount = 0;
-
+  
         for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
           const dan = date.getDay();
-
+  
           if (radniDani.includes(dan) && !jePraznik(date)) {
             let currentStartTime = new Date(date);
             currentStartTime.setHours(9, 0); // Početni termin u 9:00
-
+  
             while (currentStartTime.getHours() < 15) { // Raspored traje do 15:00
               if (predmetIndex >= data.length) {
                 predmetIndex = 0; // Restart kad se prođe kroz sve predmete
               }
-
+  
               const predmet = data[predmetIndex];
-
+  
               // Check if the same subject is about to be scheduled for the third consecutive time
               if (predmet.subject.subjectName === lastSubject) {
                 consecutiveCount++;
@@ -345,11 +345,11 @@ const Sidebar = ({ showSchedule = true }) => {
                 lastSubject = predmet.subject.subjectName;
                 consecutiveCount = 1;
               }
-
+  
               const eventStart = new Date(currentStartTime);
               const eventEnd = new Date(currentStartTime);
               eventEnd.setMinutes(eventStart.getMinutes() + 45); // Traje 45 minuta
-
+  
               generatedEvents.push({
                 Id: `${predmet.id}-${date.toISOString().split('T')[0]}-${currentStartTime.getHours()}`,
                 Subject: `📚 ${predmet.subject.subjectName}`,
@@ -359,15 +359,16 @@ const Sidebar = ({ showSchedule = true }) => {
                 isReadonly: true,
                 Location: predmet.classroom
               });
-
+  
               predmetIndex++; // Sljedeći predmet
               currentStartTime = new Date(eventEnd); // Postavlja početak sljedećeg termina na kraj prethodnog
+              currentStartTime.setMinutes(currentStartTime.getMinutes() + 15); // Dodaje 15 minuta pauze
             }
           }
         }
-
+  
         setScheduleEvents(generatedEvents);
-
+  
       } else {
         console.error("Neuspješno dohvaćanje rasporeda.");
       }
@@ -375,6 +376,7 @@ const Sidebar = ({ showSchedule = true }) => {
       console.error("Greška pri dohvaćanju rasporeda:", error);
     }
   };
+  
 
 
   const generateScheduleIfNotExists = async (gradeNumber, gradeLetter) => {
