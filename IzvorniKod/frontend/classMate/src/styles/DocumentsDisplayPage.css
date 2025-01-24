@@ -1,0 +1,48 @@
+.certificates-root {
+    width: 100%;
+    height: 100%;
+    /* background-color: white; */
+}
+
+.certificates-header {
+    height: 10%;
+    display: flex;
+    align-items: center;
+}
+
+.go-to-main-button{
+    margin-left: 3%;
+}
+
+.certificates-header-title{
+    margin-left: 30%;
+}
+
+.certificates-body {
+    height: 90%;
+}
+
+.certificates-table{
+    border: 1px solid black;
+    width: 100%;
+}
+.certificates-table th{
+    border: 1px solid black;
+}
+.certificates-table td{
+    border: 1px solid black;
+}
+.certificates-table-header{
+    height: 50px;
+}
+.certificates-table-row{
+    height: 40px;
+}
+.certificates-table-row td{
+    text-align: center;
+}
+
+.table-image{
+    max-height: 50px;
+    border-radius: 100px;
+}

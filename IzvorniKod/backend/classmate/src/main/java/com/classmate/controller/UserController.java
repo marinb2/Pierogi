@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.classmate.model.User;
 import com.classmate.service.UserService;
 
+import io.getstream.chat.java.exceptions.StreamException;
+import io.getstream.chat.java.models.App;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -53,6 +56,15 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Greška prilikom upisa: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/chattoken")
+    public void chatToken() throws StreamException{
+
+        System.out.println("-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*");
+        //String token = io.getstream.chat.java.models.User.createToken("john", null, null);
+        //System.out.println(token);
+        System.out.println(System.getenv("STREAM_KEY"));
     }
 
 }

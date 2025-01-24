@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ClassmateApplication",
+            "request": "launch",
+            "mainClass": "com.classmate.ClassmateApplication",
+            "projectName": "classmate"
+        },
+        {
+            "env": {
+                "STREAM_KEY": "37dn9j8gdhgf",
+                "STREAM_SECRET": "3usta8r2rks3agyfbq5ej2x7u38zptjsk84vca4avydrba7jny8bz4qb25sfc84e"
+            }
+        }
+    ]
+}

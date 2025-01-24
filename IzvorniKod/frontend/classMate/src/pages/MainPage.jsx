@@ -431,6 +431,14 @@ const Sidebar = ({ showSchedule = true }) => {
               </div>
             )
             }
+            {userDetails.role.roleId === 4 && (
+
+              <div className="menu-item" onClick={() => handleMenuClick('Predmeti')}>
+                <span>!!!</span>
+                <a href="/certificates">Pregledaj Sve Potvrde</a>
+              </div>
+            )
+            }
           </div>
 
           <div className="section">
