@@ -61,14 +61,12 @@ public class UserController {
 
     @GetMapping("/chattoken")
     public String chatToken(@RequestParam String id){
-        var calendar = new GregorianCalendar();
-        calendar.add(calendar.MINUTE, 60);
         System.out.println("-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*-*_*_*__*");
         //String token = io.getstream.chat.java.models.User.createToken("john", null, null);
         //System.out.println(token);
-        System.out.println(System.getenv("STREAM_KEY"));
+        //System.out.println(System.getenv("STREAM_KEY"));
         
-        return io.getstream.chat.java.models.User.createToken(id, calendar.getTime(), null);
+        return io.getstream.chat.java.models.User.createToken(id, null, null);
     }
 
 }
