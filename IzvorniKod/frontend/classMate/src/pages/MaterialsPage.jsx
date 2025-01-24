@@ -191,8 +191,6 @@ const MaterialsPage = ({ showSchedule }) => {
     }
   };
 
-
-
   const handleDeleteMaterial = (materialId, materialUrl) => {
     if (!materialId) {
       console.error("Material ID is undefined or null.");
@@ -272,7 +270,6 @@ const MaterialsPage = ({ showSchedule }) => {
     return () => unsubscribe(); // Clean up listener on unmount
   }, [materialsCollection]);
 
-
   // Logic to filter materials based on role
   const filteredMaterials = useMemo(() => {
     if (!role || !materials.length) return [];
@@ -291,7 +288,6 @@ const MaterialsPage = ({ showSchedule }) => {
 
     return materials;
   }, [role, materials, user]);
-
 
   // Group materials by subject for students
   const groupedMaterials = useMemo(() => {
@@ -349,7 +345,8 @@ const MaterialsPage = ({ showSchedule }) => {
                 {groupedMaterials[subject].map((material) => (
                   <div className="material-item" key={material.id}>
                     <h3>{material.name}</h3>
-                    <p>{`Postavio: ${material.uploadedBy}\nDatum: ${material.date}`}</p>
+                    <p>{`Postavio: ${material.uploadedBy}`}</p>
+                    <p>{`Datum: ${material.date}`}</p>
                     <p>Veličina: {formatFileSize(material.size)}</p>
                     <p>
                       <a href={material.url} target="_blank" rel="noopener noreferrer" onClick={() => handleViewFile(material.id)}>Pregledaj datoteku</a>
@@ -368,12 +365,13 @@ const MaterialsPage = ({ showSchedule }) => {
             {filteredMaterials.map((material) => (
               <div className="material-item" key={material.id}>
                 <h3>{material.name}</h3>
-                <p>{`Postavio: ${material.uploadedBy}\nDatum: ${material.date}`}</p>
+                <p>{`Postavio: ${material.uploadedBy}`}</p>
+                <p>{`Datum: ${material.date}`}</p>
                 <p>Veličina: {formatFileSize(material.size)}</p>
+                <p>Pregledalo studenata: {material.viewedBy?.length || 0}</p>
                 <p>
                   <a href={material.url} target="_blank" rel="noopener noreferrer">Pregledaj datoteku</a>
                 </p>
-                <p>Pregledalo studenata: {material.viewedBy?.length || 0}</p>
                 <button onClick={() => handleDeleteMaterial(material.id, material.url)}>
                   Obriši
                 </button>
@@ -384,7 +382,6 @@ const MaterialsPage = ({ showSchedule }) => {
       </div>
     </div>
   );
-
 
 }
 MaterialsPage.propTypes = {

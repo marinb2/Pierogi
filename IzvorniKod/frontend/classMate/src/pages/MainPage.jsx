@@ -89,6 +89,12 @@ const Sidebar = ({ showSchedule = true }) => {
     }
   }
 
+  const role = userDetails ? userDetails?.role?.roleName : null;
+  const gradeNumber = userDetails ? userDetails?.gradeNumber : null;
+  const gradeLetter = userDetails ? userDetails?.gradeLetter : null;
+  const schoolName = userDetails ? userDetails?.school.name : null;
+  const programmeName = role === "nastavnik" ? userDetails?.subject?.programme?.programName : userDetails?.programme?.programName;
+
   /*const getSubjects = async (email) => {
     try {
       const response = await fetch(`${basebackendurl}/api/subjects/getByUserEmail?email=${email}`, { method: "GET", credentials: "include" });
@@ -254,7 +260,7 @@ const Sidebar = ({ showSchedule = true }) => {
     const forecast = weatherData.find(
       (data) => data.date === new Date(date.date).toLocaleDateString("hr-HR")
     );
-  
+
     return (
       <div className="date-header">
         <div>{dayShortName}</div> {/* Prikazuje skraćenicu dana */}
@@ -275,57 +281,57 @@ const Sidebar = ({ showSchedule = true }) => {
         method: "GET",
         credentials: "include",
       });
-  
+
       if (response.ok) {
         const data = await response.json();
-  
+
         console.log("Raspored:", data);
-  
+
         // Hrvatski državni blagdani
         const hrvatskiBlagdani = [
           "2024-10-08", "2024-11-01", "2024-12-25", "2024-12-26",
           "2025-01-01", "2025-01-06", "2025-04-20", "2025-04-21",
           "2025-05-01", "2025-06-22", "2025-06-25"
         ];
-  
+
         const bozicniPrazniciStart = new Date("2024-12-24");
         const bozicniPrazniciEnd = new Date("2025-01-06");
         const uskrsStart = new Date("2025-04-17");
         const uskrsEnd = new Date("2025-04-23");
-  
+
         const jePraznik = (datum) => {
           const dateStr = datum.toISOString().split('T')[0];
           return hrvatskiBlagdani.includes(dateStr) ||
             (datum >= bozicniPrazniciStart && datum <= bozicniPrazniciEnd) ||
             (datum >= uskrsStart && datum <= uskrsEnd);
         };
-  
+
         const startDate = new Date("2024-10-01");
         const endDate = new Date("2025-06-15");
         const generatedEvents = [];
-  
+
         const radniDani = [1, 2, 3, 4, 5]; // Ponedjeljak - Petak
         const dnevniTermini = [9, 10, 11, 12, 13, 14, 15]; // Satnice od 9 do 15 sati
-  
+
         let predmetIndex = 0;
-  
+
         for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
           const dan = date.getDay();
-  
+
           if (radniDani.includes(dan) && !jePraznik(date)) {
             for (let i = 0; i < dnevniTermini.length; i++) {
               if (predmetIndex >= data.length) {
                 predmetIndex = 0; // Restart kad se prođe kroz sve predmete
               }
-  
+
               const predmet = data[predmetIndex];
-  
+
               const eventStart = new Date(date);
               eventStart.setHours(dnevniTermini[i], 0);
-  
+
               const eventEnd = new Date(date);
               eventEnd.setHours(dnevniTermini[i], 45); // Traje 45 minuta
-  
+
               generatedEvents.push({
                 Id: `${predmet.id}-${date.toISOString().split('T')[0]}-${i}`,
                 Subject: `📚 ${predmet.subject.subjectName}`,
@@ -335,21 +341,21 @@ const Sidebar = ({ showSchedule = true }) => {
                 isReadonly: true,
                 Location: predmet.classroom
               });
-  
+
               predmetIndex++; // Sljedeći predmet
             }
           }
         }
-  
+
         setScheduleEvents(generatedEvents);
-  
+
       } else {
         console.error("Neuspješno dohvaćanje rasporeda.");
       }
     } catch (error) {
       console.error("Greška pri dohvaćanju rasporeda:", error);
     }
-  };    
+  };
 
   const generateScheduleIfNotExists = async (gradeNumber, gradeLetter) => {
     try {
@@ -357,7 +363,7 @@ const Sidebar = ({ showSchedule = true }) => {
         method: "GET",
         credentials: "include",
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         if (data.length === 0) {
@@ -366,7 +372,7 @@ const Sidebar = ({ showSchedule = true }) => {
             method: "POST",
             credentials: "include",
           });
-  
+
           // Nakon generacije, ponovo dohvatiti raspored
           await getClassSchedule(gradeNumber, gradeLetter);
         }
@@ -375,13 +381,20 @@ const Sidebar = ({ showSchedule = true }) => {
       console.error("Greška pri provjeri/generaciji rasporeda:", error);
     }
   };
-  
+
   if (userDetails)
     return (
       <div className="app-container">
         <TopBar currentTitle={currentTitle} toggleSidebar={toggleSidebar} />
         <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
           <div className="section">
+            {userDetails.role.roleId === 1 && (
+              <div>
+                <h4>{`Razred: ${gradeNumber}.${gradeLetter}`}</h4>
+              </div>
+            )}
+            <h4>{`${schoolName}`}</h4>
+            <h4>{`${programmeName}`}</h4>
             <h3>Osnovno</h3>
             <div className="menu-item active" onClick={() => handleMenuClick('Moj raspored')}>
               <span>🗓️</span>
@@ -390,12 +403,12 @@ const Sidebar = ({ showSchedule = true }) => {
             <div className="menu-item" onClick={() => handleMenuClick('Obavijesti')}>
               <span>🔔</span>
               <a href="/notifications">Obavijesti</a>
-              <span className="badge">24</span>
+              {/*<span className="badge">24</span>*/}
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Razgovori')}>
               <span>💬</span>
               <a href="/conversations">Razgovori</a>
-              <span className="badge">2</span>
+              {/*<span className="badge">2</span>*/}
             </div>
             <div className="menu-item" onClick={() => handleMenuClick('Potvrde')}>
               <span>📄</span>
