@@ -146,7 +146,7 @@ export default function MessagesPage() {
         if (user.id != -1) {
             //console.log(userDetails)
 
-            await chatclient.connectUser(user, chatclient.devToken(user.id));
+            await chatclient.connectUser(user, token);
 
             if (userDetails[0].role.roleId == 1) {
                 const chatchannel = chatclient.channel("messaging", razredId, {
@@ -210,8 +210,6 @@ export default function MessagesPage() {
         if (nonEstConvos) {
         }
     }, [nonEstConvos])
-
-    useEffect(() => {console.log(token)}, [token]);
 
     /* sessionStorage.getItem("loggedInUserEmail");
     sessionStorage.getItem("userName");
