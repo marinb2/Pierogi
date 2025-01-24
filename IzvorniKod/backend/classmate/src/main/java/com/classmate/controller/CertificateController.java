@@ -5,15 +5,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.classmate.model.CertificateRequest;
 import com.classmate.model.CertificateType;
-import com.classmate.model.Student;
 import com.classmate.model.User;
 import com.classmate.repository.CertificateTypeRepository;
-import com.classmate.repository.StudentRepository;
 import com.classmate.repository.UserRepository;
 import com.classmate.service.CertificateService;
 
@@ -24,8 +27,6 @@ public class CertificateController {
     @Autowired
     private CertificateService certificateService;
 
-    @Autowired
-    private StudentRepository studentRepository;
 
     @Autowired
     private UserRepository userRepository;

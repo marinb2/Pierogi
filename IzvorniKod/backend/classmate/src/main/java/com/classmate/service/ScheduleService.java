@@ -88,4 +88,8 @@ public class ScheduleService {
     public List<Schedule> getScheduleForClass(Integer gradeNumber, Character gradeLetter) {
         return scheduleRepository.findByGradeNumberAndGradeLetter(gradeNumber, gradeLetter);
     }
+
+    public List<Schedule> getAllSchedules() {
+        return scheduleRepository.findAll();
+    }
 }
